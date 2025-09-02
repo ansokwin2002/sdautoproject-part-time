@@ -1,70 +1,296 @@
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Linkedin, Twitter } from "lucide-react";
+'use client';
 
-const teamMembers = [
-  {
-    name: "John Doe",
-    role: "Master Technician",
-    bio: "With over 20 years of experience, John is a certified master technician specializing in European vehicles. His passion for precision and problem-solving is unmatched.",
-    avatar: "https://picsum.photos/200/200?random=21",
-    aiHint: "man portrait",
-  },
-  {
-    name: "Jane Smith",
-    role: "Service Advisor",
-    bio: "Jane is the friendly face you'll meet when you arrive. She excels at understanding customer needs and ensuring a smooth, transparent service experience.",
-    avatar: "https://picsum.photos/200/200?random=22",
-    aiHint: "woman portrait",
-  },
-  {
-    name: "Mike Johnson",
-    role: "Detailing Specialist",
-    bio: "Mike has an artist's eye for detail. He transforms cars with his expertise in paint correction, ceramic coatings, and interior rejuvenation.",
-    avatar: "https://picsum.photos/200/200?random=23",
-    aiHint: "person portrait",
-  },
-  {
-    name: "Sarah Williams",
-    role: "Lead Mechanic",
-    bio: "Sarah leads our diagnostics team. She is an expert in complex electrical systems and modern engine technology, ensuring accurate and efficient repairs.",
-    avatar: "https://picsum.photos/200/200?random=24",
-    aiHint: "female engineer",
-  },
-];
+import Image from "next/image";
+import Link from "next/link";
+import { ArrowRight, Car, Wrench, Sparkles, ChevronLeft, ChevronRight, Play, Pause } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { useState, useEffect, useCallback, useRef } from "react";
+
+// Custom hook for intersection observer
+const useIntersectionObserver = (options = {}) => {
+  const [isIntersecting, setIsIntersecting] = useState(false);
+  const [hasAnimated, setHasAnimated] = useState(false);
+  const ref = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !hasAnimated) {
+          setIsIntersecting(true);
+          setHasAnimated(true);
+        }
+      },
+      {
+        threshold: 0.1,
+        rootMargin: '50px',
+        ...options
+      }
+    );
+
+    const currentRef = ref.current;
+    if (currentRef) {
+      observer.observe(currentRef);
+    }
+
+    return () => {
+      if (currentRef) {
+        observer.unobserve(currentRef);
+      }
+    };
+  }, [hasAnimated, options]);
+
+  return [ref, isIntersecting];
+};
+
+// Animation variants for different elements
+const AnimatedSection = ({ children, className = "", delay = 0 }) => {
+  const [ref, isIntersecting] = useIntersectionObserver();
+  
+  return (
+    <div
+      ref={ref}
+      className={`transition-all duration-1000 ease-out ${
+        isIntersecting 
+          ? 'opacity-100 translate-y-0' 
+          : 'opacity-0 translate-y-12'
+      } ${className}`}
+      style={{ transitionDelay: `${delay}ms` }}
+    >
+      {children}
+    </div>
+  );
+};
+
+const AnimatedCard = ({ children, className = "", delay = 0 }) => {
+  const [ref, isIntersecting] = useIntersectionObserver();
+  
+  return (
+    <div
+      ref={ref}
+      className={`transition-all duration-800 ease-out ${
+        isIntersecting 
+          ? 'opacity-100 translate-y-0 scale-100' 
+          : 'opacity-0 translate-y-8 scale-95'
+      } ${className}`}
+      style={{ transitionDelay: `${delay}ms` }}
+    >
+      {children}
+    </div>
+  );
+};
+
+const AnimatedText = ({ children, className = "", delay = 0 }) => {
+  const [ref, isIntersecting] = useIntersectionObserver();
+  
+  return (
+    <div
+      ref={ref}
+      className={`transition-all duration-700 ease-out ${
+        isIntersecting 
+          ? 'opacity-100 translate-x-0' 
+          : 'opacity-0 -translate-x-8'
+      } ${className}`}
+      style={{ transitionDelay: `${delay}ms` }}
+    >
+      {children}
+    </div>
+  );
+};
+
+const AnimatedImage = ({ children, className = "", delay = 0 }) => {
+  const [ref, isIntersecting] = useIntersectionObserver();
+  
+  return (
+    <div
+      ref={ref}
+      className={`transition-all duration-900 ease-out ${
+        isIntersecting 
+          ? 'opacity-100 translate-x-0 scale-100' 
+          : 'opacity-0 translate-x-12 scale-95'
+      } ${className}`}
+      style={{ transitionDelay: `${delay}ms` }}
+    >
+      {children}
+    </div>
+  );
+};
 
 export default function AboutPage() {
   return (
-    <div className="bg-muted">
-      <div className="container mx-auto px-4 py-16 md:py-24">
-        <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold font-headline">Meet Our Expert Team</h1>
-          <p className="text-muted-foreground mt-3 max-w-2xl mx-auto text-lg">
-            The passionate professionals dedicated to providing the highest quality automotive care.
-          </p>
+    <div className="flex flex-col">
+      {/* Welcome Section */}
+      <section className="py-16 md:py-20 bg-gradient-to-b from-gray-50 to-white">
+        <div className="container mx-auto">
+          <div className="grid md:grid-cols-2 gap-12 items-center">
+            <AnimatedImage className="relative aspect-[4/3] order-2 md:order-1" delay={200}>
+              <Image 
+                src="https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80" 
+                alt="Modern Ford truck on desert road" 
+                data-ai-hint="Ford truck automotive desert road"
+                fill 
+                className="object-cover rounded-lg shadow-xl"
+              />
+            </AnimatedImage>
+            <div className="order-1 md:order-2">
+              <div className="max-w-xl">
+                <AnimatedText delay={100}>
+                  <h2 className="text-3xl md:text-5xl font-bold font-headline text-gray-900 mb-6">
+                    Welcome to SD Auto Parts
+                  </h2>
+                </AnimatedText>
+                <AnimatedText delay={200}>
+                  <p className="text-gray-600 text-lg leading-relaxed mb-8">
+                    SD Auto Parts has earned 15 years of experience with auto parts business specializing in parts for any vehicle from Thailand, UK, and America. If you have any difficulty to get any part for your vehicle because of dealer's price is too high, please don't hesitate to contact us at{' '}
+                    <span className="font-semibold text-blue-600">0460786533</span>, email:{' '}
+                    <span className="font-semibold text-blue-600">sdautaustralia@gmail.com</span>. Thank You!...
+                  </p>
+                </AnimatedText>
+                <AnimatedSection delay={300}>
+                  <div className="flex flex-col sm:flex-row gap-4">
+                    <Button size="lg" asChild className="hover:scale-105 transition-transform duration-200">
+                      <Link href="/about">
+                        Read More <ArrowRight className="ml-2 h-5 w-5" />
+                      </Link>
+                    </Button>
+                    <Button size="lg" variant="outline" asChild className="hover:scale-105 transition-transform duration-200">
+                      <Link href="/contact">
+                        Get Quote
+                      </Link>
+                    </Button>
+                  </div>
+                </AnimatedSection>
+              </div>
+            </div>
+          </div>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-          {teamMembers.map((member) => (
-            <Card key={member.name} className="text-center shadow-md hover:shadow-xl transition-shadow duration-300 flex flex-col">
-              <CardHeader className="items-center pt-6">
-                <Avatar className="h-24 w-24 mb-4 border-2 border-primary">
-                  <AvatarImage src={member.avatar} alt={member.name} data-ai-hint={member.aiHint} />
-                  <AvatarFallback>{member.name.charAt(0)}</AvatarFallback>
-                </Avatar>
-                <CardTitle className="text-xl font-bold">{member.name}</CardTitle>
-                <CardDescription className="text-sm text-primary font-medium">{member.role}</CardDescription>
-              </CardHeader>
-              <CardContent className="flex flex-col flex-grow">
-                <p className="text-muted-foreground text-sm mb-4 flex-grow">{member.bio}</p>
-                <div className="flex justify-center space-x-3 mt-auto">
-                  <a href="#" aria-label={`${member.name}'s Twitter`} className="text-muted-foreground hover:text-primary"><Twitter className="h-5 w-5" /></a>
-                  <a href="#" aria-label={`${member.name}'s LinkedIn`} className="text-muted-foreground hover:text-primary"><Linkedin className="h-5 w-5" /></a>
+      </section>
+
+     {/* Latest Blog Section */}
+      <section className="py-16 md:py-20 bg-white">
+        <div className="container mx-auto">
+          <AnimatedSection className="text-center mb-16">
+            <div className="w-16 h-1 bg-orange-400 mx-auto mb-4"></div>
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Latest Blog</h2>
+            <p className="text-gray-600 text-lg">Stay updated with our latest news and insights</p>
+          </AnimatedSection>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+            {/* Blog Post 1 */}
+            <AnimatedCard delay={100}>
+              <div className="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 group">
+                <div className="relative aspect-[4/3]">
+                  <Image 
+                    src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80"
+                    alt="Transportation logistics - ship, plane, and truck"
+                    fill
+                    className="object-cover group-hover:scale-105 transition-transform duration-300"
+                  />
                 </div>
-              </CardContent>
-            </Card>
-          ))}
+                <div className="p-6">
+                  <h3 className="text-xl font-bold text-gray-900 mb-3 line-clamp-2">
+                    We are strongly in quality of transportation to customer
+                  </h3>
+                  <p className="text-gray-600 mb-4 line-clamp-3">
+                    Our commitment to excellence ensures your auto parts reach you through the most reliable transportation methods, whether by air, sea, or land.
+                  </p>
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-gray-500">December 15, 2024</span>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      asChild
+                      className="text-white bg-blue-600 hover:bg-blue-700 hover:scale-105 transition-all duration-200 rounded-md px-4 py-2"
+                    >
+                      <Link href="/blog/transportation-quality">
+                        Read More <ArrowRight className="ml-1 h-4 w-4" />
+                      </Link>
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            </AnimatedCard>
+
+            {/* Blog Post 2 */}
+            <AnimatedCard delay={200}>
+              <div className="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 group">
+                <div className="relative aspect-[4/3]">
+                  <Image 
+                    src="https://images.unsplash.com/photo-1566576912321-d58ddd7a6088?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80"
+                    alt="Package delivery service"
+                    fill
+                    className="object-cover group-hover:scale-105 transition-transform duration-300"
+                  />
+                </div>
+                <div className="p-6">
+                  <h3 className="text-xl font-bold text-gray-900 mb-3 line-clamp-2">
+                    Best Delivery Service provided by us will make sure on your hand with safe
+                  </h3>
+                  <p className="text-gray-600 mb-4 line-clamp-3">
+                    Experience peace of mind with our premium delivery service that ensures your automotive parts arrive safely and on time, every time.
+                  </p>
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-gray-500">December 10, 2024</span>
+                   <Button
+                      variant="ghost"
+                      size="sm"
+                      asChild
+                      className="text-white bg-blue-600 hover:bg-blue-700 hover:scale-105 transition-all duration-200 rounded-md px-4 py-2"
+                    >
+                      <Link href="/blog/transportation-quality">
+                        Read More <ArrowRight className="ml-1 h-4 w-4" />
+                      </Link>
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            </AnimatedCard>
+
+            {/* Blog Post 3 */}
+            <AnimatedCard delay={300}>
+              <div className="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 group">
+                <div className="relative aspect-[4/3]">
+                  <Image 
+                    src="https://images.unsplash.com/photo-1486496572940-2bb2341fdbdf?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80"
+                    alt="Local garage automotive service"
+                    fill
+                    className="object-cover group-hover:scale-105 transition-transform duration-300"
+                  />
+                </div>
+                <div className="p-6">
+                  <h3 className="text-xl font-bold text-gray-900 mb-3 line-clamp-2">
+                    Mostly, Garage in Local always order our products
+                  </h3>
+                  <p className="text-gray-600 mb-4 line-clamp-3">
+                    Local garages trust us for quality automotive parts. Discover why professional mechanics choose SD Auto Parts for their repair needs.
+                  </p>
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-gray-500">December 5, 2024</span>
+                    <Button
+                        variant="ghost"
+                        size="sm"
+                        asChild
+                        className="text-white bg-blue-600 hover:bg-blue-700 hover:scale-105 transition-all duration-200 rounded-md px-4 py-2"
+                      >
+                        <Link href="/blog/transportation-quality">
+                          Read More <ArrowRight className="ml-1 h-4 w-4" />
+                        </Link>
+                      </Button>
+                  </div>
+                </div>
+              </div>
+            </AnimatedCard>
+          </div>
+
+          {/* View All Blog Posts Button */}
+          {/* <AnimatedSection className="text-center mt-12">
+            <Button size="lg" asChild className="hover:scale-105 transition-transform duration-200">
+              <Link href="/blog">
+                View All Post <ArrowRight className="ml-2 h-5 w-5" />
+              </Link>
+            </Button>
+          </AnimatedSection> */}
         </div>
-      </div>
+      </section>
     </div>
   );
 }

@@ -1,9 +1,7 @@
-'use server';
-
 /**
  * @fileOverview Dynamic FAQ generation flow using Genkit.
  *
- * - generateFAQAnswer - A function that generates answers to FAQs about SD AutoCar services.
+ * - generateFAQAnswerFlow - A flow that generates answers to FAQs about SD AutoCar services.
  * - FAQInput - The input type for the generateFAQAnswer function.
  * - FAQOutput - The return type for the generateFAQAnswer function.
  */
@@ -22,10 +20,6 @@ const FAQOutputSchema = z.object({
 });
 export type FAQOutput = z.infer<typeof FAQOutputSchema>;
 
-export async function generateFAQAnswer(input: FAQInput): Promise<FAQOutput> {
-  return generateFAQAnswerFlow(input);
-}
-
 const faqPrompt = ai.definePrompt({
   name: 'faqPrompt',
   input: {schema: FAQInputSchema},
@@ -39,7 +33,7 @@ const faqPrompt = ai.definePrompt({
   Answer:`, // Keep it concise, since this is an FAQ.
 });
 
-const generateFAQAnswerFlow = ai.defineFlow(
+export const generateFAQAnswerFlow = ai.defineFlow(
   {
     name: 'generateFAQAnswerFlow',
     inputSchema: FAQInputSchema,

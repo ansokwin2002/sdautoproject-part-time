@@ -41,9 +41,9 @@ export default function Footer() {
           <div>
             <h3 className="font-semibold mb-4">Contact Us</h3>
             <ul className="space-y-2 text-sm text-muted-foreground">
-              <li>123 Auto Drive, Car City, 12345</li>
-              <li>(123) 456-7890</li>
-              <li>contact@sdautocar.com</li>
+              <li>SD AUTO PART 87 Kookaburra Avenue Werribee, Victoria 3030 Australia</li>
+              <li>+61 460 786 533</li>
+              <li>sdautoaustralia@gmail.com</li>
             </ul>
           </div>
            <div>
@@ -56,7 +56,7 @@ export default function Footer() {
           </div>
         </div>
         <div className="mt-8 border-t border-border pt-8 text-center text-sm text-muted-foreground">
-          <p>&copy; {new Date().getFullYear()} SD AutoCar Showcase. All Rights Reserved.</p>
+          <p>&copy; {new Date().getFullYear()} SD AutoCar Showcase. All Rights Reserved. | Developed by An Sokwin</p>
         </div>
       </div>
     </footer>

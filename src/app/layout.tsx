@@ -1,23 +1,33 @@
+'use client';
+
 import type { Metadata } from 'next';
 import './globals.css';
 import { cn } from '@/lib/utils';
 import Header from '@/components/layout/header';
 import Footer from '@/components/layout/footer';
 import { Toaster } from '@/components/ui/toaster';
+import ScrollToTopButton from '@/components/ui/scroll-to-top-button';
+import PageLoadingIndicator from '@/components/ui/page-loading-indicator';
+import { usePathname } from 'next/navigation';
 
-export const metadata: Metadata = {
-  title: 'SD AutoCar Showcase',
-  description: 'Your trusted partner in automotive care and excellence.',
-  icons: {
-    icon: '/favicon.ico',
-  },
-};
+// Note: Metadata export is not supported in Client Components. 
+// If you need to use metadata, consider moving this to a Server Component or a layout.tsx in a parent directory.
+// export const metadata: Metadata = {
+//   title: 'SD AutoCar Showcase',
+//   description: 'Your trusted partner in automotive care and excellence.',
+//   icons: {
+//     icon: '/favicon.ico',
+//   },
+// };
 
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const pathname = usePathname();
+  const isAdminRoute = pathname.startsWith('/admin');
+
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
@@ -27,11 +37,13 @@ export default function RootLayout({
       </head>
       <body className={cn("min-h-screen bg-background font-body antialiased")}>
         <div className="relative flex min-h-dvh flex-col">
-          <Header />
+          {!isAdminRoute && <Header />}
           <main className="flex-1">{children}</main>
-          <Footer />
+          {!isAdminRoute && <Footer />}
         </div>
         <Toaster />
+        <ScrollToTopButton />
+        <PageLoadingIndicator />
       </body>
     </html>
   );

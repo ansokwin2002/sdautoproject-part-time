@@ -4,7 +4,8 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { generateFAQAnswer, type FAQInput } from "@/ai/flows/dynamic-faq-generation";
+import { type FAQInput } from "@/ai/flows/dynamic-faq-generation";
+import { runFlow } from "@genkit-ai/next/client";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -63,7 +64,10 @@ export default function FaqClient({ serviceContext }: FaqClientProps) {
     };
 
     try {
-      const result = await generateFAQAnswer(faqInput);
+      const result = await runFlow({
+        url: "/api/genkit",
+        input: faqInput,
+      });
       setMainAnswer(result.answer);
     } catch (error) {
       console.error("Error generating FAQ answer:", error);
@@ -84,9 +88,12 @@ export default function FaqClient({ serviceContext }: FaqClientProps) {
     });
 
     try {
-      const result = await generateFAQAnswer({
-        question: currentFaq.question,
-        context: serviceContext,
+      const result = await runFlow({
+        url: "/api/genkit",
+        input: {
+          question: currentFaq.question,
+          context: serviceContext,
+        },
       });
        setFaqList(prevList => {
         const newList = [...prevList];
