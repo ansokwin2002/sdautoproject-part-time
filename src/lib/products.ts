@@ -9,6 +9,8 @@ export interface Product {
   brand: string;
   code: string;
   tag: string;
+  partNumber?: string;
+  condition?: string;
 }
 
 export const products: Product[] = [
@@ -21,6 +23,8 @@ export const products: Product[] = [
     brand: "Mitsubishi Parts",
     code: "M0001",
     tag: "Mitsubishi Parts",
+    partNumber: "1375A433",
+    condition: "New",
   },
   {
     id: "T0001",
@@ -32,6 +36,8 @@ export const products: Product[] = [
     brand: "Toyota Parts",
     code: "TOYOTA HILUX 2015-24",
     tag: "Toyota Parts",
+    partNumber: "87940-0K360",
+    condition: "Used",
   },
   {
     id: "T0002",
@@ -43,6 +49,8 @@ export const products: Product[] = [
     brand: "Toyota Parts",
     code: "TOYOTA HILUX 2015-23",
     tag: "Toyota Parts",
+    partNumber: "68160-0K010",
+    condition: "New",
   },
   {
     id: "T0003",
@@ -54,6 +62,8 @@ export const products: Product[] = [
     brand: "Toyota Parts",
     code: "TOYOTA HILUX 2022-25",
     tag: "Toyota Parts",
+    partNumber: "87940-0K370",
+    condition: "New",
   },
   {
     id: "F0001",
@@ -64,6 +74,8 @@ export const products: Product[] = [
     brand: "Ford Parts",
     code: "FORD RANGER 18-22",
     tag: "Ford Parts",
+    partNumber: "AB39-13005-AD",
+    condition: "Used",
   },
   {
     id: "H0001",
@@ -74,6 +86,8 @@ export const products: Product[] = [
     brand: "Honda Parts",
     code: "HONDA CIVIC 20-23",
     tag: "Honda Parts",
+    partNumber: "45022-TBA-A00",
+    condition: "New",
   },
   {
     id: "M0002",
@@ -85,6 +99,8 @@ export const products: Product[] = [
     brand: "Mazda Parts",
     code: "MAZDA 3 19-22",
     tag: "Mazda Parts",
+    partNumber: "PE07-13-3A0A",
+    condition: "New",
   },
   {
     id: "N0001",
@@ -95,6 +111,8 @@ export const products: Product[] = [
     brand: "Nissan Parts",
     code: "NISSAN NAVARA 17-21",
     tag: "Nissan Parts",
+    partNumber: "26550-4JA0A",
+    condition: "Used",
   },
   {
     id: "S0001",
@@ -105,6 +123,8 @@ export const products: Product[] = [
     brand: "Subaru Parts",
     code: "SUBARU FORESTER 19-23",
     tag: "Subaru Parts",
+    partNumber: "E361SSG000",
+    condition: "New",
   },
   {
     id: "V0001",
@@ -116,6 +136,8 @@ export const products: Product[] = [
     brand: "Volkswagen Parts",
     code: "VW GOLF 18-21",
     tag: "Volkswagen Parts",
+    partNumber: "06L903021J",
+    condition: "Used",
   },
   {
     id: "A0001",
@@ -126,6 +148,8 @@ export const products: Product[] = [
     brand: "Audi Parts",
     code: "AUDI A4 17-22",
     tag: "Audi Parts",
+    partNumber: "06M115561B",
+    condition: "New",
   },
   {
     id: "B0001",
@@ -137,6 +161,8 @@ export const products: Product[] = [
     brand: "BMW Parts",
     code: "BMW 3S 19-23",
     tag: "BMW Parts",
+    partNumber: "51472458560",
+    condition: "New",
   },
   {
     id: "C0001",
@@ -147,6 +173,8 @@ export const products: Product[] = [
     brand: "Chevrolet Parts",
     code: "CHEVY SILVERADO 20-24",
     tag: "Chevrolet Parts",
+    partNumber: "84347948",
+    condition: "New",
   },
   {
     id: "J0001",
@@ -157,6 +185,8 @@ export const products: Product[] = [
     brand: "Jeep Parts",
     code: "JEEP WRANGLER 18-23",
     tag: "Jeep Parts",
+    partNumber: "82215394",
+    condition: "New",
   },
   {
     id: "K0001",
@@ -167,6 +197,8 @@ export const products: Product[] = [
     brand: "Kia Parts",
     code: "KIA SORENTO 21-24",
     tag: "Kia Parts",
+    partNumber: "U8170-1U000",
+    condition: "New",
   },
   {
     id: "L0001",
@@ -178,6 +210,8 @@ export const products: Product[] = [
     brand: "Lexus Parts",
     code: "LEXUS RX 20-23",
     tag: "Lexus Parts",
+    partNumber: "PT922-48200",
+    condition: "New",
   },
   {
     id: "P0001",
@@ -188,6 +222,8 @@ export const products: Product[] = [
     brand: "Porsche Parts",
     code: "PORSCHE 911 22-24",
     tag: "Porsche Parts",
+    partNumber: "99204400000",
+    condition: "New",
   },
   {
     id: "R0001",
@@ -198,6 +234,8 @@ export const products: Product[] = [
     brand: "Ram Parts",
     code: "RAM 1500 19-23",
     tag: "Ram Parts",
+    partNumber: "82215298AC",
+    condition: "New",
   },
   {
     id: "G0001",
@@ -208,6 +246,8 @@ export const products: Product[] = [
     brand: "GMC Parts",
     code: "GMC SIERRA 21-24",
     tag: "GMC Parts",
+    partNumber: "84347948",
+    condition: "New",
   },
   {
     id: "I0001",
@@ -219,5 +259,7 @@ export const products: Product[] = [
     brand: "Isuzu Parts",
     code: "ISUZU D-MAX 20-23",
     tag: "Isuzu Parts",
+    partNumber: "UGP200001",
+    condition: "New",
   }
 ];

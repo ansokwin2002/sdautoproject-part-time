@@ -164,9 +164,71 @@ export default function ProductList({ products: initialProducts, showContainer =
             >
               Previous
             </Button>
-            <span className="text-sm">
-              Page {currentPage} of {totalPages}
-            </span>
+            {totalPages > 0 && (
+              <div className="flex items-center space-x-1">
+                {/* Generate page numbers */}
+                {(() => {
+                  const pageNumbers = [];
+                  const maxPagesToShow = 5; // Max number of page buttons to show (excluding ellipses)
+                  const ellipsis = "...";
+
+                  if (totalPages <= maxPagesToShow) {
+                    // Show all pages if total pages are few
+                    for (let i = 1; i <= totalPages; i++) {
+                      pageNumbers.push(i);
+                    }
+                  } else {
+                    // Always show first page
+                    pageNumbers.push(1);
+
+                    // Determine start and end for middle pages
+                    let startPage = Math.max(2, currentPage - Math.floor((maxPagesToShow - 3) / 2));
+                    let endPage = Math.min(totalPages - 1, currentPage + Math.ceil((maxPagesToShow - 3) / 2));
+
+                    if (currentPage <= Math.floor(maxPagesToShow / 2) + 1) {
+                      endPage = maxPagesToShow - 1;
+                    } else if (currentPage >= totalPages - Math.floor(maxPagesToShow / 2)) {
+                      startPage = totalPages - maxPagesToShow + 2;
+                    }
+
+                    // Add first ellipsis if needed
+                    if (startPage > 2) {
+                      pageNumbers.push(ellipsis);
+                    }
+
+                    // Add middle pages
+                    for (let i = startPage; i <= endPage; i++) {
+                      pageNumbers.push(i);
+                    }
+
+                    // Add second ellipsis if needed
+                    if (endPage < totalPages - 1) {
+                      pageNumbers.push(ellipsis);
+                    }
+
+                    // Always show last page (if not already included)
+                    if (!pageNumbers.includes(totalPages)) {
+                      pageNumbers.push(totalPages);
+                    }
+                  }
+
+                  return pageNumbers.map((page, index) => (
+                    page === ellipsis ? (
+                      <span key={index} className="text-sm text-gray-600 px-2">{ellipsis}</span>
+                    ) : (
+                      <Button
+                        key={page}
+                        variant={currentPage === page ? "default" : "outline"}
+                        size="sm"
+                        onClick={() => setCurrentPage(page as number)}
+                      >
+                        {page}
+                      </Button>
+                    )
+                  ));
+                })()}
+              </div>
+            )}
             <Button
               variant="outline"
               size="sm"

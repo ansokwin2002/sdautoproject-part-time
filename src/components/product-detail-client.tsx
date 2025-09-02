@@ -6,10 +6,12 @@ import { notFound } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import ProductCard, { ProductCardSkeleton } from "@/components/product-card";
+import ProductList from "@/components/product-list";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useRouter } from "next/navigation";
 
 interface ProductDetailClientProps {
   productId: string;
@@ -18,6 +20,8 @@ interface ProductDetailClientProps {
 export default function ProductDetailClient({ productId }: ProductDetailClientProps) {
   const [loading, setLoading] = useState(true);
   const [product, setProduct] = useState<Product | null>(null);
+
+  const router = useRouter();
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -40,6 +44,10 @@ export default function ProductDetailClient({ productId }: ProductDetailClientPr
   }
 
   const otherProducts = products.filter((p) => p.id !== product.id);
+
+  const handleBuyNowClick = () => {
+    router.push('/contact');
+  };
 
   return (
     <div className="bg-white">
@@ -76,11 +84,17 @@ export default function ProductDetailClient({ productId }: ProductDetailClientPr
               </div>
 
               <p className="text-sm text-gray-500 mb-6">Product Code: {product.code}</p>
+              {product.partNumber && (
+                <p className="text-sm text-gray-500 mb-6">Part Number: {product.partNumber}</p>
+              )}
+              {product.condition && (
+                <p className="text-sm text-gray-500 mb-6">Condition: {product.condition}</p>
+              )}
             </div>
 
             <div className="mt-auto">
-                <Button size="lg" className="w-full hover:scale-105 transition-transform duration-200">
-                    Add to Cart
+                <Button size="lg" className="w-full hover:scale-105 transition-transform duration-200" onClick={handleBuyNowClick}>
+                    Buy now
                 </Button>
             </div>
           </div>
@@ -91,11 +105,7 @@ export default function ProductDetailClient({ productId }: ProductDetailClientPr
         {/* Other Products */}
         <div>
           <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-8">Other Products</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {otherProducts.map((otherProduct) => (
-              <ProductCard key={otherProduct.id} product={otherProduct} />
-            ))}
-          </div>
+          <ProductList products={otherProducts} showContainer={false} />
         </div>
       </div>
     </div>
@@ -119,7 +129,9 @@ const ProductDetailSkeleton = () => {
               <Skeleton className="h-10 w-28" />
               <Skeleton className="h-8 w-20" />
             </div>
-            <Skeleton className="h-6 w-32 mb-6" />
+            <Skeleton className="h-6 w-32 mb-6" /> {/* Product Code Skeleton */}
+            <Skeleton className="h-6 w-40 mb-6" /> {/* Part Number Skeleton */}
+            <Skeleton className="h-6 w-28 mb-6" /> {/* Condition Skeleton */}
           </div>
           <div className="mt-auto">
             <Skeleton className="h-12 w-full" />

@@ -12,7 +12,9 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { products } from "@/lib/products";
 
 const getNavLinks = () => {
-  const uniqueBrands = Array.from(new Set(products.map(product => product.brand))).sort();
+  const allBrands = Array.from(new Set(products.map(product => product.brand)));
+  const brandsToRemove = ["Mitsubishi Parts", "Nissan Parts", "Porsche Parts", "Ram Parts", "Subaru Parts", "GMC Parts", "Isuzu Parts"];
+  const uniqueBrands = allBrands.filter(brand => !brandsToRemove.includes(brand)).sort();
 
   const brandDropdownItems = uniqueBrands.map(brand => ({
     href: `/genuine-parts?brand=${encodeURIComponent(brand)}`,
@@ -77,21 +79,17 @@ export default function Header() {
         // Determine if scrolled past threshold for styling
         setIsScrolled(currentScrollY > 80);
         
-        // Improved visibility logic with hysteresis to prevent jittering
-        if (currentScrollY <= 10) {
-          // Always show when at the very top
+        // Improved visibility logic to prevent jittering
+        if (currentScrollY <= 50) {
+          // Always show when near the top
           setIsVisible(true);
-        } else if (currentScrollY <= 100) {
-          // Keep visible in the first 100px to prevent flickering
+        } else if (scrollDifference < 0) {
+          // Scrolling up
           setIsVisible(true);
-        } else if (scrollDifference < -5) {
-          // Scrolling up with minimum threshold
-          setIsVisible(true);
-        } else if (scrollDifference > 5 && currentScrollY > 150) {
-          // Scrolling down with minimum threshold and past initial area
+        } else if (scrollDifference > 0 && currentScrollY > 200) {
+          // Scrolling down and past a significant threshold
           setIsVisible(false);
         }
-        // If scrollDifference is between -5 and 5, maintain current state (reduces jitter)
         
         setLastScrollY(currentScrollY);
         isScrolling = false;
