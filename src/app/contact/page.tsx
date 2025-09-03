@@ -140,7 +140,7 @@ export default function ContactPage() {
 
   return (
     <div className="bg-background">
-      <div className="container mx-auto px-4 py-16 md:py-24">
+      <div className="container mx-auto py-16 md:py-24">
         <div className="text-center mb-12">
           <AnimatedText delay={100}>
             <h1 className="text-4xl md:text-5xl font-bold font-headline">Get In Touch</h1>

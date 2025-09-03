@@ -46,13 +46,26 @@ export default function Header() {
   const [isMobileDropdownOpen, setIsMobileDropdownOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
-  const [lastScrollY, setLastScrollY] = useState(0);
   const dropdownRef = useRef(null);
+  const leaveTimeout = useRef<NodeJS.Timeout | null>(null);
+
+  const handleMouseEnter = () => {
+    if (leaveTimeout.current) {
+      clearTimeout(leaveTimeout.current);
+    }
+    setIsDropdownOpen(true);
+  };
+
+  const handleMouseLeave = () => {
+    leaveTimeout.current = setTimeout(() => {
+      setIsDropdownOpen(false);
+    }, 500);
+  };
 
   // Close dropdown when clicking outside
   useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !(dropdownRef.current as any).contains(event.target)) {
         setIsDropdownOpen(false);
       }
     };
@@ -65,8 +78,9 @@ export default function Header() {
 
   // Improved scroll handler with better performance and smoother animations
   useEffect(() => {
-    let rafId = null;
+    let rafId: number | null = null;
     let isScrolling = false;
+    let lastScrollYValue = 0;
 
     const handleScroll = () => {
       if (isScrolling) return;
@@ -74,29 +88,33 @@ export default function Header() {
       isScrolling = true;
       rafId = requestAnimationFrame(() => {
         const currentScrollY = window.scrollY;
-        const scrollDifference = currentScrollY - lastScrollY;
+        const scrollDifference = currentScrollY - lastScrollYValue;
         
         // Determine if scrolled past threshold for styling
         setIsScrolled(currentScrollY > 80);
         
-        // Improved visibility logic to prevent jittering
+        if (Math.abs(scrollDifference) > 5) { // Only update if scroll is significant
+            if (scrollDifference > 0) {
+                // Scrolling down
+                if (currentScrollY > 200) {
+                    setIsVisible(false);
+                }
+            } else {
+                // Scrolling up
+                setIsVisible(true);
+            }
+        }
+
         if (currentScrollY <= 50) {
           // Always show when near the top
           setIsVisible(true);
-        } else if (scrollDifference < 0) {
-          // Scrolling up
-          setIsVisible(true);
-        } else if (scrollDifference > 0 && currentScrollY > 200) {
-          // Scrolling down and past a significant threshold
-          setIsVisible(false);
         }
         
-        setLastScrollY(currentScrollY);
+        lastScrollYValue = currentScrollY;
         isScrolling = false;
       });
     };
 
-    // Use passive listener for better performance
     window.addEventListener('scroll', handleScroll, { passive: true });
     
     return () => {
@@ -105,7 +123,7 @@ export default function Header() {
         cancelAnimationFrame(rafId);
       }
     };
-  }, [lastScrollY]);
+  }, []);
 
   const NavLink = ({ href, label, hasDropdown, dropdownItems, className }: { 
     href: string, 
@@ -116,13 +134,12 @@ export default function Header() {
   }) => {
     if (hasDropdown && dropdownItems) {
       return (
-        <div className="relative" ref={dropdownRef}>
+        <div className="relative" ref={dropdownRef} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
           <button
             className={`flex items-center font-medium transition-colors duration-200 hover:text-blue-600 ${
               pathname === href || dropdownItems.some(item => pathname === item.href) 
                 ? "text-blue-600" : "text-gray-700"
             } ${className || ""}`}
-            onMouseEnter={() => setIsDropdownOpen(true)}
             onClick={() => setIsDropdownOpen(!isDropdownOpen)}
           >
             {label}
@@ -132,7 +149,6 @@ export default function Header() {
           {isDropdownOpen && (
             <div 
               className="absolute top-full left-0 mt-2 w-56 bg-white border border-gray-200 rounded-md shadow-lg z-50 animate-in slide-in-from-top-2 duration-200"
-              onMouseLeave={() => setIsDropdownOpen(false)}
             >
               <div className="py-2">
                 {dropdownItems.map((item, index) => (
@@ -222,7 +238,7 @@ export default function Header() {
         <div className={`bg-gray-100 border-b transition-all duration-500 ease-in-out ${
           isScrolled ? 'h-0 overflow-hidden opacity-0 -translate-y-2' : 'h-auto opacity-100 translate-y-0'
         }`}>
-          <div className="container mx-auto px-4">
+          <div className="container mx-auto">
             <div className="flex flex-col sm:flex-row justify-between items-center py-3 text-sm text-gray-600">
               <div className="flex items-center space-x-2 mb-1 sm:mb-0">
                 <MapPin className="h-4 w-4 text-blue-600" />
@@ -243,7 +259,7 @@ export default function Header() {
         </div>
 
         {/* Main Navigation - Increased height (doubled) */}
-        <div className="container mx-auto px-4">
+        <div className="container mx-auto">
           <div className="flex h-32 items-center justify-between">
             {/* Logo - Increased size */}
             <div className="flex items-center">
