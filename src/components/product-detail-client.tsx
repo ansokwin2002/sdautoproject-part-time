@@ -53,7 +53,7 @@ export default function ProductDetailClient({ productId }: ProductDetailClientPr
     <div className="bg-white">
       <div className="container mx-auto py-12 md:py-20">
         <div className="mb-8">
-            <Link href="/" className="flex items-center text-gray-500 hover:text-gray-700 transition-colors">
+            <Link href="/" className="flex items-center text-gray-500 hover:text-gray-700 transition-colors mt-4 md:mt-0">
                 <ArrowLeft className="h-4 w-4 mr-2" />
                 Back to all products
             </Link>

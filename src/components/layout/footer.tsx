@@ -1,15 +1,20 @@
 import Link from 'next/link';
 import { Github, Twitter, Linkedin } from 'lucide-react';
 import Logo from '@/components/icons/logo';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 
 export default function Footer() {
   const navLinks = [
     { href: "/", label: "Home" },
-    { href: "/services", label: "Services" },
-    { href: "/gallery", label: "Gallery" },
-    { href: "/about", label: "Our Team" },
-    { href: "/faq", label: "FAQ" },
-    { href: "/contact", label: "Contact" },
+    { href: "/about", label: "About" },
+    { href: "/genuine-parts", label: "Genuine Parts" },
+    { href: "/shipping", label: "Shipping" },
+    { href: "/contact", label: "Contact Us" },
   ];
 
   return (

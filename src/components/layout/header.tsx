@@ -241,8 +241,8 @@ export default function Header() {
           <div className="container mx-auto">
             <div className="flex flex-col sm:flex-row justify-between items-center py-3 text-sm text-gray-600">
               <div className="flex items-center space-x-2 mb-1 sm:mb-0">
-                <MapPin className="h-4 w-4 text-blue-600" />
-                <span>SD AUTO PART 67 Kookaburra Avenue Werribee, Victoria 3030 Australia</span>
+                <MapPin className="h-4 w-4 text-blue-600 flex-shrink-0" />
+                <span className="min-w-0 text-xs sm:text-sm">SD AUTO PART 87 Kookaburra Avenue Werribee, Victoria 3030 Australia</span>
               </div>
               <div className="flex items-center space-x-6">
                 <div className="flex items-center space-x-1">
@@ -395,7 +395,7 @@ export default function Header() {
                       <div className="space-y-3 text-sm text-gray-600">
                         <div className="flex items-center space-x-2">
                           <MapPin className="h-4 w-4 text-blue-600 flex-shrink-0" />
-                          <span>67 Kookaburra Avenue Werribee, Victoria 3030 Australia</span>
+                          <span className="min-w-0 text-xs">SD AUTO PART 87 Kookaburra Avenue Werribee, Victoria 3030 Australia</span>
                         </div>
                         <div className="flex items-center space-x-2">
                           <Mail className="h-4 w-4 text-blue-600 flex-shrink-0" />
