@@ -91,12 +91,12 @@ export default function Header() {
         const scrollDifference = currentScrollY - lastScrollYValue;
         
         // Determine if scrolled past threshold for styling
-        setIsScrolled(currentScrollY > 80);
+        setIsScrolled(currentScrollY > 100);
         
-        if (Math.abs(scrollDifference) > 5) { // Only update if scroll is significant
+        if (Math.abs(scrollDifference) > 10) {
             if (scrollDifference > 0) {
                 // Scrolling down
-                if (currentScrollY > 200) {
+                if (currentScrollY > 300) {
                     setIsVisible(false);
                 }
             } else {
@@ -105,7 +105,7 @@ export default function Header() {
             }
         }
 
-        if (currentScrollY <= 50) {
+        if (currentScrollY <= 80) {
           // Always show when near the top
           setIsVisible(true);
         }
