@@ -66,10 +66,13 @@ const AnimatedCard = ({ children, className = "", delay = 0 }) => {
 export default function ProductList({ products: initialProducts, showContainer = true }: { products?: import("@/lib/products").Product[], showContainer?: boolean }) {
   const [searchTerm, setSearchTerm] = useState('');
   const [sortOrder, setSortOrder] = useState('name-asc');
+  const [selectedBrand, setSelectedBrand] = useState<string>('all');
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(true);
 
   const productSource = initialProducts || products;
+
+  const uniqueBrands = Array.from(new Set(productSource.map((p) => p.brand)));
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -80,8 +83,9 @@ export default function ProductList({ products: initialProducts, showContainer =
 
   const filteredAndSortedProducts = useMemo(() => {
     let filtered = productSource.filter(product =>
-      product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      product.description.toLowerCase().includes(searchTerm.toLowerCase())
+      (selectedBrand === 'all' || product.brand.toLowerCase() === selectedBrand.toLowerCase()) &&
+      (product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+       product.description.toLowerCase().includes(searchTerm.toLowerCase()))
     );
 
     const [sortBy, order] = sortOrder.split('-');
@@ -100,13 +104,18 @@ export default function ProductList({ products: initialProducts, showContainer =
     });
 
     return filtered;
-  }, [searchTerm, sortOrder, productSource]);
+  }, [searchTerm, sortOrder, selectedBrand, productSource]); // Add selectedBrand to dependencies
 
   const totalPages = Math.ceil(filteredAndSortedProducts.length / ITEMS_PER_PAGE);
   const paginatedProducts = filteredAndSortedProducts.slice(
     (currentPage - 1) * ITEMS_PER_PAGE,
     currentPage * ITEMS_PER_PAGE
   );
+
+  // Reset currentPage when filters change
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchTerm, selectedBrand, sortOrder]); // Reset page when search, brand, or sort changes
 
   return (
     <section className={showContainer ? "py-16 md:py-20 bg-gray-50" : ""}>
@@ -120,7 +129,7 @@ export default function ProductList({ products: initialProducts, showContainer =
               className="max-w-sm"
             />
           </div>
-          <div className="w-full md:w-auto">
+          <div className="w-full md:w-auto flex flex-row gap-2">
             <Select value={sortOrder} onValueChange={setSortOrder}>
               <SelectTrigger className="w-full md:w-[180px]">
                 <SelectValue placeholder="Sort by" />
@@ -130,6 +139,19 @@ export default function ProductList({ products: initialProducts, showContainer =
                 <SelectItem value="name-desc">Name: Z to A</SelectItem>
                 <SelectItem value="price-asc">Price: Low to High</SelectItem>
                 <SelectItem value="price-desc">Price: High to Low</SelectItem>
+              </SelectContent>
+            </Select>
+            <Select onValueChange={setSelectedBrand} defaultValue={selectedBrand}>
+              <SelectTrigger className="w-full md:w-[180px]">
+                <SelectValue placeholder="Filter by brand" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Brands</SelectItem>
+                {uniqueBrands.map((brand) => (
+                  <SelectItem key={brand} value={brand}>
+                    {brand}
+                  </SelectItem>
+                ))}
               </SelectContent>
             </Select>
           </div>
@@ -213,8 +235,8 @@ export default function ProductList({ products: initialProducts, showContainer =
                   }
 
                   return pageNumbers.map((page, index) => (
-                    page === ellipsis ? (
-                      <span key={index} className="text-sm text-gray-600 px-2">{ellipsis}</span>
+                                        page === ellipsis ? (
+                      <span key={`ellipsis-${index}`} className="text-sm text-gray-600 px-2">{ellipsis}</span>
                     ) : (
                       <Button
                         key={page}
