@@ -79,61 +79,39 @@ export default function Header() {
 
   // Improved scroll handler with better performance and smoother animations
   useEffect(() => {
-    let rafId: number | null = null;
-    let isScrolling = false;
-    let lastScrollYValue = 0;
+    let lastScrollY = window.scrollY;
+    let ticking = false;
 
-    const SCROLL_THRESHOLD = 50; // Increased threshold for smoother behavior
+    const updateVisibility = () => {
+      const currentScrollY = window.scrollY;
+
+      if (currentScrollY <= 80) {
+        // Always show when near the top
+        setIsVisible(true);
+      } else if (currentScrollY > lastScrollY && currentScrollY > 200) {
+        // Scrolling down and past a certain point
+        setIsVisible(false);
+      } else if (currentScrollY < lastScrollY && currentScrollY > 80) {
+        // Scrolling up and not at the very top
+        setIsVisible(true);
+      }
+
+      setIsScrolled(currentScrollY > 100);
+      lastScrollY = currentScrollY;
+      ticking = false;
+    };
 
     const handleScroll = () => {
-      if (isScrolling) return;
-      
-      isScrolling = true;
-      rafId = requestAnimationFrame(() => {
-        const currentScrollY = window.scrollY;
-        const scrollDifference = currentScrollY - lastScrollYValue;
-        
-        // Determine if scrolled past threshold for styling
-        setIsScrolled(currentScrollY > 100);
-        
-        if (Math.abs(scrollDifference) > SCROLL_THRESHOLD) {
-            if (scrollDifference > 0) {
-                // Scrolling down
-                if (currentScrollY > 300) {
-                    if (lastScrollDirection.current !== 'down') {
-                        setIsVisible(false);
-                        lastScrollDirection.current = 'down';
-                    }
-                }
-            } else {
-                // Scrolling up
-                if (lastScrollDirection.current !== 'up') {
-                    setIsVisible(true);
-                    lastScrollDirection.current = 'up';
-                }
-            }
-        }
-
-        if (currentScrollY <= 80) {
-          // Always show when near the top
-          if (lastScrollDirection.current !== 'up' || !isVisible) {
-            setIsVisible(true);
-            lastScrollDirection.current = 'up';
-          }
-        }
-        
-        lastScrollYValue = currentScrollY;
-        isScrolling = false;
-      });
+      if (!ticking) {
+        window.requestAnimationFrame(updateVisibility);
+        ticking = true;
+      }
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
-    
+
     return () => {
       window.removeEventListener('scroll', handleScroll);
-      if (rafId) {
-        cancelAnimationFrame(rafId);
-      }
     };
   }, []);
 
