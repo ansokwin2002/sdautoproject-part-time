@@ -129,9 +129,9 @@ export default function ProductList({ products: initialProducts, showContainer =
               className="max-w-sm"
             />
           </div>
-          <div className="w-full md:w-auto flex flex-row gap-2">
+          <div className="w-full md:w-auto flex flex-col sm:flex-row gap-2">
             <Select value={sortOrder} onValueChange={setSortOrder}>
-              <SelectTrigger className="w-full md:w-[180px]">
+              <SelectTrigger className="w-full sm:w-[180px]">
                 <SelectValue placeholder="Sort by" />
               </SelectTrigger>
               <SelectContent>
@@ -142,7 +142,7 @@ export default function ProductList({ products: initialProducts, showContainer =
               </SelectContent>
             </Select>
             <Select onValueChange={setSelectedBrand} defaultValue={selectedBrand}>
-              <SelectTrigger className="w-full md:w-[180px]">
+              <SelectTrigger className="w-full sm:w-[180px]">
                 <SelectValue placeholder="Filter by brand" />
               </SelectTrigger>
               <SelectContent>

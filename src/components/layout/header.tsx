@@ -232,9 +232,9 @@ export default function Header() {
             <div className="flex flex-col sm:flex-row justify-between items-center py-3 text-sm text-gray-600">
               <div className="flex items-center space-x-2 mb-1 sm:mb-0">
                 <MapPin className="h-4 w-4 text-blue-600 flex-shrink-0" />
-                <span className="min-w-0 text-xs sm:text-sm">SD AUTO PART 87 Kookaburra Avenue Werribee, Victoria 3030 Australia</span>
+                <span className="min-w-0 text-xs sm:text-sm break-words">SD AUTO PART 87 Kookaburra Avenue Werribee, Victoria 3030 Australia</span>
               </div>
-              <div className="flex items-center space-x-6">
+              <div className="flex items-center space-x-2 sm:space-x-6">
                 <div className="flex items-center space-x-1">
                   <Mail className="h-4 w-4 text-blue-600" />
                   <span>sdautaustralia@gmail.com</span>
@@ -289,11 +289,11 @@ export default function Header() {
             </nav>
 
             {/* Mobile Menu Button */}
-            <div className="md:hidden">
+            <div className="md:hidden mr-2">
               <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
                 <SheetTrigger asChild>
                   <Button variant="ghost" size="icon" className="text-gray-700 h-12 w-12">
-                    <Menu className="h-7 w-7" />
+                    <Menu className="h-8 w-8" />
                     <span className="sr-only">Toggle navigation menu</span>
                   </Button>
                 </SheetTrigger>

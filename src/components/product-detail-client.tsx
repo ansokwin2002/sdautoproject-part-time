@@ -84,13 +84,13 @@ export default function ProductDetailClient({ productId }: ProductDetailClientPr
     <div className="bg-white min-h-screen">
       <div className="container mx-auto px-4 py-6 md:py-12 lg:py-20">
         {/* Back Button */}
-        <div className="mb-6 mt-8 md:mt-0">
+        <div className="mb-6 mt-16 md:mt-0">
           <Link
-            href="/"
+            href="/genuine-parts"
             className="flex items-center text-gray-500 hover:text-gray-700 transition-colors"
           >
             <ArrowLeft className="h-4 w-4 mr-2" />
-            <span className="text-sm md:text-base">Back to all products</span>
+            <span className="text-sm md:text-base">Back to Genuine Parts</span>
           </Link>
         </div>
 
@@ -145,40 +145,57 @@ export default function ProductDetailClient({ productId }: ProductDetailClientPr
             </div>
 
             {/* Desktop: Side-by-side layout */}
-            <div className="hidden md:flex gap-4">
+            <div className="hidden md:flex gap-4 h-[400px]">
               {/* Thumbnails */}
-              <div className="flex flex-col gap-2 w-20">
-                {product.images.slice(0, 5).map((image, index) => (
-                  <div
-                    key={index}
-                    className={`relative w-20 h-20 cursor-pointer rounded-lg overflow-hidden border-2 ${selectedImage === image ? 'border-blue-500' : 'border-transparent'}`}
-                    onClick={() => setSelectedImage(image)}
-                  >
-                    <Image
-                      src={image}
-                      alt={`Product thumbnail ${index + 1}`}
-                      fill
-                      className="object-cover"
-                    />
-                  </div>
-                ))}
-                {product.images.length > 5 && (
-                  <div
-                    className="relative w-20 h-20 cursor-pointer rounded-lg overflow-hidden border-2 border-gray-300 flex items-center justify-center group bg-gray-100"
-                    onClick={() => setIsModalOpen(true)}
-                  >
-                    <span className="text-xs font-medium text-gray-600 text-center">
-                      +{product.images.length - 5}
-                    </span>
-                  </div>
+              <div className="flex flex-col w-20 h-full">
+                {product.images.length > 5 ? (
+                  <>
+                    {product.images.slice(0, 4).map((image, index) => (
+                      <div
+                        key={index}
+                        className={`relative w-20 h-[75px] cursor-pointer rounded-lg overflow-hidden border-2 ${selectedImage === image ? 'border-blue-500' : 'border-transparent'} mb-2`}
+                        onClick={() => setSelectedImage(image)}
+                      >
+                        <Image
+                          src={image}
+                          alt={`Product thumbnail ${index + 1}`}
+                          fill
+                          className="object-cover"
+                        />
+                      </div>
+                    ))}
+                    <div
+                      className="relative w-20 h-[75px] cursor-pointer rounded-lg overflow-hidden border-2 border-gray-300 flex items-center justify-center group bg-gray-100"
+                      onClick={() => setIsModalOpen(true)}
+                    >
+                      <span className="text-xs font-medium text-gray-600 text-center">
+                        +{product.images.length - 4}
+                      </span>
+                    </div>
+                  </>
+                ) : (
+                  product.images.map((image, index) => (
+                    <div
+                      key={index}
+                      className={`relative w-20 flex-1 cursor-pointer rounded-lg overflow-hidden border-2 ${selectedImage === image ? 'border-blue-500' : 'border-transparent'} ${index < product.images.length - 1 ? 'mb-2' : ''}`}
+                      onClick={() => setSelectedImage(image)}
+                    >
+                      <Image
+                        src={image}
+                        alt={`Product thumbnail ${index + 1}`}
+                        fill
+                        className="object-cover"
+                      />
+                    </div>
+                  ))
                 )}
               </div>
 
               {/* Main Image */}
-              <div className="flex-1">
+              <div className="flex-1 h-full">
                 <div
                   ref={imageRef}
-                  className="relative w-full aspect-square rounded-lg overflow-hidden shadow-lg cursor-crosshair"
+                  className="relative w-full h-full rounded-lg overflow-hidden shadow-lg cursor-crosshair"
                   onMouseMove={handleMouseMove}
                   onMouseEnter={handleMouseEnter}
                   onMouseLeave={handleMouseLeave}
@@ -265,7 +282,7 @@ export default function ProductDetailClient({ productId }: ProductDetailClientPr
               </div>
 
               {/* Buy Button */}
-              <div className="pt-4">
+              <div className="pt-20">
                 <Button
                   size="lg"
                   className="w-full text-base md:text-lg py-3 md:py-4 hover:scale-105 transition-transform duration-200"
