@@ -229,12 +229,12 @@ export default function Header() {
           isScrolled ? 'h-0 overflow-hidden opacity-0 -translate-y-2' : 'h-auto opacity-100 translate-y-0'
         }`}>
           <div className="container mx-auto">
-            <div className="flex flex-col sm:flex-row justify-between items-center py-3 text-sm text-gray-600">
-              <div className="flex items-center space-x-2 mb-1 sm:mb-0">
+            <div className="flex flex-col lg:flex-row justify-between items-center py-3 text-sm text-gray-600">
+              <div className="flex items-center space-x-2 mb-1 lg:mb-0">
                 <MapPin className="h-4 w-4 text-blue-600 flex-shrink-0" />
                 <span className="min-w-0 text-xs sm:text-sm break-words">SD AUTO PART 87 Kookaburra Avenue Werribee, Victoria 3030 Australia</span>
               </div>
-              <div className="flex items-center space-x-2 sm:space-x-6">
+              <div className="flex flex-col sm:flex-row items-center space-x-0 sm:space-x-2 md:space-x-4 lg:space-x-6">
                 <div className="flex items-center space-x-1">
                   <Mail className="h-4 w-4 text-blue-600" />
                   <span>sdautaustralia@gmail.com</span>
@@ -282,7 +282,7 @@ export default function Header() {
             </div>
 
             {/* Desktop Navigation */}
-            <nav className="hidden md:flex items-center space-x-10 text-lg">
+            <nav className="hidden md:flex items-center space-x-6 md:space-x-6 lg:space-x-10 text-base md:text-base">
               {navLinks.map((link) => (
                 <NavLink key={link.href} {...link} />
               ))}
