@@ -147,7 +147,7 @@ export default function ContactPage() {
           </AnimatedText>
           <AnimatedText delay={200}>
             <p className="text-muted-foreground mt-3 max-w-2xl mx-auto text-lg">
-              Have a question or want to book a service? We're here to help.
+              Have a question or need assistance with your order? Our support team is ready to help.
             </p>
           </AnimatedText>
         </div>
@@ -163,15 +163,15 @@ export default function ContactPage() {
                 <CardContent className="space-y-4 text-muted-foreground">
                   <div className="flex items-center gap-4">
                     <MapPin className="h-5 w-5 text-primary shrink-0" />
-                    <span>123 Auto Drive, Car City, 12345</span>
+                    <span>SD AUTO PART 87 Kookaburra Avenue Werribee, Victoria 3030 Australia</span>
                   </div>
                   <div className="flex items-center gap-4">
                     <Phone className="h-5 w-5 text-primary shrink-0" />
-                    <span>(123) 456-7890</span>
+                    <span>+61 460 786 533</span>
                   </div>
                   <div className="flex items-center gap-4">
                     <Mail className="h-5 w-5 text-primary shrink-0" />
-                    <span>contact@sdautocar.com</span>
+                    <span>sdautaustralia@gmail.com</span>
                   </div>
                   <div className="flex items-center gap-4">
                     <Clock className="h-5 w-5 text-primary shrink-0" />
@@ -181,12 +181,12 @@ export default function ContactPage() {
               </Card>
             </AnimatedCard>
             <AnimatedSection delay={400}>
-              <div className="relative h-96 w-full rounded-lg overflow-hidden shadow-lg">
+              <div className="relative w-full rounded-lg overflow-hidden shadow-lg min-h-[400px] lg:min-h-0 lg:h-full">
                   <iframe
                     src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3149.0000000000005!2d144.6796815!3d-37.8847459!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6ad685f5ea485f2b%3A0x5bafe966a5c282c2!2s87%20Kookaburra%20Ave%2C%20Werribee%20VIC%203030%2C%20Australia!5e0!3m2!1sen!2sus!4v1700000000000!5m2!1sen!2sus"
                     width="100%"
                     height="100%"
-                    style={{ border: 0 }}
+                    style={{ border: 0, minHeight: '400px' }}
                     allowFullScreen={false}
                     loading="lazy"
                     referrerPolicy="no-referrer-when-downgrade"
@@ -194,73 +194,75 @@ export default function ContactPage() {
               </div>
             </AnimatedSection>
           </div>
-          <AnimatedCard delay={500}>
-            <div>
-              <Card className="shadow-lg">
+          <AnimatedCard delay={500} className="lg:flex lg:flex-col">
+            <div className="lg:flex-1">
+              <Card className="shadow-lg lg:h-full">
                 <CardHeader>
                   <CardTitle>Send us a Message</CardTitle>
                   <CardDescription>Fill out the form below and we'll get back to you.</CardDescription>
                 </CardHeader>
-                <CardContent>
+                <CardContent className="lg:flex-1">
                   <Form {...form}>
-                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-                      <FormField
-                        control={form.control}
-                        name="name"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Full Name</FormLabel>
-                            <FormControl>
-                              <Input placeholder="John Doe" {...field} />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                      <FormField
-                        control={form.control}
-                        name="email"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Email Address</FormLabel>
-                            <FormControl>
-                              <Input placeholder="you@example.com" {...field} />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                      <FormField
-                        control={form.control}
-                        name="phone"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Phone Number (Optional)</FormLabel>
-                            <FormControl>
-                              <Input placeholder="(123) 456-7890" {...field} />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                      <FormField
-                        control={form.control}
-                        name="message"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Your Message</FormLabel>
-                            <FormControl>
-                              <Textarea
-                                placeholder="Tell us how we can help..."
-                                className="min-h-[120px]"
-                                {...field}
-                              />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                      <Button type="submit" className="w-full" disabled={form.formState.isSubmitting}>
+                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 lg:h-full lg:flex lg:flex-col">
+                      <div className="lg:flex-1 lg:space-y-6 space-y-6">
+                        <FormField
+                          control={form.control}
+                          name="name"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Full Name</FormLabel>
+                              <FormControl>
+                                <Input placeholder="John Doe" {...field} />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                        <FormField
+                          control={form.control}
+                          name="email"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Email Address</FormLabel>
+                              <FormControl>
+                                <Input placeholder="you@example.com" {...field} />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                        <FormField
+                          control={form.control}
+                          name="phone"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Phone Number (Optional)</FormLabel>
+                              <FormControl>
+                                <Input placeholder="+61 460 786 533" {...field} />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                        <FormField
+                          control={form.control}
+                          name="message"
+                          render={({ field }) => (
+                            <FormItem className="lg:flex-1 lg:flex lg:flex-col">
+                              <FormLabel>Your Message</FormLabel>
+                              <FormControl className="lg:flex-1">
+                                <Textarea
+                                  placeholder="Tell us how we can help..."
+                                  className="min-h-[120px] lg:h-full lg:min-h-[200px]"
+                                  {...field}
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      </div>
+                      <Button type="submit" className="w-full lg:mt-auto" disabled={form.formState.isSubmitting}>
                         {form.formState.isSubmitting ? "Sending..." : "Send Message"}
                       </Button>
                     </form>

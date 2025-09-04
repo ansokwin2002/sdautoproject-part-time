@@ -280,9 +280,11 @@ export default function ProductDetailClient({ productId }: ProductDetailClientPr
                   <p>Condition: {product.condition}</p>
                 )}
               </div>
+              
+              <br /><br />
 
               {/* Buy Button */}
-              <div className="pt-20">
+              <div className="pt-19">
                 <Button
                   size="lg"
                   className="w-full text-base md:text-lg py-3 md:py-4 hover:scale-105 transition-transform duration-200"

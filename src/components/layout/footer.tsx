@@ -1,5 +1,6 @@
 import Link from 'next/link';
-import { Github, Twitter, Linkedin } from 'lucide-react';
+import { Facebook, Send } from 'lucide-react';
+import TikTokIcon from '@/components/icons/tiktok';
 import Logo from '@/components/icons/logo';
 import {
   DropdownMenu,
@@ -30,9 +31,9 @@ export default function Footer() {
               Your trusted partner in automotive care and excellence.
             </p>
              <div className="flex space-x-4 mt-4">
-              <Link href="#" aria-label="Twitter" className="text-muted-foreground hover:text-primary"><Twitter className="h-5 w-5" /></Link>
-              <Link href="#" aria-label="GitHub" className="text-muted-foreground hover:text-primary"><Github className="h-5 w-5" /></Link>
-              <Link href="#" aria-label="LinkedIn" className="text-muted-foreground hover:text-primary"><Linkedin className="h-5 w-5" /></Link>
+              <Link href="/contact" aria-label="Facebook" className="text-muted-foreground hover:text-primary"><Facebook className="h-5 w-5" /></Link>
+              <Link href="/contact" aria-label="Telegram" className="text-muted-foreground hover:text-primary"><Send className="h-5 w-5" /></Link>
+              <Link href="/contact" aria-label="TikTok" className="text-muted-foreground hover:text-primary"><TikTokIcon className="h-5 w-5" /></Link>
             </div>
           </div>
           <div>
