@@ -260,13 +260,17 @@ export default function ProductDetailClient({ productId }: ProductDetailClientPr
 
               {/* Price */}
               <div className="flex items-center gap-3">
+                <p className="text-sm font-medium text-gray-500">Price:</p>
                 <span className="text-2xl md:text-3xl font-bold text-blue-600">
                   ${product.price.toFixed(2)}
                 </span>
                 {product.originalPrice && (
-                  <span className="text-lg md:text-xl text-gray-400 line-through">
-                    ${product.originalPrice.toFixed(2)}
-                  </span>
+                  <>
+                    <p className="text-sm font-medium text-gray-500">Original Price:</p>
+                    <span className="text-lg md:text-xl text-gray-400 line-through">
+                      ${product.originalPrice.toFixed(2)}
+                    </span>
+                  </>
                 )}
               </div>
 
