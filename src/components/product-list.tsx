@@ -171,7 +171,7 @@ export default function ProductList({ products: initialProducts, showContainer =
               ))}
         </div>
 
-        <div className="flex flex-col md:flex-row justify-between items-center mt-8 gap-4">
+        <div className="flex flex-col md:flex-row justify-between items-center mt-8 gap-4 px-6">
           <div>
             <p className="text-sm text-gray-600">
               Showing {paginatedProducts.length} of {filteredAndSortedProducts.length} products
@@ -183,6 +183,7 @@ export default function ProductList({ products: initialProducts, showContainer =
               size="sm"
               onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
               disabled={currentPage === 1}
+              className="text-xs px-2 py-0.5"
             >
               Previous
             </Button>
@@ -236,13 +237,14 @@ export default function ProductList({ products: initialProducts, showContainer =
 
                   return pageNumbers.map((page, index) => (
                                         page === ellipsis ? (
-                      <span key={`ellipsis-${index}`} className="text-sm text-gray-600 px-2">{ellipsis}</span>
+                      <span key={`ellipsis-${index}`} className="text-xs text-gray-600 px-2">{ellipsis}</span>
                     ) : (
                       <Button
                         key={page}
                         variant={currentPage === page ? "default" : "outline"}
                         size="sm"
                         onClick={() => setCurrentPage(page as number)}
+                        className="text-xs px-2 py-0.5"
                       >
                         {page}
                       </Button>
@@ -256,6 +258,7 @@ export default function ProductList({ products: initialProducts, showContainer =
               size="sm"
               onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
               disabled={currentPage === totalPages}
+              className="text-xs px-2 py-0.5"
             >
               Next
             </Button>
