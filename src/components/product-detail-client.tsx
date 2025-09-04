@@ -351,7 +351,7 @@ const ProductDetailSkeleton = () => {
                 <Skeleton key={index} className="w-20 h-20 rounded-lg" />
               ))}
             </div>
-            <Skeleton className="flex-1 aspect-square rounded-lg" />
+            <Skeleton className="flex-1 h-[400px] rounded-lg" />
           </div>
         </div>
         
@@ -359,7 +359,7 @@ const ProductDetailSkeleton = () => {
         <div className="space-y-4">
           <Skeleton className="h-6 w-24" />
           <Skeleton className="h-8 md:h-10 w-full" />
-          <Skeleton className="h-20 w-full" />
+          <Skeleton className="h-24 w-full" />
           <div className="flex items-center gap-3">
             <Skeleton className="h-8 md:h-10 w-28" />
             <Skeleton className="h-6 md:h-8 w-20" />
@@ -369,7 +369,7 @@ const ProductDetailSkeleton = () => {
             <Skeleton className="h-5 w-40" />
             <Skeleton className="h-5 w-28" />
           </div>
-          <Skeleton className="h-12 md:h-14 w-full" />
+          <Skeleton className="h-16 w-full" />
         </div>
       </div>
       
