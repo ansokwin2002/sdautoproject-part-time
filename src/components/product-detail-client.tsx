@@ -19,8 +19,7 @@ interface ProductDetailClientProps {
 }
 
 export default function ProductDetailClient({ productId }: ProductDetailClientProps) {
-  const [loading, setLoading] = useState(true);
-  const [product, setProduct] = useState<Product | null>(null);
+  const product = products.find((p) => p.id === productId);
   const [selectedImage, setSelectedImage] = useState<string>('');
   const [showMagnifier, setShowMagnifier] = useState(false);
   const [magnifierPosition, setMagnifierPosition] = useState({ x: 0, y: 0 });
@@ -30,17 +29,10 @@ export default function ProductDetailClient({ productId }: ProductDetailClientPr
   const router = useRouter();
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      const foundProduct = products.find((p) => p.id === productId);
-      if (foundProduct) {
-        setProduct(foundProduct);
-        setSelectedImage(foundProduct.images[0]);
-      }
-      setLoading(false);
-    }, 1500);
-
-    return () => clearTimeout(timer);
-  }, [productId]);
+    if (product) {
+      setSelectedImage(product.images[0]);
+    }
+  }, [product]);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!imageRef.current) return;
@@ -65,10 +57,6 @@ export default function ProductDetailClient({ productId }: ProductDetailClientPr
   const handleMouseLeave = () => {
     setShowMagnifier(false);
   };
-
-  if (loading) {
-    return <ProductDetailSkeleton />;
-  }
 
   if (!product) {
     notFound();
