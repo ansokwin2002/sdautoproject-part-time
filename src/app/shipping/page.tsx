@@ -122,7 +122,7 @@ export default function ShippingPage() {
       <section className="py-16 md:py-20 bg-gradient-to-b from-gray-50 to-white">
         <div className="container mx-auto">
           <div className="grid md:grid-cols-2 gap-12 items-center">
-            <AnimatedImage className="relative aspect-[4/3] order-2 md:order-1" delay={200}>
+            <AnimatedImage className="relative h-full order-2 md:order-1" delay={200}>
               <Image 
                 src="https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80" 
                 alt="Modern Ford truck on desert road" 
@@ -176,7 +176,7 @@ export default function ShippingPage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
             {/* By Ship - Australia Post */}
             <AnimatedCard delay={100}>
-              <div className="bg-white rounded-lg p-8 shadow-lg hover:shadow-xl transition-all duration-300 group text-center">
+              <div className="bg-white rounded-lg p-8 shadow-lg hover:shadow-xl transition-all duration-300 group text-center flex flex-col min-h-[300px] md:min-h-[500px]">
                 <div className="mb-6">
                   <div className="w-24 h-24 mx-auto mb-4 flex items-center justify-center">
                     <svg className="w-20 h-16 text-red-600" viewBox="0 0 100 80" fill="currentColor">
@@ -188,7 +188,7 @@ export default function ShippingPage() {
                   </div>
                 </div>
                 <h3 className="text-xl font-bold text-gray-900 mb-3">By Ship Autocarparts</h3>
-                <p className="text-gray-600 leading-relaxed">
+                <p className="text-gray-600 leading-relaxed flex-grow">
                   Reliable shipping through Australia Post network. Perfect for standard delivery across Australia with tracking included.
                 </p>
               </div>
@@ -196,7 +196,7 @@ export default function ShippingPage() {
 
             {/* By Air */}
             <AnimatedCard delay={200}>
-              <div className="bg-white rounded-lg p-8 shadow-lg hover:shadow-xl transition-all duration-300 group text-center">
+              <div className="bg-white rounded-lg p-8 shadow-lg hover:shadow-xl transition-all duration-300 group text-center flex flex-col min-h-[300px] md:min-h-[500px]">
                 <div className="mb-6">
                   <div className="w-24 h-24 mx-auto mb-4 flex items-center justify-center">
                     <svg className="w-16 h-16 text-gray-800" viewBox="0 0 100 100" fill="currentColor">
@@ -206,7 +206,7 @@ export default function ShippingPage() {
                   </div>
                 </div>
                 <h3 className="text-xl font-bold text-gray-900 mb-3">By Air</h3>
-                <p className="text-gray-600 leading-relaxed">
+                <p className="text-gray-600 leading-relaxed flex-grow">
                   Fast air freight delivery for urgent parts. Get your automotive components delivered quickly when time is critical.
                 </p>
               </div>
@@ -214,7 +214,7 @@ export default function ShippingPage() {
 
             {/* By Land */}
             <AnimatedCard delay={300}>
-              <div className="bg-white rounded-lg p-8 shadow-lg hover:shadow-xl transition-all duration-300 group text-center">
+              <div className="bg-white rounded-lg p-8 shadow-lg hover:shadow-xl transition-all duration-300 group text-center flex flex-col min-h-[300px] md:min-h-[500px]">
                 <div className="mb-6">
                   <div className="w-24 h-24 mx-auto mb-4 flex items-center justify-center">
                     <svg className="w-16 h-16 text-gray-800" viewBox="0 0 100 100" fill="currentColor">
@@ -228,7 +228,7 @@ export default function ShippingPage() {
                   </div>
                 </div>
                 <h3 className="text-xl font-bold text-gray-900 mb-3">By Land</h3>
-                <p className="text-gray-600 leading-relaxed">
+                <p className="text-gray-600 leading-relaxed flex-grow">
                   Ground transportation for local and interstate deliveries. Cost-effective option for heavy parts and bulk orders.
                 </p>
               </div>

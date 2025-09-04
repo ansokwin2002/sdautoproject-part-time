@@ -548,14 +548,14 @@ export default function Home() {
                     className="object-cover group-hover:scale-105 transition-transform duration-300"
                   />
                 </div>
-                <div className="p-6 flex flex-col min-h-[200px] md:min-h-[400px]">
+                <div className="p-6 flex flex-col min-h-[200px] md:min-h-[500px]">
                   <h3 className="text-xl font-bold text-gray-900 mb-3">
                     We are strongly in quality of transportation to customer
                   </h3>
                   <p className="text-gray-600 mb-4 flex-grow">
                     Our commitment to excellence ensures your auto parts reach you through the most reliable transportation methods, whether by air, sea, or land.
                   </p>
-                  <div className="flex items-center justify-between">
+                  <div className="flex flex-col items-start space-y-2">
                     <span className="text-sm text-gray-500">December 15, 2024</span>
                     <Button
                       variant="ghost"
@@ -583,14 +583,14 @@ export default function Home() {
                     className="object-cover group-hover:scale-105 transition-transform duration-300"
                   />
                 </div>
-                <div className="p-6 flex flex-col min-h-[200px] md:min-h-[400px]">
+                <div className="p-6 flex flex-col min-h-[200px] md:min-h-[500px]">
                   <h3 className="text-xl font-bold text-gray-900 mb-3">
                     Best Delivery Service provided by us will make sure on your hand with safe
                   </h3>
                   <p className="text-gray-600 mb-4 flex-grow">
                     Experience peace of mind with our premium delivery service that ensures your automotive parts arrive safely and on time, every time.
                   </p>
-                  <div className="flex items-center justify-between">
+                  <div className="flex flex-col items-start space-y-2">
                     <span className="text-sm text-gray-500">December 10, 2024</span>
                    <Button
                       variant="ghost"
@@ -618,14 +618,14 @@ export default function Home() {
                     className="object-cover group-hover:scale-105 transition-transform duration-300"
                   />
                 </div>
-                <div className="p-6 flex flex-col min-h-[200px] md:min-h-[400px]">
+                <div className="p-6 flex flex-col min-h-[200px] md:min-h-[500px]">
                   <h3 className="text-xl font-bold text-gray-900 mb-3">
                     Mostly, Garage in Local always order our products
                   </h3>
                   <p className="text-gray-600 mb-4 flex-grow">
                     Local garages trust us for quality automotive parts. Discover why professional mechanics choose SD Auto Parts for their repair needs.
                   </p>
-                  <div className="flex items-center justify-between">
+                  <div className="flex flex-col items-start space-y-2">
                     <span className="text-sm text-gray-500">December 5, 2024</span>
                     <Button
                         variant="ghost"
@@ -657,7 +657,7 @@ export default function Home() {
       {/* Why Choose Section */}
       <section className="py-16 md:py-24 bg-background">
         <div className="container mx-auto grid md:grid-cols-2 gap-12 items-center">
-          <AnimatedImage className="relative aspect-[4/3]" delay={200}>
+          <AnimatedImage className="relative h-full" delay={200}>
             <Image
               src="https://images.unsplash.com/photo-1486496572940-2bb2341fdbdf?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80"
               alt="High-quality car products"
