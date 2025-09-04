@@ -46,6 +46,7 @@ export default function Header() {
   const [isMobileDropdownOpen, setIsMobileDropdownOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
+  const lastScrollDirection = useRef<'up' | 'down' | null>(null);
   const dropdownRef = useRef(null);
   const leaveTimeout = useRef<NodeJS.Timeout | null>(null);
 
@@ -82,6 +83,8 @@ export default function Header() {
     let isScrolling = false;
     let lastScrollYValue = 0;
 
+    const SCROLL_THRESHOLD = 50; // Increased threshold for smoother behavior
+
     const handleScroll = () => {
       if (isScrolling) return;
       
@@ -93,21 +96,30 @@ export default function Header() {
         // Determine if scrolled past threshold for styling
         setIsScrolled(currentScrollY > 100);
         
-        if (Math.abs(scrollDifference) > 10) {
+        if (Math.abs(scrollDifference) > SCROLL_THRESHOLD) {
             if (scrollDifference > 0) {
                 // Scrolling down
                 if (currentScrollY > 300) {
-                    setIsVisible(false);
+                    if (lastScrollDirection.current !== 'down') {
+                        setIsVisible(false);
+                        lastScrollDirection.current = 'down';
+                    }
                 }
             } else {
                 // Scrolling up
-                setIsVisible(true);
+                if (lastScrollDirection.current !== 'up') {
+                    setIsVisible(true);
+                    lastScrollDirection.current = 'up';
+                }
             }
         }
 
         if (currentScrollY <= 80) {
           // Always show when near the top
-          setIsVisible(true);
+          if (lastScrollDirection.current !== 'up' || !isVisible) {
+            setIsVisible(true);
+            lastScrollDirection.current = 'up';
+          }
         }
         
         lastScrollYValue = currentScrollY;
