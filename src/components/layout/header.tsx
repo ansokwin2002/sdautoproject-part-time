@@ -22,17 +22,26 @@ const getNavLinks = () => {
   }));
 
   return [
-    { href: "/", label: "Home" },
-    { href: "/about", label: "About" },
     {
-      href: "/genuine-parts",
-      label: "Genuine Parts",
+      href: "/",
+      label: "Genuines Parts and Accessories",
       hasDropdown: true,
       dropdownItems: [
-        { href: "/genuine-parts", label: "All Parts" }, // Add an option to view all parts
-        ...brandDropdownItems,
+        { href: "/", label: "All Parts and Accessories" },
+        { href: "/genuine-parts?brand=Ford", label: "Ford Genuine Parts and Accessories" },
+        { href: "/genuine-parts?brand=Isuzu", label: "Isuzu Genuine Parts and Accessories" },
+        { href: "/genuine-parts?brand=Toyota", label: "Toyota Genuine Parts and Accessories" },
+        { href: "/genuine-parts?brand=Mazda", label: "Mazda Genuine Parts and Accessories" },
+        { href: "/genuine-parts?brand=Mitsubishi", label: "Mitsubishi Genuine Parts and Accessories" },
+        { href: "/genuine-parts?brand=Nissan", label: "Nissan Genuine Parts and Accessories" },
+        { href: "/genuine-parts?brand=Honda", label: "Honda Genuine Parts and Accessories" },
+        { href: "/genuine-parts?brand=Suzuki", label: "Suzuki Genuine Parts and Accessories" },
+        { href: "/aftermarket-accessories", label: "Aftermarket Accessories" },
       ],
     },
+    { href: "/home", label: "Home" },
+    { href: "/policy", label: "Policy" },
+    { href: "/faq", label: "FAQ" },
     { href: "/shipping", label: "Shipping" },
     { href: "/contact", label: "Contact Us" },
   ];
@@ -46,7 +55,8 @@ export default function Header() {
   const [isMobileDropdownOpen, setIsMobileDropdownOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
-  const lastScrollDirection = useRef<'up' | 'down' | null>(null);
+  const lastScrollY = useRef(0);
+  const scrollTimer = useRef<NodeJS.Timeout | null>(null);
   const dropdownRef = useRef(null);
   const leaveTimeout = useRef<NodeJS.Timeout | null>(null);
 
@@ -77,41 +87,49 @@ export default function Header() {
     };
   }, []);
 
-  // Improved scroll handler with better performance and smoother animations
   useEffect(() => {
-    let lastScrollY = window.scrollY;
-    let ticking = false;
-
-    const updateVisibility = () => {
-      const currentScrollY = window.scrollY;
-
-      if (currentScrollY <= 80) {
-        // Always show when near the top
-        setIsVisible(true);
-      } else if (currentScrollY > lastScrollY && currentScrollY > 200) {
-        // Scrolling down and past a certain point
-        setIsVisible(false);
-      } else if (currentScrollY < lastScrollY && currentScrollY > 80) {
-        // Scrolling up and not at the very top
-        setIsVisible(true);
-      }
-
-      setIsScrolled(currentScrollY > 100);
-      lastScrollY = currentScrollY;
-      ticking = false;
-    };
-
     const handleScroll = () => {
-      if (!ticking) {
-        window.requestAnimationFrame(updateVisibility);
-        ticking = true;
+      const currentScrollY = window.scrollY;
+      
+      // Clear any existing timer
+      if (scrollTimer.current) {
+        clearTimeout(scrollTimer.current);
       }
+
+      // Always update isScrolled immediately for visual effects
+      setIsScrolled(currentScrollY > 100);
+
+      // Debounce the visibility logic to prevent jittery behavior
+      scrollTimer.current = setTimeout(() => {
+        const scrollDifference = currentScrollY - lastScrollY.current;
+
+        // Show header when at top
+        if (currentScrollY <= 100) {
+          setIsVisible(true);
+        }
+        // Hide header only when scrolling down significantly (more than 150px)
+        else if (scrollDifference > 150) {
+          setIsVisible(false);
+        }
+        // Show header when scrolling up significantly (more than 100px)
+        else if (scrollDifference < -100) {
+          setIsVisible(true);
+        }
+
+        lastScrollY.current = currentScrollY;
+      }, 100); // 100ms debounce to smooth out the behavior
     };
 
+    // Set initial scroll position
+    lastScrollY.current = window.scrollY;
+    
     window.addEventListener('scroll', handleScroll, { passive: true });
 
     return () => {
       window.removeEventListener('scroll', handleScroll);
+      if (scrollTimer.current) {
+        clearTimeout(scrollTimer.current);
+      }
     };
   }, []);
 
@@ -138,7 +156,7 @@ export default function Header() {
           
           {isDropdownOpen && (
             <div 
-              className="absolute top-full left-0 mt-2 w-56 bg-white border border-gray-200 rounded-md shadow-lg z-50 animate-in slide-in-from-top-2 duration-200"
+              className="absolute top-full left-0 mt-2 w-max bg-white border border-gray-200 rounded-md shadow-lg z-50 animate-in slide-in-from-top-2 duration-200"
             >
               <div className="py-2">
                 {dropdownItems.map((item, index) => (
@@ -214,15 +232,13 @@ export default function Header() {
       {/* Header Spacer - prevents content jump when header becomes fixed */}
       <div className="h-auto">
         {/* Contact Bar Spacer */}
-        <div className={`transition-all duration-500 ease-in-out ${isScrolled ? 'h-0' : 'h-[50px]'}`}></div>
-        {/* Main Nav Spacer - Increased height (doubled) */}
+        <div className="h-[50px]"></div>
+        {/* Main Nav Spacer */}
         <div className="h-32"></div>
       </div>
       
-      <header className={`w-full bg-white shadow-sm fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-in-out ${
+      <header className={`w-full bg-white shadow-sm fixed top-0 left-0 right-0 z-50 transition-all duration-300 ease-in-out ${
         isScrolled ? 'shadow-lg backdrop-blur-md bg-white/95' : 'shadow-sm'
-      } ${
-        isVisible ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'
       }`}>
         {/* Top Contact Bar */}
         <div className={`bg-gray-100 border-b transition-all duration-500 ease-in-out ${

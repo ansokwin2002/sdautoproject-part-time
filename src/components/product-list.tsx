@@ -63,16 +63,21 @@ const AnimatedCard = ({ children, className = "", delay = 0 }) => {
   );
 };
 
-export default function ProductList({ products: initialProducts, showContainer = true }: { products?: import("@/lib/products").Product[], showContainer?: boolean }) {
+export default function ProductList({ products: initialProducts, showContainer = true, selectedBrand: propSelectedBrand, allowedBrands: propAllowedBrands }: { products?: import("@/lib/products").Product[], showContainer?: boolean, selectedBrand?: string | null, allowedBrands?: string[] }) {
   const [searchTerm, setSearchTerm] = useState('');
   const [sortOrder, setSortOrder] = useState('name-asc');
-  const [selectedBrand, setSelectedBrand] = useState<string>('all');
+  const [selectedBrand, setSelectedBrand] = useState<string>(propSelectedBrand || 'all'); // Use propSelectedBrand as initial state
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(true);
 
   const productSource = initialProducts || products;
 
-  const uniqueBrands = Array.from(new Set(productSource.map((p) => p.brand)));
+  // Update internal selectedBrand when propSelectedBrand changes
+  useEffect(() => {
+    setSelectedBrand(propSelectedBrand || 'all');
+  }, [propSelectedBrand]);
+
+  const uniqueBrands = Array.from(new Set(productSource.map((p) => p.brand))).filter(brand => propAllowedBrands ? propAllowedBrands.includes(brand) : true);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -112,10 +117,11 @@ export default function ProductList({ products: initialProducts, showContainer =
     currentPage * ITEMS_PER_PAGE
   );
 
-  // Reset currentPage when filters change
+  // Reset currentPage and searchTerm when filters change
   useEffect(() => {
     setCurrentPage(1);
-  }, [searchTerm, selectedBrand, sortOrder]); // Reset page when search, brand, or sort changes
+    setSearchTerm(''); // Reset search term
+  }, [selectedBrand, sortOrder]); // Reset page when search, brand, or sort changes
 
   return (
     <section className={showContainer ? "py-16 md:py-20 bg-gray-50" : ""}>
@@ -141,7 +147,7 @@ export default function ProductList({ products: initialProducts, showContainer =
                 <SelectItem value="price-desc">Price: High to Low</SelectItem>
               </SelectContent>
             </Select>
-            <Select onValueChange={setSelectedBrand} defaultValue={selectedBrand}>
+            <Select onValueChange={setSelectedBrand} value={selectedBrand}>
               <SelectTrigger className="w-full sm:w-[180px]">
                 <SelectValue placeholder="Filter by brand" />
               </SelectTrigger>
@@ -170,6 +176,14 @@ export default function ProductList({ products: initialProducts, showContainer =
                 </AnimatedCard>
               ))}
         </div>
+
+        {/* Message when no products found */}
+        {!loading && paginatedProducts.length === 0 && (
+          <div className="text-center py-16">
+            <h2 className="text-2xl font-bold text-gray-800 mb-4">No products found</h2>
+            <p className="text-gray-600">Try adjusting your filters or search term.</p>
+          </div>
+        )}
 
         <div className="flex flex-col md:flex-row justify-between items-center mt-8 gap-4 px-6">
           <div>
