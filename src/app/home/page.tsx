@@ -409,7 +409,7 @@ export default function Home() {
       <section className="py-16 md:py-20 bg-gradient-to-b from-gray-50 to-white">
         <div className="container mx-auto">
           <div className="grid md:grid-cols-2 gap-12 items-center">
-            <AnimatedImage className="relative h-full order-2 md:order-1" delay={200}>
+            <AnimatedSection className="relative h-full order-2 md:order-1" delay={200}>
               <Image 
                 src="https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80" 
                 alt="Modern Ford truck on desert road" 
@@ -417,21 +417,21 @@ export default function Home() {
                 fill 
                 className="object-cover rounded-lg shadow-xl"
               />
-            </AnimatedImage>
+            </AnimatedSection>
             <div className="order-1 md:order-2">
               <div className="max-w-xl">
-                <AnimatedText delay={100}>
+                <AnimatedSection delay={100}>
                   <h2 className="text-3xl md:text-5xl font-bold font-headline text-gray-900 mb-6">
                     Welcome to SD Auto Parts
                   </h2>
-                </AnimatedText>
-                <AnimatedText delay={200}>
+                </AnimatedSection>
+                <AnimatedSection delay={200}>
                   <p className="text-gray-600 text-lg leading-relaxed mb-8">
                     SD Auto Parts has earned 15 years of experience with auto parts business specializing in parts for any vehicle from Thailand, UK, and America. If you have any difficulty to get any part for your vehicle because of dealer's price is too high, please don't hesitate to contact us at{' '}
                     <span className="font-semibold text-blue-600">0460786533</span>, email:{' '}
                     <span className="font-semibold text-blue-600">sdautaustralia@gmail.com</span>. Thank You!...
                   </p>
-                </AnimatedText>
+                </AnimatedSection>
                 <AnimatedSection delay={300}>
                   <div className="flex flex-col sm:flex-row gap-4">
                     <Button size="lg" asChild className="hover:scale-105 transition-transform duration-200">
@@ -463,7 +463,7 @@ export default function Home() {
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
             {/* By Ship - Australia Post */}
-            <AnimatedCard delay={100}>
+            <AnimatedSection delay={100}>
               <div className="bg-white rounded-lg p-8 shadow-lg hover:shadow-xl transition-all duration-300 group text-center flex flex-col min-h-[300px] md:min-h-[500px]">
                 <div className="mb-6">
                   <div className="w-24 h-24 mx-auto mb-4 flex items-center justify-center">
@@ -480,10 +480,10 @@ export default function Home() {
                   Reliable shipping through Australia Post network. Perfect for standard delivery across Australia with tracking included.
                 </p>
               </div>
-            </AnimatedCard>
+            </AnimatedSection>
 
             {/* By Air */}
-            <AnimatedCard delay={200}>
+            <AnimatedSection delay={200}>
               <div className="bg-white rounded-lg p-8 shadow-lg hover:shadow-xl transition-all duration-300 group text-center flex flex-col min-h-[300px] md:min-h-[500px]">
                 <div className="mb-6">
                   <div className="w-24 h-24 mx-auto mb-4 flex items-center justify-center">
@@ -498,10 +498,10 @@ export default function Home() {
                   Fast air freight delivery for urgent parts. Get your automotive components delivered quickly when time is critical.
                 </p>
               </div>
-            </AnimatedCard>
+            </AnimatedSection>
 
             {/* By Land */}
-            <AnimatedCard delay={300}>
+            <AnimatedSection delay={300}>
               <div className="bg-white rounded-lg p-8 shadow-lg hover:shadow-xl transition-all duration-300 group text-center flex flex-col min-h-[300px] md:min-h-[500px]">
                 <div className="mb-6">
                   <div className="w-24 h-24 mx-auto mb-4 flex items-center justify-center">
@@ -520,7 +520,7 @@ export default function Home() {
                   Ground transportation for local and interstate deliveries. Cost-effective option for heavy parts and bulk orders.
                 </p>
               </div>
-            </AnimatedCard>
+            </AnimatedSection>
           </div>
         </div>
       </section>
@@ -538,26 +538,29 @@ export default function Home() {
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
             {/* Blog Post 1 */}
-            <AnimatedCard delay={100}>
+                        
+
+            {/* Blog Post 2 */}
+            <AnimatedSection delay={200}>
               <div className="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 group">
                 <div className="relative aspect-[4/3]">
                   <Image 
-                    src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80"
-                    alt="Transportation logistics - ship, plane, and truck"
+                    src="https://images.unsplash.com/photo-1566576912321-d58ddd7a6088?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80"
+                    alt="Package delivery service"
                     fill
                     className="object-cover group-hover:scale-105 transition-transform duration-300"
                   />
                 </div>
                 <div className="p-6 flex flex-col min-h-[200px] md:min-h-[500px]">
                   <h3 className="text-xl font-bold text-gray-900 mb-3">
-                    We are strongly in quality of transportation to customer
+                    Best Delivery Service provided by us will make sure on your hand with safe
                   </h3>
                   <p className="text-gray-600 mb-4 flex-grow">
-                    Our commitment to excellence ensures your auto parts reach you through the most reliable transportation methods, whether by air, sea, or land.
+                    Experience peace of mind with our premium delivery service that ensures your automotive parts arrive safely and on time, every time.
                   </p>
                   <div className="flex flex-col items-start space-y-2">
-                    <span className="text-sm text-gray-500">December 15, 2024</span>
-                    <Button
+                    <span className="text-sm text-gray-500">December 10, 2024</span>
+                   <Button
                       variant="ghost"
                       size="sm"
                       asChild
@@ -570,7 +573,42 @@ export default function Home() {
                   </div>
                 </div>
               </div>
-            </AnimatedCard>
+            </AnimatedSection>
+
+            {/* Blog Post 3 */}
+            <AnimatedSection delay={300}>
+              <div className="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 group">
+                <div className="relative aspect-[4/3]">
+                  <Image 
+                    src="https://images.unsplash.com/photo-1486496572940-2bb2341fdbdf?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80"
+                    alt="Local garage automotive service"
+                    fill
+                    className="object-cover group-hover:scale-105 transition-transform duration-300"
+                  />
+                </div>
+                <div className="p-6 flex flex-col min-h-[200px] md:min-h-[500px]">
+                  <h3 className="text-xl font-bold text-gray-900 mb-3">
+                    Mostly, Garage in Local always order our products
+                  </h3>
+                  <p className="text-gray-600 mb-4 flex-grow">
+                    Local garages trust us for quality automotive parts. Discover why professional mechanics choose SD Auto Parts for their repair needs.
+                  </p>
+                  <div className="flex flex-col items-start space-y-2">
+                    <span className="text-sm text-gray-500">December 5, 2024</span>
+                    <Button
+                        variant="ghost"
+                        size="sm"
+                        asChild
+                        className="text-white bg-blue-600 hover:bg-blue-700 hover:scale-105 transition-all duration-200 rounded-md px-4 py-2"
+                      >
+                        <Link href="/blog/transportation-quality">
+                          Read More <ArrowRight className="ml-1 h-4 w-4" />
+                        </Link>
+                      </Button>
+                  </div>
+                </div>
+              </div>
+            </AnimatedSection>
 
             {/* Blog Post 2 */}
             <AnimatedCard delay={200}>
@@ -606,41 +644,6 @@ export default function Home() {
                 </div>
               </div>
             </AnimatedCard>
-
-            {/* Blog Post 3 */}
-            <AnimatedCard delay={300}>
-              <div className="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 group">
-                <div className="relative aspect-[4/3]">
-                  <Image 
-                    src="https://images.unsplash.com/photo-1486496572940-2bb2341fdbdf?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80"
-                    alt="Local garage automotive service"
-                    fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
-                </div>
-                <div className="p-6 flex flex-col min-h-[200px] md:min-h-[500px]">
-                  <h3 className="text-xl font-bold text-gray-900 mb-3">
-                    Mostly, Garage in Local always order our products
-                  </h3>
-                  <p className="text-gray-600 mb-4 flex-grow">
-                    Local garages trust us for quality automotive parts. Discover why professional mechanics choose SD Auto Parts for their repair needs.
-                  </p>
-                  <div className="flex flex-col items-start space-y-2">
-                    <span className="text-sm text-gray-500">December 5, 2024</span>
-                    <Button
-                        variant="ghost"
-                        size="sm"
-                        asChild
-                        className="text-white bg-blue-600 hover:bg-blue-700 hover:scale-105 transition-all duration-200 rounded-md px-4 py-2"
-                      >
-                        <Link href="/blog/transportation-quality">
-                          Read More <ArrowRight className="ml-1 h-4 w-4" />
-                        </Link>
-                      </Button>
-                  </div>
-                </div>
-              </div>
-            </AnimatedCard>
           </div>
 
           {/* View All Blog Posts Button */}
@@ -657,7 +660,7 @@ export default function Home() {
       {/* Why Choose Section */}
       <section className="py-16 md:py-24 bg-background">
         <div className="container mx-auto grid md:grid-cols-2 gap-12 items-center">
-          <AnimatedImage className="relative h-full" delay={200}>
+          <AnimatedSection className="relative h-full" delay={200}>
             <Image
               src="https://images.unsplash.com/photo-1486496572940-2bb2341fdbdf?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80"
               alt="High-quality car products"
@@ -665,16 +668,16 @@ export default function Home() {
               fill
               className="object-cover rounded-lg shadow-lg"
             />
-          </AnimatedImage>
+          </AnimatedSection>
           <div>
-            <AnimatedText>
+            <AnimatedSection>
               <h2 className="text-3xl md:text-4xl font-bold font-headline">Why Choose SD AutoCar Products?</h2>
-            </AnimatedText>
-            <AnimatedText delay={100}>
+            </AnimatedSection>
+            <AnimatedSection delay={100}>
               <p className="text-muted-foreground mt-4 mb-6 text-lg">
                 We provide top-quality car parts and accessories that ensure your vehicle runs smoothly and safely. Your satisfaction is our priority.
               </p>
-            </AnimatedText>
+            </AnimatedSection>
             <ul className="space-y-4">
               <AnimatedSection delay={200}>
                 <li className="flex items-start">

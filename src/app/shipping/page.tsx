@@ -122,7 +122,7 @@ export default function ShippingPage() {
       <section className="py-16 md:py-20 bg-gradient-to-b from-gray-50 to-white">
         <div className="container mx-auto">
           <div className="grid md:grid-cols-2 gap-12 items-center">
-            <AnimatedImage className="relative h-full order-2 md:order-1" delay={200}>
+            <AnimatedSection className="relative h-full order-2 md:order-1" delay={200}>
               <Image 
                 src="https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80" 
                 alt="Modern Ford truck on desert road" 
@@ -130,20 +130,20 @@ export default function ShippingPage() {
                 fill 
                 className="object-cover rounded-lg shadow-xl"
               />
-            </AnimatedImage>
+            </AnimatedSection>
             <div className="order-1 md:order-2">
               <div className="max-w-xl">
-                <AnimatedText delay={100}>
+                <AnimatedSection delay={100}>
                   <h2 className="text-3xl md:text-5xl font-bold font-headline text-gray-900 mb-6">
                     Shipping
                   </h2>
-                </AnimatedText>
-                <AnimatedText delay={200}>
+                </AnimatedSection>
+                <AnimatedSection delay={200}>
                   <p className="text-gray-600 text-lg leading-relaxed mb-8">
                     Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit. Aliqu diam amet diam et eos. Clita erat ipsum et lorem et sit, sed stet lorem sit clita duo justo magna dolore erat amet Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit. Aliqu diam amet diam et eos. Clita erat ipsum et lorem et sit, sed stet lorem sit clita duo justo magna dolore erat amet
                     Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit. Aliqu diam amet diam et eos. Clita erat ipsum et lorem et sit, sed stet lorem sit clita duo justo magna dolore erat amet Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit. Aliqu diam amet diam et eos. Clita erat ipsum et lorem et sit, sed stet lorem sit clita duo justo magna dolore erat amet
                   </p>
-                </AnimatedText>
+                </AnimatedSection>
                 <AnimatedSection delay={300}>
                   <div className="flex flex-col sm:flex-row gap-4">
                     <Button size="lg" asChild className="hover:scale-105 transition-transform duration-200">
@@ -175,7 +175,7 @@ export default function ShippingPage() {
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
             {/* By Ship - Australia Post */}
-            <AnimatedCard delay={100}>
+            <AnimatedSection delay={100}>
               <div className="bg-white rounded-lg p-8 shadow-lg hover:shadow-xl transition-all duration-300 group text-center flex flex-col min-h-[300px] md:min-h-[500px]">
                 <div className="mb-6">
                   <div className="w-24 h-24 mx-auto mb-4 flex items-center justify-center">
@@ -192,10 +192,10 @@ export default function ShippingPage() {
                   Reliable shipping through Australia Post network. Perfect for standard delivery across Australia with tracking included.
                 </p>
               </div>
-            </AnimatedCard>
+            </AnimatedSection>
 
             {/* By Air */}
-            <AnimatedCard delay={200}>
+            <AnimatedSection delay={200}>
               <div className="bg-white rounded-lg p-8 shadow-lg hover:shadow-xl transition-all duration-300 group text-center flex flex-col min-h-[300px] md:min-h-[500px]">
                 <div className="mb-6">
                   <div className="w-24 h-24 mx-auto mb-4 flex items-center justify-center">
@@ -210,10 +210,10 @@ export default function ShippingPage() {
                   Fast air freight delivery for urgent parts. Get your automotive components delivered quickly when time is critical.
                 </p>
               </div>
-            </AnimatedCard>
+            </AnimatedSection>
 
             {/* By Land */}
-            <AnimatedCard delay={300}>
+            <AnimatedSection delay={300}>
               <div className="bg-white rounded-lg p-8 shadow-lg hover:shadow-xl transition-all duration-300 group text-center flex flex-col min-h-[300px] md:min-h-[500px]">
                 <div className="mb-6">
                   <div className="w-24 h-24 mx-auto mb-4 flex items-center justify-center">
@@ -232,7 +232,7 @@ export default function ShippingPage() {
                   Ground transportation for local and interstate deliveries. Cost-effective option for heavy parts and bulk orders.
                 </p>
               </div>
-            </AnimatedCard>
+            </AnimatedSection>
           </div>
         </div>
       </section>
