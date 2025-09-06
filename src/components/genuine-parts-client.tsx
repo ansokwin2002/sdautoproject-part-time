@@ -14,9 +14,18 @@ import { ChevronLeft, ChevronRight } from 'lucide-react'; // Added ChevronLeft, 
 export default function GenuinePartsClient() {
   const searchParams = useSearchParams();
   const router = useRouter(); // Get router instance
-  const initialBrand = searchParams.get('brand');
-
+  const initialBrandParam = searchParams.get('brand');
   const allowedBrands = useMemo(() => ["Ford Parts", "Isuzu Parts", "Toyota Parts", "Mazda Parts", "Mitsubishi Parts", "Nissan Parts", "Honda Parts", "Suzuki Parts"], []);
+
+  const initialBrand = useMemo(() => {
+    if (initialBrandParam && !initialBrandParam.endsWith(' Parts')) {
+      const brandWithParts = `${initialBrandParam} Parts`;
+      if (allowedBrands.includes(brandWithParts)) {
+        return brandWithParts;
+      }
+    }
+    return initialBrandParam;
+  }, [initialBrandParam, allowedBrands]);
 
   const filteredProductSource = useMemo(() => {
     return products.filter(product => allowedBrands.includes(product.brand));
