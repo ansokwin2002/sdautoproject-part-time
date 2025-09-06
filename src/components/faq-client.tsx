@@ -263,7 +263,7 @@ export default function FaqClient({ serviceContext }: FaqClientProps) {
         </Card>
       )}
 
-      <AnimatedSection delay={100}>
+      <AnimatedCard delay={100}>
         <div>
           <h2 className="text-2xl font-bold text-center mb-6">Common Questions</h2>
           <Accordion type="single" collapsible className="w-full bg-background rounded-lg shadow-md">
@@ -285,7 +285,7 @@ export default function FaqClient({ serviceContext }: FaqClientProps) {
               ))}
           </Accordion>
         </div>
-      </AnimatedSection>
+      </AnimatedCard>
     </div>
   );
 }
