@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import ProductCard, { ProductCardSkeleton } from "@/components/product-card";
 import ProductList from "@/components/product-list";
-import { ArrowLeft, Package, Hash, Award, Archive, Eye, Star, Shield, Truck, Heart, Share2 } from "lucide-react";
+import { ArrowLeft, Package, Hash, Award, Archive, Eye, Star, Shield, Truck, Heart, Share2, ShoppingCart } from "lucide-react";
 import Link from "next/link";
 import { useState, useEffect, useRef } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -26,7 +26,7 @@ export default function ProductDetailClient({ productId }: ProductDetailClientPr
   const [magnifierPosition, setMagnifierPosition] = useState({ x: 0, y: 0 });
   const imageRef = useRef<HTMLDivElement>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isFavorited, setIsFavorited] = useState(false);
+  
 
   const router = useRouter();
 
@@ -79,7 +79,7 @@ export default function ProductDetailClient({ productId }: ProductDetailClientPr
             className="inline-flex items-center bg-white px-4 py-2 rounded-lg border border-gray-200 text-gray-600 hover:text-gray-900 hover:shadow-md hover:border-gray-300 transition-all duration-200 group"
           >
             <ArrowLeft className="h-4 w-4 mr-2 group-hover:-translate-x-1 transition-transform duration-200" />
-            <span className="text-sm md:text-base font-medium">Back to Genuine Parts</span>
+            <span className="text-sm md:text-base font-medium">Back to Genuine Parts and Accessories</span>
           </Link>
         </div>
 
@@ -298,29 +298,9 @@ export default function ProductDetailClient({ productId }: ProductDetailClientPr
                     <span className="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-3 py-1.5 text-xs font-semibold rounded-full shadow-lg">
                       {product.brand}
                     </span>
-                    <div className="flex items-center gap-1 ml-2">
-                      <Star className="h-4 w-4 text-yellow-400 fill-current" />
-                      <Star className="h-4 w-4 text-yellow-400 fill-current" />
-                      <Star className="h-4 w-4 text-yellow-400 fill-current" />
-                      <Star className="h-4 w-4 text-yellow-400 fill-current" />
-                      <Star className="h-4 w-4 text-yellow-400 fill-current" />
-                      <span className="text-sm text-gray-500 ml-1">(4.8)</span>
-                    </div>
+                    
                   </div>
-                  <div className="flex items-center gap-2">
-                    <button
-                      onClick={() => setIsFavorited(!isFavorited)}
-                      className={cn(
-                        "p-2 rounded-full border transition-all duration-200 hover:scale-110",
-                        isFavorited ? "bg-red-50 border-red-200 text-red-500" : "bg-gray-50 border-gray-200 text-gray-400 hover:text-red-500 hover:bg-red-50"
-                      )}
-                    >
-                      <Heart size={18} className={isFavorited ? "fill-current" : ""} />
-                    </button>
-                    <button className="p-2 rounded-full border bg-gray-50 border-gray-200 text-gray-400 hover:text-blue-500 hover:bg-blue-50 transition-all duration-200 hover:scale-110">
-                      <Share2 size={18} />
-                    </button>
-                  </div>
+                  
                 </div>
                 
                 {/* Product Title */}
@@ -341,14 +321,6 @@ export default function ProductDetailClient({ productId }: ProductDetailClientPr
                     <span className="ml-2">{product.brand}</span>
                   </div>
 
-                  <div className="flex items-center text-sm text-gray-600">
-                    <Hash size={16} className="mr-2 text-gray-400" />
-                    <span className="font-medium text-gray-800">Product Code:</span>
-                    <span className="ml-2 font-mono text-xs bg-gray-50 px-2 py-1 rounded">
-                      {product.code}
-                    </span>
-                  </div>
-
                   {product.partNumber && (
                     <div className="flex items-center text-sm text-gray-600">
                       <Hash size={16} className="mr-2 text-gray-400" />
@@ -358,6 +330,10 @@ export default function ProductDetailClient({ productId }: ProductDetailClientPr
                       </span>
                     </div>
                   )}
+
+                  
+
+                  
 
                   {product.condition && (
                     <div className="flex items-center text-sm text-gray-600">
@@ -392,17 +368,7 @@ export default function ProductDetailClient({ productId }: ProductDetailClientPr
                   </div>
                 </div>
 
-                {/* Features */}
-                <div className="grid grid-cols-2 gap-3 mb-6">
-                  <div className="flex items-center text-sm text-green-600">
-                    <Shield size={16} className="mr-2" />
-                    <span>Warranty Included</span>
-                  </div>
-                  <div className="flex items-center text-sm text-blue-600">
-                    <Truck size={16} className="mr-2" />
-                    <span>Fast Shipping</span>
-                  </div>
-                </div>
+                
 
                 {/* Spacer */}
                 <div className="flex-grow" />
@@ -433,7 +399,7 @@ export default function ProductDetailClient({ productId }: ProductDetailClientPr
                     className="w-full text-base md:text-lg py-3 md:py-4 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 shadow-md hover:shadow-lg transition-all duration-200 hover:scale-[1.02]"
                     onClick={handleBuyNowClick}
                   >
-                    <Eye size={18} className="mr-2" />
+                    <ShoppingCart size={18} className="mr-2" />
                     Buy Now
                   </Button>
                 </div>
@@ -446,13 +412,11 @@ export default function ProductDetailClient({ productId }: ProductDetailClientPr
         <Separator className="my-8 md:my-12 lg:my-16" />
 
         {/* Other Products */}
-        <div className="bg-white rounded-xl border border-gray-100 overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 p-6">
-          <h2 className="text-xl md:text-2xl lg:text-3xl font-bold text-gray-900 mb-6 md:mb-8 flex items-center">
-            <Package size={24} className="mr-3 text-blue-600" />
-            Other Products
-          </h2>
-          <ProductList products={otherProducts} showContainer={false} />
-        </div>
+        <h2 className="text-xl md:text-2xl lg:text-3xl font-bold text-gray-900 mb-6 md:mb-8 flex items-center">
+          <Package size={24} className="mr-3 text-blue-600" />
+          Other Products
+        </h2>
+        <ProductList products={otherProducts} showContainer={false} />
       </div>
 
       {/* Image Gallery Modal */}
