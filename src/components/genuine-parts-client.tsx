@@ -89,7 +89,7 @@ export default function GenuinePartsClient() {
 
   const brandLogos = {
     "Ford Parts": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Ford_logo_flat.svg/1200px-Ford_logo_flat.svg.png",
-    "Isuzu Parts": "https://1000logos.net/wp-content/uploads/2018/02/Isuzu-Logo.png",
+    "Isuzu Parts": "https://1000logos.net/wp-content/uploads/2021/04/Isuzu-logo-500x281.png",
     "Toyota Parts": "https://logos-world.net/wp-content/uploads/2020/04/Toyota-Logo.png",
     "Mazda Parts": "https://logos-world.net/wp-content/uploads/2021/03/Mazda-Logo.png",
     "Mitsubishi Parts": "https://logos-world.net/wp-content/uploads/2021/03/Mitsubishi-Logo.png",
@@ -119,7 +119,7 @@ export default function GenuinePartsClient() {
         >
           {loading ? (
             Array.from({ length: 8 }).map((_, index) => (
-              <div key={index} className="flex-none flex flex-col items-center" style={{ width: `calc(100% / ${visibleCards})` }}> {/* Use visibleCards */}
+              <div key={index} className="flex-none flex flex-col items-center ml-6" style={{ width: `calc(100% / ${visibleCards})` }}> {/* Use visibleCards */}
                 <Skeleton className="w-20 h-20 rounded-full mb-2" />
                 <Skeleton className="w-24 h-4" />
               </div>
@@ -127,7 +127,7 @@ export default function GenuinePartsClient() {
           ) : (
             <>
               {/* All Brands Button */}
-              <div className="flex-none flex flex-col items-center" style={{ width: `calc(100% / ${visibleCards})` }}> {/* Use visibleCards */}
+              <div className="flex-none flex flex-col items-center ml-6" style={{ width: `calc(100% / ${visibleCards})` }}> {/* Use visibleCards */}
                 <Button
                   variant={selectedBrand === null ? 'default' : 'outline'}
                   onClick={() => handleBrandClick(null)}
