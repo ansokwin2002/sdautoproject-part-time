@@ -340,14 +340,14 @@ export default function Header() {
                       </div>
                     </div>
                     
-                    <nav className="flex flex-col space-y-6 text-lg">
+                    <nav className="flex flex-col space-y-6 text-base">
                       {navLinks.map((link) => {
                         if (link.hasDropdown && link.dropdownItems) {
                           return (
                             <div key={link.href} className="space-y-2">
                               <button
                                 onClick={() => setIsMobileDropdownOpen(!isMobileDropdownOpen)}
-                                className={`flex items-center justify-between w-full font-medium transition-colors duration-200 hover:text-blue-600 ${
+                                className={`flex items-center justify-between w-full font-medium transition-colors duration-200 hover:text-blue-600 whitespace-nowrap overflow-hidden text-ellipsis ${
                                   pathname === link.href || link.dropdownItems.some(item => pathname === item.href)
                                     ? "text-blue-600" : "text-gray-700"
                                 }`}
@@ -361,7 +361,7 @@ export default function Header() {
                                     <Link
                                       key={item.href}
                                       href={item.href}
-                                      className={`block text-base transition-all duration-200 hover:text-blue-600 hover:translate-x-1 ${
+                                      className={`block text-sm transition-all duration-200 hover:text-blue-600 hover:translate-x-1 whitespace-nowrap overflow-hidden text-ellipsis ${
                                         pathname === item.href ? "text-blue-600" : "text-gray-600"
                                       }`}
                                       style={{
