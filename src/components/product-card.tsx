@@ -49,11 +49,13 @@ const ProductCard = ({ product, className, loading }: ProductCardProps) => {
           </span>
         </div>
 
-        {/* Discount Badge */}
-        {discountPercentage > 0 && (
+        
+
+        {/* New Badge */}
+        {product.condition?.toLowerCase() === 'new' && (
           <div className="absolute top-4 right-4">
-            <span className="bg-gradient-to-r from-red-500 to-red-600 text-white px-2.5 py-1 text-xs font-bold rounded-full shadow-lg">
-              -{discountPercentage}%
+            <span className="bg-green-500 text-white px-2.5 py-1 text-xs font-bold rounded-full shadow-lg">
+              NEW
             </span>
           </div>
         )}
@@ -73,11 +75,9 @@ const ProductCard = ({ product, className, loading }: ProductCardProps) => {
       {/* Content Section */}
       <div className="p-6 flex flex-col flex-grow">
         {/* Product Name */}
-        <Link href={`/product/${product.id}`} className="block mb-4">
-          <h3 className="font-bold text-gray-900 text-lg leading-tight line-clamp-2 hover:text-blue-600 transition-colors">
-            {product.name}
-          </h3>
-        </Link>
+        <h3 className="text-lg font-semibold text-gray-900 mb-2 line-clamp-2">
+          {product.name}
+        </h3>
 
         {/* Product Details */}
         <div className="space-y-3 mb-6">
@@ -90,7 +90,7 @@ const ProductCard = ({ product, className, loading }: ProductCardProps) => {
           {product.partNumber && (
             <div className="flex items-center text-sm text-gray-600">
               <Hash size={16} className="mr-2 text-gray-400" />
-              <span className="font-medium text-gray-800">Part#:</span>
+              <span className="font-medium text-gray-800">Part Number:</span>
               <span className="ml-2 font-mono text-xs bg-gray-50 px-2 py-1 rounded">
                 {product.partNumber}
               </span>
@@ -116,7 +116,7 @@ const ProductCard = ({ product, className, loading }: ProductCardProps) => {
 
           <div className="flex items-center text-sm text-gray-600">
             <Archive size={16} className="mr-2 text-gray-400" />
-            <span className="font-medium text-gray-800">Stock:</span>
+            <span className="font-medium text-gray-800">Quantity:</span>
             <span className={cn(
               "ml-2 px-2 py-1 rounded-full text-xs font-medium",
               product.quantity > 10 
@@ -140,11 +140,7 @@ const ProductCard = ({ product, className, loading }: ProductCardProps) => {
               <span className="text-2xl font-bold text-gray-900">
                 ${product.price.toFixed(2)}
               </span>
-              {product.originalPrice && (
-                <span className="text-lg text-gray-400 line-through">
-                  ${product.originalPrice.toFixed(2)}
-                </span>
-              )}
+              
             </div>
             
             <Link 

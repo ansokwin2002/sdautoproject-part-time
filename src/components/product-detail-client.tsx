@@ -7,12 +7,13 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import ProductCard, { ProductCardSkeleton } from "@/components/product-card";
 import ProductList from "@/components/product-list";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Package, Hash, Award, Archive, Eye, Star, Shield, Truck, Heart, Share2 } from "lucide-react";
 import Link from "next/link";
 import { useState, useEffect, useRef } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useRouter } from "next/navigation";
 import ImageGalleryModal from '@/components/ImageGalleryModal';
+import { cn } from "@/lib/utils";
 
 interface ProductDetailClientProps {
   productId: string;
@@ -25,6 +26,7 @@ export default function ProductDetailClient({ productId }: ProductDetailClientPr
   const [magnifierPosition, setMagnifierPosition] = useState({ x: 0, y: 0 });
   const imageRef = useRef<HTMLDivElement>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isFavorited, setIsFavorited] = useState(false);
 
   const router = useRouter();
 
@@ -48,7 +50,6 @@ export default function ProductDetailClient({ productId }: ProductDetailClientPr
   };
 
   const handleMouseEnter = () => {
-    // Only enable magnifier on desktop
     if (window.innerWidth >= 1024) {
       setShowMagnifier(true);
     }
@@ -69,152 +70,208 @@ export default function ProductDetailClient({ productId }: ProductDetailClientPr
   };
 
   return (
-    <div className="bg-white min-h-screen">
-      <div className="container mx-auto px-4 py-6 md:py-12 lg:py-20">
-        {/* Back Button */}
+    <div className="bg-gray-50 min-h-screen">
+      <div className="container mx-auto px-4 py-6 md:py-12 lg:py-20 flex flex-col h-full">
+        {/* Back Button with Card Style */}
         <div className="mb-6 mt-16 md:mt-0">
           <Link
             href="/genuine-parts"
-            className="flex items-center text-gray-500 hover:text-gray-700 transition-colors"
+            className="inline-flex items-center bg-white px-4 py-2 rounded-lg border border-gray-200 text-gray-600 hover:text-gray-900 hover:shadow-md hover:border-gray-300 transition-all duration-200 group"
           >
-            <ArrowLeft className="h-4 w-4 mr-2" />
-            <span className="text-sm md:text-base">Back to Genuine Parts</span>
+            <ArrowLeft className="h-4 w-4 mr-2 group-hover:-translate-x-1 transition-transform duration-200" />
+            <span className="text-sm md:text-base font-medium">Back to Genuine Parts</span>
           </Link>
         </div>
 
-        {/* Main Product Section */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-12">
-          {/* Product Images */}
-          <div className="order-1">
-            {/* Mobile: Main Image First */}
-            <div className="block md:hidden mb-4">
-              <div
-                ref={imageRef}
-                className="relative w-full aspect-square rounded-lg overflow-hidden shadow-lg"
-                onClick={() => setIsModalOpen(true)}
-              >
-                <Image
-                  src={selectedImage}
-                  alt={product.name}
-                  fill
-                  className="object-cover"
-                />
-              </div>
-            </div>
-
-            {/* Mobile: Horizontal Scrolling Thumbnails */}
-            <div className="block md:hidden">
-              <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-hide">
-                {product.images.slice(0, 6).map((image, index) => (
-                  <div
-                    key={index}
-                    className={`relative w-16 h-16 flex-shrink-0 cursor-pointer rounded-lg overflow-hidden border-2 ${selectedImage === image ? 'border-blue-500' : 'border-gray-200'}`}
-                    onClick={() => setSelectedImage(image)}
-                  >
-                    <Image
-                      src={image}
-                      alt={`Thumbnail ${index + 1}`}
-                      fill
-                      className="object-cover"
-                    />
-                  </div>
-                ))}
-                {product.images.length > 6 && (
-                  <div
-                    className="relative w-16 h-16 flex-shrink-0 cursor-pointer rounded-lg overflow-hidden border-2 border-gray-300 flex items-center justify-center bg-gray-100"
-                    onClick={() => setIsModalOpen(true)}
-                  >
-                    <span className="text-xs font-medium text-gray-600 text-center leading-tight">
-                      +{product.images.length - 6}<br/>more
+        {/* Main Product Section with Card Styling */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-12 items-stretch flex-grow">
+          {/* Product Images Card */}
+          <div className="order-1 h-full">
+            <div className="bg-white rounded-xl border border-gray-100 overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 h-full p-6">
+              {/* Mobile: Main Image First */}
+              <div className="block md:hidden mb-4">
+                <div
+                  ref={imageRef}
+                  className="relative w-full aspect-square rounded-xl overflow-hidden shadow-lg group cursor-pointer"
+                  onClick={() => setIsModalOpen(true)}
+                >
+                  <Image
+                    src={selectedImage}
+                    alt={product.name}
+                    fill
+                    className="object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
+                  
+                  {/* Overlays */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  
+                  {/* Product Tag */}
+                  <div className="absolute top-4 left-4">
+                    <span className="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-3 py-1.5 text-xs font-semibold rounded-full shadow-lg backdrop-blur-sm">
+                      {product.tag}
                     </span>
                   </div>
-                )}
-              </div>
-            </div>
 
-            {/* Desktop: Side-by-side layout */}
-            <div className="hidden md:flex gap-4 h-[400px]">
-              {/* Thumbnails */}
-              <div className="flex flex-col w-20 h-full">
-                {product.images.length > 5 ? (
-                  <>
-                    {product.images.slice(0, 4).map((image, index) => (
+                  {product.condition?.toLowerCase() === 'new' && (
+                    <div className="absolute top-4 right-4">
+                      <span className="bg-green-500 text-white px-2.5 py-1 text-xs font-bold rounded-full shadow-lg">
+                        NEW
+                      </span>
+                    </div>
+                  )}
+
+                  {/* Quick View Overlay */}
+                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300">
+                    <div className="bg-white/90 backdrop-blur-sm text-gray-900 px-6 py-2.5 rounded-full font-semibold text-sm shadow-lg">
+                      <Eye size={16} className="inline mr-2" />
+                      Click to Expand
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Mobile: Horizontal Scrolling Thumbnails */}
+              <div className="block md:hidden">
+                <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-hide">
+                  {product.images.slice(0, 6).map((image, index) => (
+                    <div
+                      key={index}
+                      className={cn(
+                        "relative w-16 h-16 flex-shrink-0 cursor-pointer rounded-lg overflow-hidden border-2 transition-all duration-200 hover:scale-105",
+                        selectedImage === image ? 'border-blue-500 shadow-md' : 'border-gray-200 hover:border-gray-300'
+                      )}
+                      onClick={() => setSelectedImage(image)}
+                    >
+                      <Image
+                        src={image}
+                        alt={`Thumbnail ${index + 1}`}
+                        fill
+                        className="object-cover"
+                      />
+                    </div>
+                  ))}
+                  {product.images.length > 6 && (
+                    <div
+                      className="relative w-16 h-16 flex-shrink-0 cursor-pointer rounded-lg overflow-hidden border-2 border-gray-300 flex items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200 hover:from-blue-50 hover:to-blue-100 hover:border-blue-300 transition-all duration-200"
+                      onClick={() => setIsModalOpen(true)}
+                    >
+                      <span className="text-xs font-medium text-gray-600 text-center leading-tight">
+                        +{product.images.length - 6}<br/>more
+                      </span>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Desktop: Side-by-side layout */}
+              <div className="hidden md:flex gap-4 h-[400px]">
+                {/* Thumbnails */}
+                <div className="flex flex-col w-20 h-full">
+                  {product.images.length > 5 ? (
+                    <>
+                      {product.images.slice(0, 4).map((image, index) => (
+                        <div
+                          key={index}
+                          className={cn(
+                            "relative w-20 h-[75px] cursor-pointer rounded-lg overflow-hidden border-2 mb-2 transition-all duration-200 hover:scale-105 group",
+                            selectedImage === image ? 'border-blue-500 shadow-md' : 'border-transparent hover:border-gray-300'
+                          )}
+                          onClick={() => setSelectedImage(image)}
+                        >
+                          <Image
+                            src={image}
+                            alt={`Product thumbnail ${index + 1}`}
+                            fill
+                            className="object-cover group-hover:scale-110 transition-transform duration-300"
+                          />
+                        </div>
+                      ))}
+                      <div
+                        className="relative w-20 h-[75px] cursor-pointer rounded-lg overflow-hidden border-2 border-gray-300 flex items-center justify-center group bg-gradient-to-br from-gray-100 to-gray-200 hover:from-blue-50 hover:to-blue-100 hover:border-blue-300 transition-all duration-200 hover:scale-105"
+                        onClick={() => setIsModalOpen(true)}
+                      >
+                        <span className="text-xs font-medium text-gray-600 text-center group-hover:text-blue-600 transition-colors duration-200">
+                          +{product.images.length - 4}
+                        </span>
+                      </div>
+                    </>
+                  ) : (
+                    product.images.map((image, index) => (
                       <div
                         key={index}
-                        className={`relative w-20 h-[75px] cursor-pointer rounded-lg overflow-hidden border-2 ${selectedImage === image ? 'border-blue-500' : 'border-transparent'} mb-2`}
+                        className={cn(
+                          "relative w-20 flex-1 cursor-pointer rounded-lg overflow-hidden border-2 transition-all duration-200 hover:scale-105 group",
+                          selectedImage === image ? 'border-blue-500 shadow-md' : 'border-transparent hover:border-gray-300',
+                          index < product.images.length - 1 ? 'mb-2' : ''
+                        )}
                         onClick={() => setSelectedImage(image)}
                       >
                         <Image
                           src={image}
                           alt={`Product thumbnail ${index + 1}`}
                           fill
-                          className="object-cover"
+                          className="object-cover group-hover:scale-110 transition-transform duration-300"
                         />
                       </div>
-                    ))}
-                    <div
-                      className="relative w-20 h-[75px] cursor-pointer rounded-lg overflow-hidden border-2 border-gray-300 flex items-center justify-center group bg-gray-100"
-                      onClick={() => setIsModalOpen(true)}
-                    >
-                      <span className="text-xs font-medium text-gray-600 text-center">
-                        +{product.images.length - 4}
+                    ))
+                  )}
+                </div>
+
+                {/* Main Image */}
+                <div className="flex-1 h-full">
+                  <div
+                    ref={imageRef}
+                    className="relative w-full h-full rounded-xl overflow-hidden shadow-lg cursor-crosshair group"
+                    onMouseMove={handleMouseMove}
+                    onMouseEnter={handleMouseEnter}
+                    onMouseLeave={handleMouseLeave}
+                  >
+                    <Image
+                      src={selectedImage}
+                      alt={product.name}
+                      fill
+                      className="object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                    
+                    {/* Overlays */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    
+                    {/* Product Tag */}
+                    <div className="absolute top-4 left-4">
+                      <span className="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-3 py-1.5 text-xs font-semibold rounded-full shadow-lg backdrop-blur-sm">
+                        {product.tag}
                       </span>
                     </div>
-                  </>
-                ) : (
-                  product.images.map((image, index) => (
-                    <div
-                      key={index}
-                      className={`relative w-20 flex-1 cursor-pointer rounded-lg overflow-hidden border-2 ${selectedImage === image ? 'border-blue-500' : 'border-transparent'} ${index < product.images.length - 1 ? 'mb-2' : ''}`}
-                      onClick={() => setSelectedImage(image)}
-                    >
-                      <Image
-                        src={image}
-                        alt={`Product thumbnail ${index + 1}`}
-                        fill
-                        className="object-cover"
+
+                    {product.condition?.toLowerCase() === 'new' && (
+                      <div className="absolute top-4 right-4">
+                        <span className="bg-green-500 text-white px-2.5 py-1 text-xs font-bold rounded-full shadow-lg">
+                          NEW
+                        </span>
+                      </div>
+                    )}
+
+                    {/* Magnifier indicator */}
+                    {showMagnifier && (
+                      <div
+                        className="absolute w-16 h-16 border-2 border-blue-500 bg-blue-500/20 pointer-events-none rounded-full"
+                        style={{
+                          left: `calc(${magnifierPosition.x}% - 32px)`,
+                          top: `calc(${magnifierPosition.y}% - 32px)`,
+                        }}
                       />
-                    </div>
-                  ))
-                )}
-              </div>
-
-              {/* Main Image */}
-              <div className="flex-1 h-full">
-                <div
-                  ref={imageRef}
-                  className="relative w-full h-full rounded-lg overflow-hidden shadow-lg cursor-crosshair"
-                  onMouseMove={handleMouseMove}
-                  onMouseEnter={handleMouseEnter}
-                  onMouseLeave={handleMouseLeave}
-                >
-                  <Image
-                    src={selectedImage}
-                    alt={product.name}
-                    fill
-                    className="object-cover"
-                  />
-
-                  {/* Magnifier indicator */}
-                  {showMagnifier && (
-                    <div
-                      className="absolute w-16 h-16 border-2 border-blue-500 bg-blue-500/20 pointer-events-none"
-                      style={{
-                        left: `calc(${magnifierPosition.x}% - 32px)`,
-                        top: `calc(${magnifierPosition.y}% - 32px)`,
-                      }}
-                    />
-                  )}
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* Product Details */}
-          <div className="order-2 relative">
+          {/* Product Details Card */}
+          <div className="order-2 relative h-full">
             {/* Desktop Magnifier Overlay */}
             {showMagnifier && (
-              <div className="hidden lg:block absolute inset-0 z-50 rounded-lg overflow-hidden bg-white shadow-2xl border-2 border-blue-200">
+              <div className="hidden lg:block absolute inset-0 z-50 rounded-xl overflow-hidden bg-white shadow-2xl border-2 border-blue-200">
                 <div
                   className="w-full h-full bg-no-repeat"
                   style={{
@@ -232,58 +289,154 @@ export default function ProductDetailClient({ productId }: ProductDetailClientPr
               </div>
             )}
 
-            {/* Product Information */}
-            <div className="space-y-4">
-              <span className="inline-block text-xs md:text-sm font-medium text-blue-600 bg-blue-100 px-3 py-1 rounded-full">
-                {product.brand}
-              </span>
-              
-              <h1 className="text-xl md:text-2xl lg:text-3xl font-bold text-gray-900 leading-tight">
-                {product.name}
-              </h1>
-              
-              <p className="text-gray-600 text-sm md:text-base leading-relaxed">
-                {product.description}
-              </p>
-
-              {/* Price */}
-              <div className="flex items-center gap-3">
-                <p className="text-sm font-medium text-gray-500">Price:</p>
-                <span className="text-2xl md:text-3xl font-bold text-blue-600">
-                  ${product.price.toFixed(2)}
-                </span>
-                {product.originalPrice && (
-                  <>
-                    <p className="text-sm font-medium text-gray-500">Original Price:</p>
-                    <span className="text-lg md:text-xl text-gray-400 line-through">
-                      ${product.originalPrice.toFixed(2)}
+            {/* Product Information Card */}
+            <div className="bg-white rounded-xl border border-gray-100 overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 h-full flex flex-col">
+              <div className="p-6 flex flex-col flex-grow">
+                {/* Header with Brand and Actions */}
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center gap-2">
+                    <span className="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-3 py-1.5 text-xs font-semibold rounded-full shadow-lg">
+                      {product.brand}
                     </span>
-                  </>
-                )}
-              </div>
+                    <div className="flex items-center gap-1 ml-2">
+                      <Star className="h-4 w-4 text-yellow-400 fill-current" />
+                      <Star className="h-4 w-4 text-yellow-400 fill-current" />
+                      <Star className="h-4 w-4 text-yellow-400 fill-current" />
+                      <Star className="h-4 w-4 text-yellow-400 fill-current" />
+                      <Star className="h-4 w-4 text-yellow-400 fill-current" />
+                      <span className="text-sm text-gray-500 ml-1">(4.8)</span>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={() => setIsFavorited(!isFavorited)}
+                      className={cn(
+                        "p-2 rounded-full border transition-all duration-200 hover:scale-110",
+                        isFavorited ? "bg-red-50 border-red-200 text-red-500" : "bg-gray-50 border-gray-200 text-gray-400 hover:text-red-500 hover:bg-red-50"
+                      )}
+                    >
+                      <Heart size={18} className={isFavorited ? "fill-current" : ""} />
+                    </button>
+                    <button className="p-2 rounded-full border bg-gray-50 border-gray-200 text-gray-400 hover:text-blue-500 hover:bg-blue-50 transition-all duration-200 hover:scale-110">
+                      <Share2 size={18} />
+                    </button>
+                  </div>
+                </div>
+                
+                {/* Product Title */}
+                <h1 className="text-xl md:text-2xl lg:text-3xl font-bold text-gray-900 leading-tight mb-4">
+                  {product.name}
+                </h1>
+                
+                {/* Description */}
+                <p className="text-gray-600 text-sm md:text-base leading-relaxed mb-6">
+                  {product.description}
+                </p>
 
-              {/* Product Details */}
-              <div className="space-y-2 text-sm text-gray-500">
-                <p>Product Code: {product.code}</p>
-                {product.partNumber && (
-                  <p>Part Number: {product.partNumber}</p>
-                )}
-                {product.condition && (
-                  <p>Condition: {product.condition}</p>
-                )}
-              </div>
-              
-              <br /><br />
+                {/* Product Details */}
+                <div className="space-y-3 mb-6">
+                  <div className="flex items-center text-sm text-gray-600">
+                    <Package size={16} className="mr-2 text-gray-400" />
+                    <span className="font-medium text-gray-800">Brand:</span>
+                    <span className="ml-2">{product.brand}</span>
+                  </div>
 
-              {/* Buy Button */}
-              <div className="pt-19">
-                <Button
-                  size="lg"
-                  className="w-full text-base md:text-lg py-3 md:py-4 hover:scale-105 transition-transform duration-200"
-                  onClick={handleBuyNowClick}
-                >
-                  Buy now
-                </Button>
+                  <div className="flex items-center text-sm text-gray-600">
+                    <Hash size={16} className="mr-2 text-gray-400" />
+                    <span className="font-medium text-gray-800">Product Code:</span>
+                    <span className="ml-2 font-mono text-xs bg-gray-50 px-2 py-1 rounded">
+                      {product.code}
+                    </span>
+                  </div>
+
+                  {product.partNumber && (
+                    <div className="flex items-center text-sm text-gray-600">
+                      <Hash size={16} className="mr-2 text-gray-400" />
+                      <span className="font-medium text-gray-800">Part Number:</span>
+                      <span className="ml-2 font-mono text-xs bg-gray-50 px-2 py-1 rounded">
+                        {product.partNumber}
+                      </span>
+                    </div>
+                  )}
+
+                  {product.condition && (
+                    <div className="flex items-center text-sm text-gray-600">
+                      <Award size={16} className="mr-2 text-gray-400" />
+                      <span className="font-medium text-gray-800">Condition:</span>
+                      <span className={cn(
+                        "ml-2 px-2 py-1 rounded-full text-xs font-medium",
+                        product.condition.toLowerCase() === 'new' 
+                          ? "bg-green-100 text-green-700"
+                          : product.condition.toLowerCase() === 'used'
+                          ? "bg-yellow-100 text-yellow-700"
+                          : "bg-gray-100 text-gray-700"
+                      )}>
+                        {product.condition}
+                      </span>
+                    </div>
+                  )}
+
+                  <div className="flex items-center text-sm text-gray-600">
+                    <Archive size={16} className="mr-2 text-gray-400" />
+                    <span className="font-medium text-gray-800">Quantity:</span>
+                    <span className={cn(
+                      "ml-2 px-2 py-1 rounded-full text-xs font-medium",
+                      product.quantity > 10 
+                        ? "bg-green-100 text-green-700"
+                        : product.quantity > 0
+                        ? "bg-orange-100 text-orange-700"
+                        : "bg-red-100 text-red-700"
+                    )}>
+                      {product.quantity > 0 ? `${product.quantity} units` : 'Out of stock'}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Features */}
+                <div className="grid grid-cols-2 gap-3 mb-6">
+                  <div className="flex items-center text-sm text-green-600">
+                    <Shield size={16} className="mr-2" />
+                    <span>Warranty Included</span>
+                  </div>
+                  <div className="flex items-center text-sm text-blue-600">
+                    <Truck size={16} className="mr-2" />
+                    <span>Fast Shipping</span>
+                  </div>
+                </div>
+
+                {/* Spacer */}
+                <div className="flex-grow" />
+
+                {/* Price Section */}
+                <div className="border-t border-gray-100 pt-6 mt-auto">
+                  <div className="flex items-center justify-between mb-6">
+                    <div className="flex items-center gap-3">
+                      <span className="text-2xl md:text-3xl font-bold text-gray-900">
+                        ${product.price.toFixed(2)}
+                      </span>
+                      {product.originalPrice && (
+                        <>
+                          <span className="text-lg md:text-xl text-gray-400 line-through">
+                            ${product.originalPrice.toFixed(2)}
+                          </span>
+                          <span className="bg-red-100 text-red-700 px-2 py-1 rounded-full text-xs font-medium">
+                            {Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)}% OFF
+                          </span>
+                        </>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Buy Button */}
+                  <Button
+                    size="lg"
+                    className="w-full text-base md:text-lg py-3 md:py-4 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 shadow-md hover:shadow-lg transition-all duration-200 hover:scale-[1.02]"
+                    onClick={handleBuyNowClick}
+                  >
+                    <Eye size={18} className="mr-2" />
+                    Buy Now
+                  </Button>
+                </div>
               </div>
             </div>
           </div>
@@ -293,8 +446,9 @@ export default function ProductDetailClient({ productId }: ProductDetailClientPr
         <Separator className="my-8 md:my-12 lg:my-16" />
 
         {/* Other Products */}
-        <div>
-          <h2 className="text-xl md:text-2xl lg:text-3xl font-bold text-gray-900 mb-6 md:mb-8">
+        <div className="bg-white rounded-xl border border-gray-100 overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 p-6">
+          <h2 className="text-xl md:text-2xl lg:text-3xl font-bold text-gray-900 mb-6 md:mb-8 flex items-center">
+            <Package size={24} className="mr-3 text-blue-600" />
             Other Products
           </h2>
           <ProductList products={otherProducts} showContainer={false} />
@@ -316,63 +470,85 @@ export default function ProductDetailClient({ productId }: ProductDetailClientPr
 
 const ProductDetailSkeleton = () => {
   return (
-    <div className="container mx-auto px-4 py-6 md:py-12 lg:py-20">
-      <div className="mb-6">
-        <Skeleton className="h-6 w-40" />
-      </div>
-      
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-12">
-        {/* Image Skeletons */}
-        <div>
-          {/* Mobile Image Skeleton */}
-          <div className="block md:hidden mb-4">
-            <Skeleton className="w-full aspect-square rounded-lg" />
-          </div>
-          <div className="block md:hidden">
-            <div className="flex gap-3">
-              {Array.from({ length: 5 }).map((_, index) => (
-                <Skeleton key={index} className="w-16 h-16 rounded-lg flex-shrink-0" />
-              ))}
+    <div className="bg-gray-50 min-h-screen">
+      <div className="container mx-auto px-4 py-6 md:py-12 lg:py-20">
+        <div className="mb-6">
+          <Skeleton className="h-10 w-48 rounded-lg" />
+        </div>
+        
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-12">
+          {/* Image Skeletons */}
+          <div className="bg-white rounded-xl border border-gray-100 overflow-hidden shadow-sm p-6">
+            {/* Mobile Image Skeleton */}
+            <div className="block md:hidden mb-4">
+              <Skeleton className="w-full aspect-square rounded-xl" />
+            </div>
+            <div className="block md:hidden">
+              <div className="flex gap-3">
+                {Array.from({ length: 5 }).map((_, index) => (
+                  <Skeleton key={index} className="w-16 h-16 rounded-lg flex-shrink-0" />
+                ))}
+              </div>
+            </div>
+            
+            {/* Desktop Image Skeleton */}
+            <div className="hidden md:flex gap-4">
+              <div className="flex flex-col gap-2">
+                {Array.from({ length: 5 }).map((_, index) => (
+                  <Skeleton key={index} className="w-20 h-20 rounded-lg" />
+                ))}
+              </div>
+              <Skeleton className="flex-1 h-[400px] rounded-xl" />
             </div>
           </div>
           
-          {/* Desktop Image Skeleton */}
-          <div className="hidden md:flex gap-4">
-            <div className="flex flex-col gap-2">
-              {Array.from({ length: 5 }).map((_, index) => (
-                <Skeleton key={index} className="w-20 h-20 rounded-lg" />
+          {/* Details Skeleton */}
+          <div className="bg-white rounded-xl border border-gray-100 overflow-hidden shadow-sm p-6">
+            <div className="flex justify-between mb-4">
+              <div className="flex gap-2">
+                <Skeleton className="h-6 w-20 rounded-full" />
+                <Skeleton className="h-6 w-24 rounded" />
+              </div>
+              <div className="flex gap-2">
+                <Skeleton className="h-8 w-8 rounded-full" />
+                <Skeleton className="h-8 w-8 rounded-full" />
+              </div>
+            </div>
+            <Skeleton className="h-8 md:h-10 w-full mb-4" />
+            <Skeleton className="h-24 w-full mb-6" />
+            <div className="space-y-3 mb-6">
+              {Array.from({ length: 4 }).map((_, index) => (
+                <div key={index} className="flex items-center gap-2">
+                  <Skeleton className="h-4 w-4 rounded" />
+                  <Skeleton className="h-4 w-16" />
+                  <Skeleton className="h-4 w-24" />
+                </div>
               ))}
             </div>
-            <Skeleton className="flex-1 h-[400px] rounded-lg" />
+            <div className="grid grid-cols-2 gap-3 mb-6">
+              <Skeleton className="h-6 w-full" />
+              <Skeleton className="h-6 w-full" />
+            </div>
+            <div className="border-t border-gray-100 pt-6">
+              <div className="flex items-center gap-3 mb-6">
+                <Skeleton className="h-8 md:h-10 w-28" />
+                <Skeleton className="h-6 md:h-8 w-20" />
+                <Skeleton className="h-6 w-16 rounded-full" />
+              </div>
+              <Skeleton className="h-12 w-full rounded-lg" />
+            </div>
           </div>
         </div>
         
-        {/* Details Skeleton */}
-        <div className="space-y-4">
-          <Skeleton className="h-6 w-24" />
-          <Skeleton className="h-8 md:h-10 w-full" />
-          <Skeleton className="h-24 w-full" />
-          <div className="flex items-center gap-3">
-            <Skeleton className="h-8 md:h-10 w-28" />
-            <Skeleton className="h-6 md:h-8 w-20" />
+        <Separator className="my-8 md:my-12 lg:my-16" />
+        
+        <div className="bg-white rounded-xl border border-gray-100 overflow-hidden shadow-sm p-6">
+          <Skeleton className="h-8 w-48 mb-6" />
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {Array.from({ length: 4 }).map((_, index) => (
+              <ProductCardSkeleton key={index} />
+            ))}
           </div>
-          <div className="space-y-2">
-            <Skeleton className="h-5 w-32" />
-            <Skeleton className="h-5 w-40" />
-            <Skeleton className="h-5 w-28" />
-          </div>
-          <Skeleton className="h-16 w-full" />
-        </div>
-      </div>
-      
-      <Separator className="my-8 md:my-12 lg:my-16" />
-      
-      <div>
-        <Skeleton className="h-8 w-48 mb-6" />
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {Array.from({ length: 4 }).map((_, index) => (
-            <ProductCardSkeleton key={index} />
-          ))}
         </div>
       </div>
     </div>

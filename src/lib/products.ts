@@ -2199,5 +2199,23 @@ export const products: Product[] = [
     partNumber: "GENERIC_PN_5",
     condition: "New",
     quantity: 50,
+  },
+  {
+    id: "audi-generic-part-4",
+    name: "Audi Generic Part 4",
+    description: "A generic part for Audi vehicles. This is a newly added product.",
+    price: 30.00,
+    images: [
+      "https://picsum.photos/seed/audi-generic-part-4_1/400/400",
+      "https://picsum.photos/seed/audi-generic-part-4_2/400/400",
+      "https://picsum.photos/seed/audi-generic-part-4_3/400/400",
+      "https://picsum.photos/seed/audi-generic-part-4_4/400/400"
+    ],
+    brand: "Audi Parts",
+    code: "A_GENERIC_4",
+    tag: "Audi Parts",
+    partNumber: "GENERIC_PN_4",
+    condition: "Used",
+    quantity: 10,
   }
 ];
