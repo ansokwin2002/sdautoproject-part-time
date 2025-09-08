@@ -35,23 +35,23 @@ export async function POST(request: Request) {
           <h1 style="margin: 0;">New Auto Parts Inquiry</h1>
         </div>
         <div style="padding: 30px;">
-          <h2 style="color: #0d47a1;">Inquiry Details</h2>
-          <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
-            <tr style="border-bottom: 1px solid #eee;"><td style="padding: 10px 0; font-weight: bold;">Company:</td><td style="padding: 10px 0;">${companyName || 'N/A'}</td></tr>
-            <tr style="border-bottom: 1px solid #eee;"><td style="padding: 10px 0; font-weight: bold;">Contact Name:</td><td style="padding: 10px 0;">${name}</td></tr>
-            <tr style="border-bottom: 1px solid #eee;"><td style="padding: 10px 0; font-weight: bold;">Email:</td><td style="padding: 10px 0;"><a href="mailto:${email}">${email}</a></td></tr>
-            <tr style="border-bottom: 1px solid #eee;"><td style="padding: 10px 0; font-weight: bold;">Phone:</td><td style="padding: 10px 0;">${phone || 'N/A'}</td></tr>
-          </table>
-          <h2 style="color: #0d47a1; margin-top: 30px;">Vehicle Information</h2>
-          <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
-            <tr style="border-bottom: 1px solid #eee;"><td style="padding: 10px 0; font-weight: bold;">VIN:</td><td style="padding: 10px 0;">${vin || 'N/A'}</td></tr>
-            <tr style="border-bottom: 1px solid #eee;"><td style="padding: 10px 0; font-weight: bold;">Make/Model:</td><td style="padding: 10px 0;">${vehicleMakeModel || 'N/A'}</td></tr>
-            <tr style="border-bottom: 1px solid #eee;"><td style="padding: 10px 0; font-weight: bold;">Year:</td><td style="padding: 10px 0;">${vehicleYear || 'N/A'}</td></tr>
-            <tr style="border-bottom: 1px solid #eee;"><td style="padding: 10px 0; font-weight: bold;">Engine:</td><td style="padding: 10px 0;">${engineCapacity || 'N/A'}</td></tr>
-          </table>
-          <h2 style="color: #0d47a1; margin-top: 30px;">Parts Required</h2>
-          <div style="background-color: #f9f9f9; border: 1px solid #eee; border-radius: 5px; padding: 15px; margin-top: 10px;">
-            <p style="margin: 0;">${partsRequired}</p>
+          <div style="background-color: #f9f9f9; border: 1px solid #eee; border-radius: 5px; padding: 20px; margin-top: 20px;">
+            <h2 style="color: #0d47a1;">Inquiry Details</h2>
+            <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
+              <tr style="border-bottom: 1px solid #eee;"><td style="padding: 10px 0; font-weight: bold;">Company:</td><td style="padding: 10px 0;">${companyName || 'N/A'}</td></tr>
+              <tr style="border-bottom: 1px solid #eee;"><td style="padding: 10px 0; font-weight: bold;">Contact Name:</td><td style="padding: 10px 0;">${name}</td></tr>
+              <tr style="border-bottom: 1px solid #eee;"><td style="padding: 10px 0; font-weight: bold;">Email:</td><td style="padding: 10px 0;"><a href="mailto:${email}">${email}</a></td></tr>
+              <tr style="border-bottom: 1px solid #eee;"><td style="padding: 10px 0; font-weight: bold;">Phone:</td><td style="padding: 10px 0;">${phone || 'N/A'}</td></tr>
+            </table>
+            <h2 style="color: #0d47a1; margin-top: 30px;">Vehicle Information</h2>
+            <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
+              <tr style="border-bottom: 1px solid #eee;"><td style="padding: 10px 0; font-weight: bold;">VIN:</td><td style="padding: 10px 0;">${vin || 'N/A'}</td></tr>
+              <tr style="border-bottom: 1px solid #eee;"><td style="padding: 10px 0; font-weight: bold;">Make/Model:</td><td style="padding: 10px 0;">${vehicleMakeModel || 'N/A'}</td></tr>
+              <tr style="border-bottom: 1px solid #eee;"><td style="padding: 10px 0; font-weight: bold;">Year:</td><td style="padding: 10px 0;">${vehicleYear || 'N/A'}</td></tr>
+              <tr style="border-bottom: 1px solid #eee;"><td style="padding: 10px 0; font-weight: bold;">Engine:</td><td style="padding: 10px 0;">${engineCapacity || 'N/A'}</td></tr>
+            </table>
+            <h2 style="color: #0d47a1; margin-top: 30px;">Parts Required</h2>
+              <p style="margin: 0;">${partsRequired}</p>
           </div>
         </div>
         <div style="background-color: #f4f4f4; color: #777; padding: 15px; text-align: center; font-size: 12px;">

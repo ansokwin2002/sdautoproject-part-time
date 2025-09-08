@@ -15,6 +15,7 @@ export default function GenuinePartsClient() {
   const searchParams = useSearchParams();
   const router = useRouter(); // Get router instance
   const initialBrandParam = searchParams.get('brand');
+  const viewParam = searchParams.get('view');
   const allowedBrands = useMemo(() => ["Ford Parts", "Isuzu Parts", "Toyota Parts", "Mazda Parts", "Mitsubishi Parts", "Nissan Parts", "Honda Parts", "Suzuki Parts"], []);
 
   const initialBrand = useMemo(() => {
@@ -109,7 +110,7 @@ export default function GenuinePartsClient() {
 
   return (
     <div className="container mx-auto py-8">
-      <h1 className="text-4xl font-bold text-center mb-8 mt-16 md:mt-0">Genuine Parts</h1>
+      <h1 className="text-4xl font-bold text-center mb-8 mt-16 md:mt-0">{viewParam === 'aftermarket' ? "Aftermarket Parts and Accessories" : "Genuine Parts"}</h1>
 
       {/* Brand Selection Slider */}
       <div className="relative w-full overflow-hidden mb-8 py-4 pr-24"> {/* Increased pr-12 to pr-24 */}

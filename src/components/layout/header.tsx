@@ -36,7 +36,7 @@ const getNavLinks = () => {
         { href: "/genuine-parts?brand=Nissan", label: "Nissan Genuine Parts and Accessories" },
         { href: "/genuine-parts?brand=Honda", label: "Honda Genuine Parts and Accessories" },
         { href: "/genuine-parts?brand=Suzuki", label: "Suzuki Genuine Parts and Accessories" },
-        { href: "/aftermarket-accessories", label: "Aftermarket Accessories" },
+        { href: "/genuine-parts?view=aftermarket", label: "Aftermarket Parts and Accessories" },
       ],
     },
     { href: "/home", label: "Home" },
@@ -253,7 +253,7 @@ export default function Header() {
               <div className="flex flex-col sm:flex-row items-center space-x-0 sm:space-x-2 md:space-x-4 lg:space-x-6">
                 <div className="flex items-center space-x-1">
                   <Mail className="h-4 w-4 text-blue-600" />
-                  <span>sdautaustralia@gmail.com</span>
+                  <span>sdautoaustralia@gmail.com</span>
                 </div>
                 <div className="flex items-center space-x-1">
                   <Phone className="h-4 w-4 text-blue-600" />

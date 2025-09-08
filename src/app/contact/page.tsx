@@ -256,22 +256,22 @@ export default function ContactPage() {
         {/* Header Section */}
         <div className="text-center">
           <AnimatedText delay={100}>
-            <h1 className="text-4xl md:text-5xl font-bold font-headline">Auto Parts Inquiry</h1>
+            <h1 className="text-4xl md:text-5xl font-bold font-headline">Product Inquiry</h1>
           </AnimatedText>
           <AnimatedText delay={200}>
             <p className="text-muted-foreground mt-3 max-w-2xl mx-auto text-lg">
-              Looking for specific auto parts? Provide your vehicle details and we'll help you find what you need.
+              Have a question about our products? Provide your details and we'll assist you.
             </p>
           </AnimatedText>
         </div>
 
         {/* Contact Form Section - First */}
         <AnimatedCard delay={300}>
-          <Card className="shadow-lg max-w-4xl mx-auto">
+          <Card className="shadow-lg mx-auto">
             <CardHeader className="text-center">
-              <CardTitle className="text-2xl">Parts Request Form</CardTitle>
+              <CardTitle className="text-2xl">Product Inquiry Form</CardTitle>
               <CardDescription className="text-base">
-                Provide your vehicle information and parts requirements for a quick quote.
+                Provide your details and we'll get back to you shortly.
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -407,7 +407,7 @@ export default function ContactPage() {
                 
                 <Button 
                   type="submit"
-                  className="w-full md:w-auto px-12 py-3 text-lg" 
+                  className="w-full px-12 py-3 text-lg" 
                   disabled={isSubmitting}
                 >
                   {isSubmitting ? (
@@ -416,7 +416,7 @@ export default function ContactPage() {
                       Sending Inquiry...
                     </div>
                   ) : (
-                    "Send Parts Request"
+                    "Submit Application"
                   )}
                 </Button>
               </form>
@@ -512,7 +512,7 @@ export default function ContactPage() {
 
         {/* Map Section - Third */}
         <AnimatedSection delay={500}>
-          <div className="max-w-6xl mx-auto">
+          <div className="mx-auto">
             <div className="text-center mb-8">
               <h2 className="text-3xl font-bold font-headline mb-4">Find Us</h2>
               <p className="text-muted-foreground text-lg">
