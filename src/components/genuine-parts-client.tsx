@@ -161,7 +161,7 @@ export default function GenuinePartsClient() {
                     )}
                   </Button>
                   <span className="text-sm text-center font-medium">
-                    {brand.replace(' Parts', '')}
+                    {visibleCards <= 3 ? brand.replace(' Parts', '').split(' ')[0] : brand.replace(' Parts', '')}
                   </span>
                 </div>
               ))}
