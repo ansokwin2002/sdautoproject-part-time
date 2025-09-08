@@ -1,4 +1,3 @@
-
 export interface Product {
   id: string;
   name: string;
@@ -11,6 +10,7 @@ export interface Product {
   tag: string;
   partNumber?: string;
   condition?: string;
+  quantity: number;
 }
 
 export const products: Product[] = [
@@ -34,6 +34,7 @@ export const products: Product[] = [
     tag: "Mitsubishi Parts",
     partNumber: "1375A433",
     condition: "New",
+    quantity: 42,
   },
   {
     id: "T0001",
@@ -56,6 +57,7 @@ export const products: Product[] = [
     tag: "Toyota Parts",
     partNumber: "87940-0K360",
     condition: "Used",
+    quantity: 15,
   },
   {
     id: "T0002",
@@ -78,6 +80,7 @@ export const products: Product[] = [
     tag: "Toyota Parts",
     partNumber: "68160-0K010",
     condition: "New",
+    quantity: 33,
   },
   {
     id: "T0003",
@@ -100,6 +103,7 @@ export const products: Product[] = [
     tag: "Toyota Parts",
     partNumber: "87940-0K370",
     condition: "New",
+    quantity: 8,
   },
   {
     id: "F0001",
@@ -121,6 +125,7 @@ export const products: Product[] = [
     tag: "Ford Parts",
     partNumber: "AB39-13005-AD",
     condition: "Used",
+    quantity: 21,
   },
   {
     id: "H0001",
@@ -142,6 +147,7 @@ export const products: Product[] = [
     tag: "Honda Parts",
     partNumber: "45022-TBA-A00",
     condition: "New",
+    quantity: 49,
   },
   {
     id: "M0002",
@@ -164,6 +170,7 @@ export const products: Product[] = [
     tag: "Mazda Parts",
     partNumber: "PE07-13-3A0A",
     condition: "New",
+    quantity: 5,
   },
   {
     id: "N0001",
@@ -185,6 +192,7 @@ export const products: Product[] = [
     tag: "Nissan Parts",
     partNumber: "26550-4JA0A",
     condition: "Used",
+    quantity: 12,
   },
   {
     id: "S0001",
@@ -206,6 +214,7 @@ export const products: Product[] = [
     tag: "Subaru Parts",
     partNumber: "E361SSG000",
     condition: "New",
+    quantity: 28,
   },
   {
     id: "V0001",
@@ -228,6 +237,7 @@ export const products: Product[] = [
     tag: "Volkswagen Parts",
     partNumber: "06L903021J",
     condition: "Used",
+    quantity: 3,
   },
   {
     id: "A0001",
@@ -249,6 +259,7 @@ export const products: Product[] = [
     tag: "Audi Parts",
     partNumber: "06M115561B",
     condition: "New",
+    quantity: 18,
   },
   {
     id: "B0001",
@@ -271,6 +282,7 @@ export const products: Product[] = [
     tag: "BMW Parts",
     partNumber: "51472458560",
     condition: "New",
+    quantity: 37,
   },
   {
     id: "C0001",
@@ -292,6 +304,7 @@ export const products: Product[] = [
     tag: "Chevrolet Parts",
     partNumber: "84347948",
     condition: "New",
+    quantity: 9,
   },
   {
     id: "J0001",
@@ -313,6 +326,7 @@ export const products: Product[] = [
     tag: "Jeep Parts",
     partNumber: "82215394",
     condition: "New",
+    quantity: 2,
   },
   {
     id: "K0001",
@@ -334,6 +348,7 @@ export const products: Product[] = [
     tag: "Kia Parts",
     partNumber: "U8170-1U000",
     condition: "New",
+    quantity: 45,
   },
   {
     id: "L0001",
@@ -356,6 +371,7 @@ export const products: Product[] = [
     tag: "Lexus Parts",
     partNumber: "PT922-48200",
     condition: "New",
+    quantity: 11,
   },
   {
     id: "P0001",
@@ -377,6 +393,7 @@ export const products: Product[] = [
     tag: "Porsche Parts",
     partNumber: "99204400000",
     condition: "New",
+    quantity: 1,
   },
   {
     id: "R0001",
@@ -398,6 +415,7 @@ export const products: Product[] = [
     tag: "Ram Parts",
     partNumber: "82215298AC",
     condition: "New",
+    quantity: 17,
   },
   {
     id: "G0001",
@@ -419,6 +437,7 @@ export const products: Product[] = [
     tag: "GMC Parts",
     partNumber: "84347948",
     condition: "New",
+    quantity: 22,
   },
   {
     id: "I0001",
@@ -441,6 +460,7 @@ export const products: Product[] = [
     tag: "Isuzu Parts",
     partNumber: "UGP200001",
     condition: "New",
+    quantity: 31,
   }
   ,
   {
@@ -463,6 +483,7 @@ export const products: Product[] = [
     tag: "Mitsubishi Parts",
     partNumber: "GENERIC_PN_1",
     condition: "New",
+    quantity: 4,
   },
   {
     id: "M002_NEW",
@@ -484,6 +505,7 @@ export const products: Product[] = [
     tag: "Mitsubishi Parts",
     partNumber: "GENERIC_PN_2",
     condition: "Used",
+    quantity: 19,
   },
   {
     id: "M003_NEW",
@@ -505,6 +527,7 @@ export const products: Product[] = [
     tag: "Mitsubishi Parts",
     partNumber: "GENERIC_PN_3",
     condition: "New",
+    quantity: 38,
   },
   {
     id: "M004_NEW",
@@ -526,6 +549,7 @@ export const products: Product[] = [
     tag: "Mitsubishi Parts",
     partNumber: "GENERIC_PN_4",
     condition: "Used",
+    quantity: 23,
   },
   {
     id: "M005_NEW",
@@ -547,6 +571,7 @@ export const products: Product[] = [
     tag: "Mitsubishi Parts",
     partNumber: "GENERIC_PN_5",
     condition: "New",
+    quantity: 41,
   },
   {
     id: "T001_NEW",
@@ -568,6 +593,7 @@ export const products: Product[] = [
     tag: "Toyota Parts",
     partNumber: "GENERIC_PN_1",
     condition: "New",
+    quantity: 6,
   },
   {
     id: "T002_NEW",
@@ -589,6 +615,7 @@ export const products: Product[] = [
     tag: "Toyota Parts",
     partNumber: "GENERIC_PN_2",
     condition: "Used",
+    quantity: 27,
   },
   {
     id: "T003_NEW",
@@ -610,6 +637,7 @@ export const products: Product[] = [
     tag: "Toyota Parts",
     partNumber: "GENERIC_PN_3",
     condition: "New",
+    quantity: 34,
   },
   {
     id: "T004_NEW",
@@ -631,6 +659,7 @@ export const products: Product[] = [
     tag: "Toyota Parts",
     partNumber: "GENERIC_PN_4",
     condition: "Used",
+    quantity: 13,
   },
   {
     id: "T005_NEW",
@@ -652,6 +681,7 @@ export const products: Product[] = [
     tag: "Toyota Parts",
     partNumber: "GENERIC_PN_5",
     condition: "New",
+    quantity: 48,
   },
   {
     id: "F001_NEW",
@@ -673,6 +703,7 @@ export const products: Product[] = [
     tag: "Ford Parts",
     partNumber: "GENERIC_PN_1",
     condition: "New",
+    quantity: 25,
   },
   {
     id: "F002_NEW",
@@ -694,6 +725,7 @@ export const products: Product[] = [
     tag: "Ford Parts",
     partNumber: "GENERIC_PN_2",
     condition: "Used",
+    quantity: 30,
   },
   {
     id: "F003_NEW",
@@ -715,6 +747,7 @@ export const products: Product[] = [
     tag: "Ford Parts",
     partNumber: "GENERIC_PN_3",
     condition: "New",
+    quantity: 35,
   },
   {
     id: "F004_NEW",
@@ -736,6 +769,7 @@ export const products: Product[] = [
     tag: "Ford Parts",
     partNumber: "GENERIC_PN_4",
     condition: "Used",
+    quantity: 40,
   },
   {
     id: "F005_NEW",
@@ -757,6 +791,7 @@ export const products: Product[] = [
     tag: "Ford Parts",
     partNumber: "GENERIC_PN_5",
     condition: "New",
+    quantity: 45,
   },
   {
     id: "H001_NEW",
@@ -778,6 +813,7 @@ export const products: Product[] = [
     tag: "Honda Parts",
     partNumber: "GENERIC_PN_1",
     condition: "New",
+    quantity: 50,
   },
   {
     id: "H002_NEW",
@@ -799,6 +835,7 @@ export const products: Product[] = [
     tag: "Honda Parts",
     partNumber: "GENERIC_PN_2",
     condition: "Used",
+    quantity: 2,
   },
   {
     id: "H003_NEW",
@@ -820,6 +857,7 @@ export const products: Product[] = [
     tag: "Honda Parts",
     partNumber: "GENERIC_PN_3",
     condition: "New",
+    quantity: 7,
   },
   {
     id: "H004_NEW",
@@ -841,6 +879,7 @@ export const products: Product[] = [
     tag: "Honda Parts",
     partNumber: "GENERIC_PN_4",
     condition: "Used",
+    quantity: 14,
   },
   {
     id: "H005_NEW",
@@ -862,6 +901,7 @@ export const products: Product[] = [
     tag: "Honda Parts",
     partNumber: "GENERIC_PN_5",
     condition: "New",
+    quantity: 24,
   },
   {
     id: "MA001_NEW",
@@ -883,6 +923,7 @@ export const products: Product[] = [
     tag: "Mazda Parts",
     partNumber: "GENERIC_PN_1",
     condition: "New",
+    quantity: 39,
   },
   {
     id: "MA002_NEW",
@@ -904,6 +945,7 @@ export const products: Product[] = [
     tag: "Mazda Parts",
     partNumber: "GENERIC_PN_2",
     condition: "Used",
+    quantity: 16,
   },
   {
     id: "MA003_NEW",
@@ -925,6 +967,7 @@ export const products: Product[] = [
     tag: "Mazda Parts",
     partNumber: "GENERIC_PN_3",
     condition: "New",
+    quantity: 26,
   },
   {
     id: "MA004_NEW",
@@ -946,6 +989,7 @@ export const products: Product[] = [
     tag: "Mazda Parts",
     partNumber: "GENERIC_PN_4",
     condition: "Used",
+    quantity: 32,
   },
   {
     id: "MA005_NEW",
@@ -967,6 +1011,7 @@ export const products: Product[] = [
     tag: "Mazda Parts",
     partNumber: "GENERIC_PN_5",
     condition: "New",
+    quantity: 43,
   },
   {
     id: "N001_NEW",
@@ -988,6 +1033,7 @@ export const products: Product[] = [
     tag: "Nissan Parts",
     partNumber: "GENERIC_PN_1",
     condition: "New",
+    quantity: 20,
   },
   {
     id: "N002_NEW",
@@ -1009,6 +1055,7 @@ export const products: Product[] = [
     tag: "Nissan Parts",
     partNumber: "GENERIC_PN_2",
     condition: "Used",
+    quantity: 36,
   },
   {
     id: "N003_NEW",
@@ -1030,6 +1077,7 @@ export const products: Product[] = [
     tag: "Nissan Parts",
     partNumber: "GENERIC_PN_3",
     condition: "New",
+    quantity: 44,
   },
   {
     id: "N004_NEW",
@@ -1051,6 +1099,7 @@ export const products: Product[] = [
     tag: "Nissan Parts",
     partNumber: "GENERIC_PN_4",
     condition: "Used",
+    quantity: 10,
   },
   {
     id: "N005_NEW",
@@ -1072,6 +1121,7 @@ export const products: Product[] = [
     tag: "Nissan Parts",
     partNumber: "GENERIC_PN_5",
     condition: "New",
+    quantity: 29,
   },
   {
     id: "S001_NEW",
@@ -1093,6 +1143,7 @@ export const products: Product[] = [
     tag: "Subaru Parts",
     partNumber: "GENERIC_PN_1",
     condition: "New",
+    quantity: 46,
   },
   {
     id: "S002_NEW",
@@ -1114,6 +1165,7 @@ export const products: Product[] = [
     tag: "Subaru Parts",
     partNumber: "GENERIC_PN_2",
     condition: "Used",
+    quantity: 1,
   },
   {
     id: "S003_NEW",
@@ -1135,6 +1187,7 @@ export const products: Product[] = [
     tag: "Subaru Parts",
     partNumber: "GENERIC_PN_3",
     condition: "New",
+    quantity: 17,
   },
   {
     id: "S004_NEW",
@@ -1156,6 +1209,7 @@ export const products: Product[] = [
     tag: "Subaru Parts",
     partNumber: "GENERIC_PN_4",
     condition: "Used",
+    quantity: 33,
   },
   {
     id: "S005_NEW",
@@ -1177,6 +1231,7 @@ export const products: Product[] = [
     tag: "Subaru Parts",
     partNumber: "GENERIC_PN_5",
     condition: "New",
+    quantity: 47,
   },
   {
     id: "V001_NEW",
@@ -1198,6 +1253,7 @@ export const products: Product[] = [
     tag: "Volkswagen Parts",
     partNumber: "GENERIC_PN_1",
     condition: "New",
+    quantity: 2,
   },
   {
     id: "V002_NEW",
@@ -1219,6 +1275,7 @@ export const products: Product[] = [
     tag: "Volkswagen Parts",
     partNumber: "GENERIC_PN_2",
     condition: "Used",
+    quantity: 19,
   },
   {
     id: "V003_NEW",
@@ -1240,6 +1297,7 @@ export const products: Product[] = [
     tag: "Volkswagen Parts",
     partNumber: "GENERIC_PN_3",
     condition: "New",
+    quantity: 34,
   },
   {
     id: "V004_NEW",
@@ -1261,6 +1319,7 @@ export const products: Product[] = [
     tag: "Volkswagen Parts",
     partNumber: "GENERIC_PN_4",
     condition: "Used",
+    quantity: 49,
   },
   {
     id: "V005_NEW",
@@ -1282,6 +1341,7 @@ export const products: Product[] = [
     tag: "Volkswagen Parts",
     partNumber: "GENERIC_PN_5",
     condition: "New",
+    quantity: 1,
   },
   {
     id: "A001_NEW",
@@ -1303,6 +1363,7 @@ export const products: Product[] = [
     tag: "Audi Parts",
     partNumber: "GENERIC_PN_1",
     condition: "New",
+    quantity: 15,
   },
   {
     id: "A002_NEW",
@@ -1313,7 +1374,7 @@ export const products: Product[] = [
       "https://picsum.photos/seed/A002_NEW_1/400/400",
       "https://picsum.photos/seed/A002_NEW_2/400/400",
       "https://picsum.photos/seed/A002_NEW_3/400/400",
-      "https://picsum.photos/seed/A002_NEW_4/400/400",
+      "https_docs/seed/A002_NEW_4/400/400",
       "https://picsum.photos/seed/A002_NEW_5/400/400",
       "https://picsum.photos/seed/A002_NEW_6/400/400",
       "https://picsum.photos/seed/A002_NEW_7/400/400",
@@ -1324,6 +1385,7 @@ export const products: Product[] = [
     tag: "Audi Parts",
     partNumber: "GENERIC_PN_2",
     condition: "Used",
+    quantity: 30,
   },
   {
     id: "A003_NEW",
@@ -1345,6 +1407,7 @@ export const products: Product[] = [
     tag: "Audi Parts",
     partNumber: "GENERIC_PN_3",
     condition: "New",
+    quantity: 45,
   },
   {
     id: "A004_NEW",
@@ -1366,6 +1429,7 @@ export const products: Product[] = [
     tag: "Audi Parts",
     partNumber: "GENERIC_PN_4",
     condition: "Used",
+    quantity: 10,
   },
   {
     id: "A005_NEW",
@@ -1387,6 +1451,7 @@ export const products: Product[] = [
     tag: "Audi Parts",
     partNumber: "GENERIC_PN_5",
     condition: "New",
+    quantity: 25,
   },
   {
     id: "B001_NEW",
@@ -1408,6 +1473,7 @@ export const products: Product[] = [
     tag: "BMW Parts",
     partNumber: "GENERIC_PN_1",
     condition: "New",
+    quantity: 40,
   },
   {
     id: "B002_NEW",
@@ -1429,6 +1495,7 @@ export const products: Product[] = [
     tag: "BMW Parts",
     partNumber: "GENERIC_PN_2",
     condition: "Used",
+    quantity: 5,
   },
   {
     id: "B003_NEW",
@@ -1450,6 +1517,7 @@ export const products: Product[] = [
     tag: "BMW Parts",
     partNumber: "GENERIC_PN_3",
     condition: "New",
+    quantity: 20,
   },
   {
     id: "B004_NEW",
@@ -1471,6 +1539,7 @@ export const products: Product[] = [
     tag: "BMW Parts",
     partNumber: "GENERIC_PN_4",
     condition: "Used",
+    quantity: 35,
   },
   {
     id: "B005_NEW",
@@ -1492,6 +1561,7 @@ export const products: Product[] = [
     tag: "BMW Parts",
     partNumber: "GENERIC_PN_5",
     condition: "New",
+    quantity: 50,
   },
   {
     id: "C001_NEW",
@@ -1513,6 +1583,7 @@ export const products: Product[] = [
     tag: "Chevrolet Parts",
     partNumber: "GENERIC_PN_1",
     condition: "New",
+    quantity: 15,
   },
   {
     id: "C002_NEW",
@@ -1534,6 +1605,7 @@ export const products: Product[] = [
     tag: "Chevrolet Parts",
     partNumber: "GENERIC_PN_2",
     condition: "Used",
+    quantity: 30,
   },
   {
     id: "C003_NEW",
@@ -1555,6 +1627,7 @@ export const products: Product[] = [
     tag: "Chevrolet Parts",
     partNumber: "GENERIC_PN_3",
     condition: "New",
+    quantity: 45,
   },
   {
     id: "C004_NEW",
@@ -1576,6 +1649,7 @@ export const products: Product[] = [
     tag: "Chevrolet Parts",
     partNumber: "GENERIC_PN_4",
     condition: "Used",
+    quantity: 10,
   },
   {
     id: "C005_NEW",
@@ -1597,6 +1671,7 @@ export const products: Product[] = [
     tag: "Chevrolet Parts",
     partNumber: "GENERIC_PN_5",
     condition: "New",
+    quantity: 25,
   },
   {
     id: "J001_NEW",
@@ -1618,6 +1693,7 @@ export const products: Product[] = [
     tag: "Jeep Parts",
     partNumber: "GENERIC_PN_1",
     condition: "New",
+    quantity: 40,
   },
   {
     id: "J002_NEW",
@@ -1639,6 +1715,7 @@ export const products: Product[] = [
     tag: "Jeep Parts",
     partNumber: "GENERIC_PN_2",
     condition: "Used",
+    quantity: 5,
   },
   {
     id: "J003_NEW",
@@ -1660,6 +1737,7 @@ export const products: Product[] = [
     tag: "Jeep Parts",
     partNumber: "GENERIC_PN_3",
     condition: "New",
+    quantity: 20,
   },
   {
     id: "J004_NEW",
@@ -1681,6 +1759,7 @@ export const products: Product[] = [
     tag: "Jeep Parts",
     partNumber: "GENERIC_PN_4",
     condition: "Used",
+    quantity: 35,
   },
   {
     id: "J005_NEW",
@@ -1702,6 +1781,7 @@ export const products: Product[] = [
     tag: "Jeep Parts",
     partNumber: "GENERIC_PN_5",
     condition: "New",
+    quantity: 50,
   },
   {
     id: "K001_NEW",
@@ -1723,6 +1803,7 @@ export const products: Product[] = [
     tag: "Kia Parts",
     partNumber: "GENERIC_PN_1",
     condition: "New",
+    quantity: 15,
   },
   {
     id: "K002_NEW",
@@ -1744,6 +1825,7 @@ export const products: Product[] = [
     tag: "Kia Parts",
     partNumber: "GENERIC_PN_2",
     condition: "Used",
+    quantity: 30,
   },
   {
     id: "K003_NEW",
@@ -1765,6 +1847,7 @@ export const products: Product[] = [
     tag: "Kia Parts",
     partNumber: "GENERIC_PN_3",
     condition: "New",
+    quantity: 45,
   },
   {
     id: "K004_NEW",
@@ -1777,6 +1860,7 @@ export const products: Product[] = [
     tag: "Kia Parts",
     partNumber: "GENERIC_PN_4",
     condition: "Used",
+    quantity: 10,
   },
   {
     id: "K005_NEW",
@@ -1789,6 +1873,7 @@ export const products: Product[] = [
     tag: "Kia Parts",
     partNumber: "GENERIC_PN_5",
     condition: "New",
+    quantity: 25,
   },
   {
     id: "L001_NEW",
@@ -1801,6 +1886,7 @@ export const products: Product[] = [
     tag: "Lexus Parts",
     partNumber: "GENERIC_PN_1",
     condition: "New",
+    quantity: 40,
   },
   {
     id: "L002_NEW",
@@ -1813,6 +1899,7 @@ export const products: Product[] = [
     tag: "Lexus Parts",
     partNumber: "GENERIC_PN_2",
     condition: "Used",
+    quantity: 5,
   },
   {
     id: "L003_NEW",
@@ -1825,6 +1912,7 @@ export const products: Product[] = [
     tag: "Lexus Parts",
     partNumber: "GENERIC_PN_3",
     condition: "New",
+    quantity: 20,
   },
   {
     id: "L004_NEW",
@@ -1837,6 +1925,7 @@ export const products: Product[] = [
     tag: "Lexus Parts",
     partNumber: "GENERIC_PN_4",
     condition: "Used",
+    quantity: 35,
   },
   {
     id: "L005_NEW",
@@ -1849,6 +1938,7 @@ export const products: Product[] = [
     tag: "Lexus Parts",
     partNumber: "GENERIC_PN_5",
     condition: "New",
+    quantity: 50,
   },
   {
     id: "P001_NEW",
@@ -1861,6 +1951,7 @@ export const products: Product[] = [
     tag: "Porsche Parts",
     partNumber: "GENERIC_PN_1",
     condition: "New",
+    quantity: 15,
   },
   {
     id: "P002_NEW",
@@ -1873,6 +1964,7 @@ export const products: Product[] = [
     tag: "Porsche Parts",
     partNumber: "GENERIC_PN_2",
     condition: "Used",
+    quantity: 30,
   },
   {
     id: "P003_NEW",
@@ -1885,6 +1977,7 @@ export const products: Product[] = [
     tag: "Porsche Parts",
     partNumber: "GENERIC_PN_3",
     condition: "New",
+    quantity: 45,
   },
   {
     id: "P004_NEW",
@@ -1897,6 +1990,7 @@ export const products: Product[] = [
     tag: "Porsche Parts",
     partNumber: "GENERIC_PN_4",
     condition: "Used",
+    quantity: 10,
   },
   {
     id: "P005_NEW",
@@ -1909,6 +2003,7 @@ export const products: Product[] = [
     tag: "Porsche Parts",
     partNumber: "GENERIC_PN_5",
     condition: "New",
+    quantity: 25,
   },
   {
     id: "R001_NEW",
@@ -1921,6 +2016,7 @@ export const products: Product[] = [
     tag: "Ram Parts",
     partNumber: "GENERIC_PN_1",
     condition: "New",
+    quantity: 40,
   },
   {
     id: "R002_NEW",
@@ -1933,6 +2029,7 @@ export const products: Product[] = [
     tag: "Ram Parts",
     partNumber: "GENERIC_PN_2",
     condition: "Used",
+    quantity: 5,
   },
   {
     id: "R003_NEW",
@@ -1945,6 +2042,7 @@ export const products: Product[] = [
     tag: "Ram Parts",
     partNumber: "GENERIC_PN_3",
     condition: "New",
+    quantity: 20,
   },
   {
     id: "R004_NEW",
@@ -1957,6 +2055,7 @@ export const products: Product[] = [
     tag: "Ram Parts",
     partNumber: "GENERIC_PN_4",
     condition: "Used",
+    quantity: 35,
   },
   {
     id: "R005_NEW",
@@ -1969,6 +2068,7 @@ export const products: Product[] = [
     tag: "Ram Parts",
     partNumber: "GENERIC_PN_5",
     condition: "New",
+    quantity: 50,
   },
   {
     id: "G001_NEW",
@@ -1981,6 +2081,7 @@ export const products: Product[] = [
     tag: "GMC Parts",
     partNumber: "GENERIC_PN_1",
     condition: "New",
+    quantity: 15,
   },
   {
     id: "G002_NEW",
@@ -1993,6 +2094,7 @@ export const products: Product[] = [
     tag: "GMC Parts",
     partNumber: "GENERIC_PN_2",
     condition: "Used",
+    quantity: 30,
   },
   {
     id: "G003_NEW",
@@ -2005,6 +2107,7 @@ export const products: Product[] = [
     tag: "GMC Parts",
     partNumber: "GENERIC_PN_3",
     condition: "New",
+    quantity: 45,
   },
   {
     id: "G004_NEW",
@@ -2017,6 +2120,7 @@ export const products: Product[] = [
     tag: "GMC Parts",
     partNumber: "GENERIC_PN_4",
     condition: "Used",
+    quantity: 10,
   },
   {
     id: "G005_NEW",
@@ -2029,6 +2133,7 @@ export const products: Product[] = [
     tag: "GMC Parts",
     partNumber: "GENERIC_PN_5",
     condition: "New",
+    quantity: 25,
   },
   {
     id: "I001_NEW",
@@ -2041,6 +2146,7 @@ export const products: Product[] = [
     tag: "Isuzu Parts",
     partNumber: "GENERIC_PN_1",
     condition: "New",
+    quantity: 40,
   },
   {
     id: "I002_NEW",
@@ -2053,6 +2159,7 @@ export const products: Product[] = [
     tag: "Isuzu Parts",
     partNumber: "GENERIC_PN_2",
     condition: "Used",
+    quantity: 5,
   },
   {
     id: "I003_NEW",
@@ -2065,6 +2172,7 @@ export const products: Product[] = [
     tag: "Isuzu Parts",
     partNumber: "GENERIC_PN_3",
     condition: "New",
+    quantity: 20,
   },
   {
     id: "I004_NEW",
@@ -2077,6 +2185,7 @@ export const products: Product[] = [
     tag: "Isuzu Parts",
     partNumber: "GENERIC_PN_4",
     condition: "Used",
+    quantity: 35,
   },
   {
     id: "I005_NEW",
@@ -2089,5 +2198,6 @@ export const products: Product[] = [
     tag: "Isuzu Parts",
     partNumber: "GENERIC_PN_5",
     condition: "New",
+    quantity: 50,
   }
 ];

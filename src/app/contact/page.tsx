@@ -1,23 +1,11 @@
-'use client';
+"use client";
 
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
+import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { useToast } from "@/hooks/use-toast";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Phone, Mail, MapPin, Clock } from "lucide-react";
-import { useState, useEffect, useRef } from "react";
+import { Phone, Mail, MapPin, Clock, CheckCircle, AlertCircle } from "lucide-react";
 
 // Custom hook for intersection observer
 const useIntersectionObserver = (options = {}) => {
@@ -110,168 +98,436 @@ const AnimatedText = ({ children, className = "", delay = 0 }) => {
   );
 };
 
-const formSchema = z.object({
-  name: z.string().min(2, "Name must be at least 2 characters."),
-  email: z.string().email("Please enter a valid email address."),
-  phone: z.string().optional(),
-  message: z.string().min(10, "Message must be at least 10 characters."),
-});
+// Success/Error notification component
+const Notification = ({ type, message, onClose }) => {
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      onClose();
+    }, 5000);
+    return () => clearTimeout(timer);
+  }, [onClose]);
+
+  const isSuccess = type === 'success';
+  
+  return (
+    <div className={`fixed top-4 right-4 z-50 max-w-md p-4 rounded-lg shadow-lg border transition-all duration-300 ${
+      isSuccess 
+        ? 'bg-green-50 border-green-200 text-green-800' 
+        : 'bg-red-50 border-red-200 text-red-800'
+    }`}>
+      <div className="flex items-start gap-3">
+        {isSuccess ? (
+          <CheckCircle className="h-5 w-5 text-green-600 mt-0.5 flex-shrink-0" />
+        ) : (
+          <AlertCircle className="h-5 w-5 text-red-600 mt-0.5 flex-shrink-0" />
+        )}
+        <div className="flex-1">
+          <p className="font-medium">
+            {isSuccess ? 'Message Sent!' : 'Error Sending Message'}
+          </p>
+          <p className="text-sm mt-1">{message}</p>
+        </div>
+        <button 
+          onClick={onClose}
+          className="text-xl leading-none hover:opacity-70"
+        >
+          ×
+        </button>
+      </div>
+    </div>
+  );
+};
 
 export default function ContactPage() {
-  const { toast } = useToast();
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      name: "",
-      email: "",
-      phone: "",
-      message: "",
-    },
+  const [formData, setFormData] = useState({
+    companyName: '',
+    name: '',
+    email: '',
+    phone: '',
+    vin: '',
+    vehicleMakeModel: '',
+    vehicleYear: '',
+    engineCapacity: '',
+    partsRequired: ''
   });
+  const [errors, setErrors] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [notification, setNotification] = useState(null);
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
-    toast({
-      title: "Message Sent!",
-      description: "Thanks for reaching out. We'll get back to you shortly.",
-    });
-    form.reset();
-  }
+  const validateForm = () => {
+    const newErrors = {};
+    
+    if (formData.name.length < 2) {
+      newErrors.name = 'Name must be at least 2 characters.';
+    }
+    
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.email)) {
+      newErrors.email = 'Please enter a valid email address.';
+    }
+    
+    if (formData.partsRequired.length < 10) {
+      newErrors.partsRequired = 'Parts information must be at least 10 characters.';
+    }
+    
+    return newErrors;
+  };
+
+  const handleInputChange = (field, value) => {
+    setFormData(prev => ({
+      ...prev,
+      [field]: value
+    }));
+    
+    // Clear error when user starts typing
+    if (errors[field]) {
+      setErrors(prev => ({
+        ...prev,
+        [field]: ''
+      }));
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const newErrors = validateForm();
+    
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
+    
+    setIsSubmitting(true);
+
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (response.ok) {
+        setNotification({
+          type: 'success',
+          message: 'Your inquiry has been sent successfully! We\'ll get back to you soon.'
+        });
+        
+        // Reset form
+        setFormData({
+          companyName: '',
+          name: '',
+          email: '',
+          phone: '',
+          vin: '',
+          vehicleMakeModel: '',
+          vehicleYear: '',
+          engineCapacity: '',
+          partsRequired: ''
+        });
+        setErrors({});
+      } else {
+        throw new Error('Failed to send email.');
+      }
+
+    } catch (error) {
+      console.error('Submission error:', error);
+      setNotification({
+        type: 'error',
+        message: 'There was an issue sending your inquiry. Please try again later or contact us directly.'
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <div className="bg-background">
-      <div className="container mx-auto py-16 md:py-24">
-        <div className="text-center mb-12">
+      {notification && (
+        <Notification
+          type={notification.type}
+          message={notification.message}
+          onClose={() => setNotification(null)}
+        />
+      )}
+
+      <div className="container mx-auto py-16 md:py-24 space-y-16">
+        {/* Header Section */}
+        <div className="text-center">
           <AnimatedText delay={100}>
-            <h1 className="text-4xl md:text-5xl font-bold font-headline">Get In Touch</h1>
+            <h1 className="text-4xl md:text-5xl font-bold font-headline">Auto Parts Inquiry</h1>
           </AnimatedText>
           <AnimatedText delay={200}>
             <p className="text-muted-foreground mt-3 max-w-2xl mx-auto text-lg">
-              Have a question or need assistance with your order? Our support team is ready to help.
+              Looking for specific auto parts? Provide your vehicle details and we'll help you find what you need.
             </p>
           </AnimatedText>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-          <div className="space-y-8">
-            <AnimatedCard delay={300}>
-              <Card className="shadow-md">
-                <CardHeader>
-                  <CardTitle>Contact Information</CardTitle>
-                  <CardDescription>Find us at our location or drop us a line.</CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4 text-muted-foreground">
-                  <div className="flex items-center gap-4">
-                    <MapPin className="h-5 w-5 text-primary shrink-0" />
-                    <span>SD AUTO PART 87 Kookaburra Avenue Werribee, Victoria 3030 Australia</span>
+        {/* Contact Form Section - First */}
+        <AnimatedCard delay={300}>
+          <Card className="shadow-lg max-w-4xl mx-auto">
+            <CardHeader className="text-center">
+              <CardTitle className="text-2xl">Parts Request Form</CardTitle>
+              <CardDescription className="text-base">
+                Provide your vehicle information and parts requirements for a quick quote.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <form onSubmit={handleSubmit} className="space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                      Company Name
+                    </label>
+                    <Input 
+                      placeholder="Your company name" 
+                      value={formData.companyName}
+                      onChange={(e) => handleInputChange('companyName', e.target.value)}
+                      disabled={isSubmitting}
+                    />
                   </div>
-                  <div className="flex items-center gap-4">
-                    <Phone className="h-5 w-5 text-primary shrink-0" />
-                    <span>+61 460 786 533</span>
+                  
+                  <div>
+                    <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                      Your Name *
+                    </label>
+                    <Input 
+                      placeholder="John Doe" 
+                      value={formData.name}
+                      onChange={(e) => handleInputChange('name', e.target.value)}
+                      className={errors.name ? 'border-red-500' : ''}
+                      disabled={isSubmitting}
+                    />
+                    {errors.name && (
+                      <p className="text-sm font-medium text-red-500 mt-1">{errors.name}</p>
+                    )}
                   </div>
-                  <div className="flex items-center gap-4">
-                    <Mail className="h-5 w-5 text-primary shrink-0" />
-                    <span>sdautaustralia@gmail.com</span>
+                </div>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                      Phone Number (Optional)
+                    </label>
+                    <Input 
+                      placeholder="+61 460 786 533" 
+                      value={formData.phone}
+                      onChange={(e) => handleInputChange('phone', e.target.value)}
+                      disabled={isSubmitting}
+                    />
                   </div>
-                  <div className="flex items-center gap-4">
-                    <Clock className="h-5 w-5 text-primary shrink-0" />
-                    <span>Mon - Fri: 8:00 AM - 6:00 PM</span>
+                  
+                  <div>
+                    <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                      Email Address *
+                    </label>
+                    <Input 
+                      placeholder="you@example.com" 
+                      type="email"
+                      value={formData.email}
+                      onChange={(e) => handleInputChange('email', e.target.value)}
+                      className={errors.email ? 'border-red-500' : ''}
+                      disabled={isSubmitting}
+                    />
+                    {errors.email && (
+                      <p className="text-sm font-medium text-red-500 mt-1">{errors.email}</p>
+                    )}
                   </div>
+                </div>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                      VIN (Vehicle Identification Number)
+                    </label>
+                    <Input 
+                      placeholder="Vehicle VIN number" 
+                      value={formData.vin}
+                      onChange={(e) => handleInputChange('vin', e.target.value)}
+                      disabled={isSubmitting}
+                    />
+                  </div>
+                  
+                  <div>
+                    <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                      Vehicle Make / Model
+                    </label>
+                    <Input 
+                      placeholder="e.g., Toyota Camry" 
+                      value={formData.vehicleMakeModel}
+                      onChange={(e) => handleInputChange('vehicleMakeModel', e.target.value)}
+                      disabled={isSubmitting}
+                    />
+                  </div>
+                </div>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                      Vehicle Year
+                    </label>
+                    <Input 
+                      placeholder="e.g., 2020" 
+                      value={formData.vehicleYear}
+                      onChange={(e) => handleInputChange('vehicleYear', e.target.value)}
+                      disabled={isSubmitting}
+                    />
+                  </div>
+                  
+                  <div>
+                    <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                      Engine Capacity
+                    </label>
+                    <Input 
+                      placeholder="e.g., 2.5L" 
+                      value={formData.engineCapacity}
+                      onChange={(e) => handleInputChange('engineCapacity', e.target.value)}
+                      disabled={isSubmitting}
+                    />
+                  </div>
+                </div>
+                
+                <div>
+                  <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                    Parts Required / Other Information *
+                  </label>
+                  <Textarea
+                    placeholder="Please describe the parts you need, including part numbers if available..."
+                    className={`min-h-[150px] ${errors.partsRequired ? 'border-red-500' : ''}`}
+                    value={formData.partsRequired}
+                    onChange={(e) => handleInputChange('partsRequired', e.target.value)}
+                    disabled={isSubmitting}
+                  />
+                  {errors.partsRequired && (
+                    <p className="text-sm font-medium text-red-500 mt-1">{errors.partsRequired}</p>
+                  )}
+                </div>
+                
+                <Button 
+                  type="submit"
+                  className="w-full md:w-auto px-12 py-3 text-lg" 
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? (
+                    <div className="flex items-center gap-2">
+                      <div className="animate-spin h-5 w-5 border-2 border-current border-t-transparent rounded-full"></div>
+                      Sending Inquiry...
+                    </div>
+                  ) : (
+                    "Send Parts Request"
+                  )}
+                </Button>
+              </form>
+            </CardContent>
+          </Card>
+        </AnimatedCard>
+
+        {/* Contact Information Section - Second */}
+        <AnimatedSection delay={400}>
+          <div className="max-w-4xl mx-auto">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl font-bold font-headline mb-4">Contact Information</h2>
+              <p className="text-muted-foreground text-lg">
+                Find us at our location or reach out through any of these channels.
+              </p>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              <Card className="shadow-md hover:shadow-lg transition-shadow duration-300">
+                <CardContent className="p-6 text-center">
+                  <div className="flex justify-center mb-4">
+                    <div className="p-3 bg-primary/10 rounded-full">
+                      <MapPin className="h-6 w-6 text-primary" />
+                    </div>
+                  </div>
+                  <h3 className="font-semibold mb-2">Address</h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed">
+                    SD AUTO PART<br />
+                    87 Kookaburra Avenue<br />
+                    Werribee, Victoria 3030<br />
+                    Australia
+                  </p>
                 </CardContent>
               </Card>
-            </AnimatedCard>
-            <AnimatedSection delay={400}>
-              <div className="relative w-full rounded-lg overflow-hidden shadow-lg min-h-[400px] lg:min-h-0 lg:h-full">
-                  <iframe
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3149.0000000000005!2d144.6796815!3d-37.8847459!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6ad685f5ea485f2b%3A0x5bafe966a5c282c2!2s87%20Kookaburra%20Ave%2C%20Werribee%20VIC%203030%2C%20Australia!5e0!3m2!1sen!2sus!4v1700000000000!5m2!1sen!2sus"
-                    width="100%"
-                    height="100%"
-                    style={{ border: 0, minHeight: '400px' }}
-                    allowFullScreen={false}
-                    loading="lazy"
-                    referrerPolicy="no-referrer-when-downgrade"
-                  ></iframe>
-              </div>
-            </AnimatedSection>
-          </div>
-          <AnimatedCard delay={500} className="lg:flex lg:flex-col">
-            <div className="lg:flex-1">
-              <Card className="shadow-lg lg:h-full">
-                <CardHeader>
-                  <CardTitle>Send us a Message</CardTitle>
-                  <CardDescription>Fill out the form below and we'll get back to you.</CardDescription>
-                </CardHeader>
-                <CardContent className="lg:flex-1">
-                  <Form {...form}>
-                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 lg:h-full lg:flex lg:flex-col">
-                      <div className="lg:flex-1 lg:space-y-6 space-y-6">
-                        <FormField
-                          control={form.control}
-                          name="name"
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel>Full Name</FormLabel>
-                              <FormControl>
-                                <Input placeholder="John Doe" {...field} />
-                              </FormControl>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
-                        <FormField
-                          control={form.control}
-                          name="email"
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel>Email Address</FormLabel>
-                              <FormControl>
-                                <Input placeholder="you@example.com" {...field} />
-                              </FormControl>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
-                        <FormField
-                          control={form.control}
-                          name="phone"
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel>Phone Number (Optional)</FormLabel>
-                              <FormControl>
-                                <Input placeholder="+61 460 786 533" {...field} />
-                              </FormControl>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
-                        <FormField
-                          control={form.control}
-                          name="message"
-                          render={({ field }) => (
-                            <FormItem className="lg:flex-1 lg:flex lg:flex-col">
-                              <FormLabel>Your Message</FormLabel>
-                              <FormControl className="lg:flex-1">
-                                <Textarea
-                                  placeholder="Tell us how we can help..."
-                                  className="min-h-[120px] lg:h-full lg:min-h-[200px]"
-                                  {...field}
-                                />
-                              </FormControl>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
-                      </div>
-                      <Button type="submit" className="w-full lg:mt-auto" disabled={form.formState.isSubmitting}>
-                        {form.formState.isSubmitting ? "Sending..." : "Send Message"}
-                      </Button>
-                    </form>
-                  </Form>
+
+              <Card className="shadow-md hover:shadow-lg transition-shadow duration-300">
+                <CardContent className="p-6 text-center">
+                  <div className="flex justify-center mb-4">
+                    <div className="p-3 bg-primary/10 rounded-full">
+                      <Phone className="h-6 w-6 text-primary" />
+                    </div>
+                  </div>
+                  <h3 className="font-semibold mb-2">Phone</h3>
+                  <p className="text-sm text-muted-foreground">
+                    <a href="tel:+61460786533" className="hover:text-primary transition-colors">
+                      +61 460 786 533
+                    </a>
+                  </p>
+                </CardContent>
+              </Card>
+
+              <Card className="shadow-md hover:shadow-lg transition-shadow duration-300">
+                <CardContent className="p-6 text-center">
+                  <div className="flex justify-center mb-4">
+                    <div className="p-3 bg-primary/10 rounded-full">
+                      <Mail className="h-6 w-6 text-primary" />
+                    </div>
+                  </div>
+                  <h3 className="font-semibold mb-2">Email</h3>
+                  <p className="text-sm text-muted-foreground">
+                    <a href="mailto:ansokwin@gmail.com" className="hover:text-primary transition-colors">
+                      ansokwin@gmail.com
+                    </a>
+                  </p>
+                </CardContent>
+              </Card>
+
+              <Card className="shadow-md hover:shadow-lg transition-shadow duration-300">
+                <CardContent className="p-6 text-center">
+                  <div className="flex justify-center mb-4">
+                    <div className="p-3 bg-primary/10 rounded-full">
+                      <Clock className="h-6 w-6 text-primary" />
+                    </div>
+                  </div>
+                  <h3 className="font-semibold mb-2">Business Hours</h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed">
+                    Monday - Friday<br />
+                    8:00 AM - 6:00 PM
+                  </p>
                 </CardContent>
               </Card>
             </div>
-          </AnimatedCard>
-        </div>
+          </div>
+        </AnimatedSection>
+
+        {/* Map Section - Third */}
+        <AnimatedSection delay={500}>
+          <div className="max-w-6xl mx-auto">
+            <div className="text-center mb-8">
+              <h2 className="text-3xl font-bold font-headline mb-4">Find Us</h2>
+              <p className="text-muted-foreground text-lg">
+                Visit our location in Werribee, Victoria for in-person assistance.
+              </p>
+            </div>
+            
+            <Card className="shadow-lg overflow-hidden">
+              <div className="relative w-full h-[500px]">
+                <iframe
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3149.0000000000005!2d144.6796815!3d-37.8847459!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6ad685f5ea485f2b%3A0x5bafe966a5c282c2!2s87%20Kookaburra%20Ave%2C%20Werribee%20VIC%203030%2C%20Australia!5e0!3m2!1sen!2sus!4v1700000000000!5m2!1sen!2sus"
+                  width="100%"
+                  height="100%"
+                  style={{ border: 0 }}
+                  allowFullScreen={false}
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  className="rounded-lg"
+                ></iframe>
+              </div>
+            </Card>
+          </div>
+        </AnimatedSection>
       </div>
     </div>
   );
