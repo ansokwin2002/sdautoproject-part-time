@@ -15,6 +15,8 @@ export async function POST(request: Request) {
       partsRequired 
     } = await request.json();
 
+    const logoUrl = "https://sdauto.com.au/assets/logo.png";
+
     const transporter = nodemailer.createTransport({
       host: process.env.EMAIL_HOST,
       port: parseInt(process.env.EMAIL_PORT || '587'),
@@ -28,7 +30,8 @@ export async function POST(request: Request) {
     const adminMailHtml = `
     <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; background-color: #f4f4f4; padding: 20px;">
       <div style="max-width: 600px; margin: 0 auto; background-color: #fff; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); overflow: hidden;">
-        <div style="background-color: #0d47a1; color: #fff; padding: 20px; text-align: center;">
+        <div style="background-color: #ffffff; color: #333333; padding: 20px; text-align: center; border-bottom: 1px solid #eee;">
+          <img src="${logoUrl}" alt="SD Auto Part Logo" style="max-width: 150px; margin-bottom: 10px;"/>
           <h1 style="margin: 0;">New Auto Parts Inquiry</h1>
         </div>
         <div style="padding: 30px;">
@@ -61,22 +64,30 @@ export async function POST(request: Request) {
     const customerMailHtml = `
     <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; background-color: #f4f4f4; padding: 20px;">
       <div style="max-width: 600px; margin: 0 auto; background-color: #fff; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); overflow: hidden;">
-        <div style="background-color: #0d47a1; color: #fff; padding: 20px; text-align: center;">
-          <!-- Replace with your logo URL -->
-          <img src="YOUR_LOGO_URL_HERE" alt="SD Auto Part Logo" style="max-width: 150px; margin-bottom: 10px;"/>
+        <div style="background-color: #ffffff; color: #333333; padding: 20px; text-align: center; border-bottom: 1px solid #eee;">
+          <img src="${logoUrl}" alt="SD Auto Part Logo" style="max-width: 150px; margin-bottom: 10px;"/>
           <h1 style="margin: 0;">Thank You For Your Inquiry!</h1>
         </div>
         <div style="padding: 30px;">
           <p>Hi ${name},</p>
-          <p>We have successfully received your request for auto parts and our team is looking into it. We will get back to you with a quote as soon as possible.</p>
-          <p>Here is a summary of your request:</p>
+          <p>We have successfully received your request and our team is looking into it. Here is a complete copy of the information you submitted:</p>
           <div style="background-color: #f9f9f9; border: 1px solid #eee; border-radius: 5px; padding: 20px; margin-top: 20px;">
-            <h3 style="color: #0d47a1; margin-top: 0;">Vehicle:</h3>
-            <p style="margin: 5px 0;">${vehicleMakeModel || 'N/A'} (${vehicleYear || 'N/A'})</p>
-            <h3 style="color: #0d47a1; margin-top: 15px;">Parts Requested:</h3>
+            <h3 style="color: #0d47a1; margin-top: 0;">Your Details:</h3>
+            <table style="width: 100%; border-collapse: collapse;">
+              <tr style="border-bottom: 1px solid #ddd;"><td style="padding: 8px 0; font-weight: bold;">Company:</td><td style="padding: 8px 0;">${companyName || 'N/A'}</td></tr>
+              <tr style="border-bottom: 1px solid #ddd;"><td style="padding: 8px 0; font-weight: bold;">Phone:</td><td style="padding: 8px 0;">${phone || 'N/A'}</td></tr>
+            </table>
+            <h3 style="color: #0d47a1; margin-top: 20px;">Vehicle Information:</h3>
+            <table style="width: 100%; border-collapse: collapse;">
+              <tr style="border-bottom: 1px solid #ddd;"><td style="padding: 8px 0; font-weight: bold;">VIN:</td><td style="padding: 8px 0;">${vin || 'N/A'}</td></tr>
+              <tr style="border-bottom: 1px solid #ddd;"><td style="padding: 8px 0; font-weight: bold;">Make/Model:</td><td style="padding: 8px 0;">${vehicleMakeModel || 'N/A'}</td></tr>
+              <tr style="border-bottom: 1px solid #ddd;"><td style="padding: 8px 0; font-weight: bold;">Year:</td><td style="padding: 8px 0;">${vehicleYear || 'N/A'}</td></tr>
+              <tr style="border-bottom: 1px solid #ddd;"><td style="padding: 8px 0; font-weight: bold;">Engine:</td><td style="padding: 8px 0;">${engineCapacity || 'N/A'}</td></tr>
+            </table>
+            <h3 style="color: #0d47a1; margin-top: 20px;">Parts Required:</h3>
             <p style="margin: 5px 0;">${partsRequired}</p>
           </div>
-          <p style="margin-top: 30px;">If you have any questions, please reply directly to this email.</p>
+          <p style="margin-top: 30px;">We will get back to you with a quote as soon as possible. If you have any questions, please reply directly to this email.</p>
         </div>
         <div style="background-color: #f4f4f4; color: #777; padding: 15px; text-align: center; font-size: 12px;">
           <p>&copy; ${new Date().getFullYear()} SD Auto Part. All rights reserved.</p>
@@ -96,7 +107,7 @@ export async function POST(request: Request) {
     const customerMailOptions = {
       from: process.env.EMAIL_USER,
       to: email,
-      subject: 'Thank you for your inquiry - SD Auto Part',
+      subject: 'Your Auto Parts Inquiry with SD Auto Part',
       html: customerMailHtml,
     };
 
