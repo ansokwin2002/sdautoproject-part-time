@@ -434,68 +434,76 @@ export default function ContactPage() {
               </p>
             </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              <Card className="shadow-md hover:shadow-lg transition-shadow duration-300">
-                <CardContent className="p-6 text-center">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <Card className="shadow-md hover:shadow-lg transition-shadow duration-300 h-full">
+                <CardContent className="p-6 text-center flex flex-col">
                   <div className="flex justify-center mb-4">
                     <div className="p-3 bg-primary/10 rounded-full">
                       <MapPin className="h-6 w-6 text-primary" />
                     </div>
                   </div>
                   <h3 className="font-semibold mb-2">Address</h3>
-                  <p className="text-sm text-muted-foreground leading-relaxed">
-                    SD AUTO PART<br />
-                    87 Kookaburra Avenue<br />
-                    Werribee, Victoria 3030<br />
-                    Australia
-                  </p>
+                  <div className="flex-grow flex items-center justify-center">
+                    <p className="text-sm text-muted-foreground leading-relaxed">
+                      SD AUTO PART<br />
+                      87 Kookaburra Avenue<br />
+                      Werribee, Victoria 3030<br />
+                      Australia
+                    </p>
+                  </div>
                 </CardContent>
               </Card>
 
-              <Card className="shadow-md hover:shadow-lg transition-shadow duration-300">
-                <CardContent className="p-6 text-center">
+              <Card className="shadow-md hover:shadow-lg transition-shadow duration-300 h-full">
+                <CardContent className="p-6 text-center flex flex-col">
                   <div className="flex justify-center mb-4">
                     <div className="p-3 bg-primary/10 rounded-full">
                       <Phone className="h-6 w-6 text-primary" />
                     </div>
                   </div>
                   <h3 className="font-semibold mb-2">Phone</h3>
-                  <p className="text-sm text-muted-foreground">
-                    <a href="tel:+61460786533" className="hover:text-primary transition-colors">
-                      +61 460 786 533
-                    </a>
-                  </p>
+                  <div className="flex-grow flex items-center justify-center">
+                    <p className="text-sm text-muted-foreground">
+                      <a href="tel:+61460786533" className="hover:text-primary transition-colors">
+                        +61 460 786 533
+                      </a>
+                    </p>
+                  </div>
                 </CardContent>
               </Card>
 
-              <Card className="shadow-md hover:shadow-lg transition-shadow duration-300">
-                <CardContent className="p-6 text-center">
+              <Card className="shadow-md hover:shadow-lg transition-shadow duration-300 h-full">
+                <CardContent className="p-6 text-center flex flex-col">
                   <div className="flex justify-center mb-4">
                     <div className="p-3 bg-primary/10 rounded-full">
                       <Mail className="h-6 w-6 text-primary" />
                     </div>
                   </div>
                   <h3 className="font-semibold mb-2">Email</h3>
-                  <p className="text-sm text-muted-foreground">
-                    <a href="mailto:ansokwin@gmail.com" className="hover:text-primary transition-colors">
-                      ansokwin@gmail.com
-                    </a>
-                  </p>
+                  <div className="flex-grow flex items-center justify-center">
+                    <p className="text-sm text-muted-foreground">
+                      <a href="mailto:sdautoaustralia@gmail.com" className="hover:text-primary transition-colors">
+                        sdautoaustralia@gmail.com
+                      </a>
+                    </p>
+                  </div>
                 </CardContent>
               </Card>
 
-              <Card className="shadow-md hover:shadow-lg transition-shadow duration-300">
-                <CardContent className="p-6 text-center">
+              <Card className="shadow-md hover:shadow-lg transition-shadow duration-300 h-full">
+                <CardContent className="p-6 text-center flex flex-col">
                   <div className="flex justify-center mb-4">
                     <div className="p-3 bg-primary/10 rounded-full">
                       <Clock className="h-6 w-6 text-primary" />
                     </div>
                   </div>
                   <h3 className="font-semibold mb-2">Business Hours</h3>
-                  <p className="text-sm text-muted-foreground leading-relaxed">
-                    Monday - Friday<br />
-                    8:00 AM - 6:00 PM
-                  </p>
+                  <div className="flex-grow flex items-center justify-center">
+                    <p className="text-sm text-muted-foreground leading-relaxed">
+                      Monday - Friday<br />
+                      8:00 AM - 6:00 PM
+                    </p>
+                  </div>
                 </CardContent>
               </Card>
             </div>
