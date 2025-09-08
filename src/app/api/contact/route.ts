@@ -15,67 +15,91 @@ export async function POST(request: Request) {
       partsRequired 
     } = await request.json();
 
-    // Create a transporter using your SMTP details
-    // IMPORTANT: Use environment variables for these credentials in a real application
     const transporter = nodemailer.createTransport({
       host: process.env.EMAIL_HOST,
       port: parseInt(process.env.EMAIL_PORT || '587'),
-      secure: process.env.EMAIL_SECURE === 'true', // true for 465, false for other ports
+      secure: process.env.EMAIL_SECURE === 'true',
       auth: {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASS,
       },
     });
 
-    // 1. Email to Admin
+    const adminMailHtml = `
+    <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; background-color: #f4f4f4; padding: 20px;">
+      <div style="max-width: 600px; margin: 0 auto; background-color: #fff; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); overflow: hidden;">
+        <div style="background-color: #0d47a1; color: #fff; padding: 20px; text-align: center;">
+          <h1 style="margin: 0;">New Auto Parts Inquiry</h1>
+        </div>
+        <div style="padding: 30px;">
+          <h2 style="color: #0d47a1;">Inquiry Details</h2>
+          <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
+            <tr style="border-bottom: 1px solid #eee;"><td style="padding: 10px 0; font-weight: bold;">Company:</td><td style="padding: 10px 0;">${companyName || 'N/A'}</td></tr>
+            <tr style="border-bottom: 1px solid #eee;"><td style="padding: 10px 0; font-weight: bold;">Contact Name:</td><td style="padding: 10px 0;">${name}</td></tr>
+            <tr style="border-bottom: 1px solid #eee;"><td style="padding: 10px 0; font-weight: bold;">Email:</td><td style="padding: 10px 0;"><a href="mailto:${email}">${email}</a></td></tr>
+            <tr style="border-bottom: 1px solid #eee;"><td style="padding: 10px 0; font-weight: bold;">Phone:</td><td style="padding: 10px 0;">${phone || 'N/A'}</td></tr>
+          </table>
+          <h2 style="color: #0d47a1; margin-top: 30px;">Vehicle Information</h2>
+          <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
+            <tr style="border-bottom: 1px solid #eee;"><td style="padding: 10px 0; font-weight: bold;">VIN:</td><td style="padding: 10px 0;">${vin || 'N/A'}</td></tr>
+            <tr style="border-bottom: 1px solid #eee;"><td style="padding: 10px 0; font-weight: bold;">Make/Model:</td><td style="padding: 10px 0;">${vehicleMakeModel || 'N/A'}</td></tr>
+            <tr style="border-bottom: 1px solid #eee;"><td style="padding: 10px 0; font-weight: bold;">Year:</td><td style="padding: 10px 0;">${vehicleYear || 'N/A'}</td></tr>
+            <tr style="border-bottom: 1px solid #eee;"><td style="padding: 10px 0; font-weight: bold;">Engine:</td><td style="padding: 10px 0;">${engineCapacity || 'N/A'}</td></tr>
+          </table>
+          <h2 style="color: #0d47a1; margin-top: 30px;">Parts Required</h2>
+          <div style="background-color: #f9f9f9; border: 1px solid #eee; border-radius: 5px; padding: 15px; margin-top: 10px;">
+            <p style="margin: 0;">${partsRequired}</p>
+          </div>
+        </div>
+        <div style="background-color: #f4f4f4; color: #777; padding: 15px; text-align: center; font-size: 12px;">
+          <p>This email was sent from the contact form on your website.</p>
+        </div>
+      </div>
+    </div>
+    `;
+
+    const customerMailHtml = `
+    <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; background-color: #f4f4f4; padding: 20px;">
+      <div style="max-width: 600px; margin: 0 auto; background-color: #fff; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); overflow: hidden;">
+        <div style="background-color: #0d47a1; color: #fff; padding: 20px; text-align: center;">
+          <!-- Replace with your logo URL -->
+          <img src="YOUR_LOGO_URL_HERE" alt="SD Auto Part Logo" style="max-width: 150px; margin-bottom: 10px;"/>
+          <h1 style="margin: 0;">Thank You For Your Inquiry!</h1>
+        </div>
+        <div style="padding: 30px;">
+          <p>Hi ${name},</p>
+          <p>We have successfully received your request for auto parts and our team is looking into it. We will get back to you with a quote as soon as possible.</p>
+          <p>Here is a summary of your request:</p>
+          <div style="background-color: #f9f9f9; border: 1px solid #eee; border-radius: 5px; padding: 20px; margin-top: 20px;">
+            <h3 style="color: #0d47a1; margin-top: 0;">Vehicle:</h3>
+            <p style="margin: 5px 0;">${vehicleMakeModel || 'N/A'} (${vehicleYear || 'N/A'})</p>
+            <h3 style="color: #0d47a1; margin-top: 15px;">Parts Requested:</h3>
+            <p style="margin: 5px 0;">${partsRequired}</p>
+          </div>
+          <p style="margin-top: 30px;">If you have any questions, please reply directly to this email.</p>
+        </div>
+        <div style="background-color: #f4f4f4; color: #777; padding: 15px; text-align: center; font-size: 12px;">
+          <p>&copy; ${new Date().getFullYear()} SD Auto Part. All rights reserved.</p>
+          <p>87 Kookaburra Avenue, Werribee, Victoria 3030, Australia</p>
+        </div>
+      </div>
+    </div>
+    `;
+
     const adminMailOptions = {
       from: process.env.EMAIL_USER,
-      to: 'ansokwin@gmail.com', // Admin's email address
+      to: 'ansokwin@gmail.com',
       subject: `New Auto Parts Inquiry from ${name}`,
-      html: `
-        <h1>New Auto Parts Inquiry</h1>
-        <p>You have received a new message from your website contact form.</p>
-        <h2>Contact Details:</h2>
-        <ul>
-          <li><strong>Company:</strong> ${companyName || 'Not provided'}</li>
-          <li><strong>Name:</strong> ${name}</li>
-          <li><strong>Email:</strong> ${email}</li>
-          <li><strong>Phone:</strong> ${phone || 'Not provided'}</li>
-        </ul>
-        <h2>Vehicle Information:</h2>
-        <ul>
-          <li><strong>VIN:</strong> ${vin || 'Not provided'}</li>
-          <li><strong>Make/Model:</strong> ${vehicleMakeModel || 'Not provided'}</li>
-          <li><strong>Year:</strong> ${vehicleYear || 'Not provided'}</li>
-          <li><strong>Engine:</strong> ${engineCapacity || 'Not provided'}</li>
-        </ul>
-        <h2>Parts Required:</h2>
-        <p>${partsRequired}</p>
-      `,
+      html: adminMailHtml,
     };
 
-    // 2. Confirmation Email to Customer
     const customerMailOptions = {
       from: process.env.EMAIL_USER,
-      to: email, // Customer's email address
-      subject: 'Thank you for your inquiry!',
-      html: `
-        <h1>Thank You for Your Inquiry</h1>
-        <p>Hi ${name},</p>
-        <p>We have received your request for auto parts and will get back to you shortly. Here is a summary of your inquiry:</p>
-        <h2>Your Vehicle Information:</h2>
-        <ul>
-          <li><strong>Make/Model:</strong> ${vehicleMakeModel || 'Not provided'}</li>
-          <li><strong>Year:</strong> ${vehicleYear || 'Not provided'}</li>
-        </ul>
-        <h2>Parts You Requested:</h2>
-        <p>${partsRequired}</p>
-        <p>If you have any other questions, please reply to this email.</p>
-        <p>Best regards,<br/>The SD Auto Part Team</p>
-      `,
+      to: email,
+      subject: 'Thank you for your inquiry - SD Auto Part',
+      html: customerMailHtml,
     };
 
-    // Send both emails
     await transporter.sendMail(adminMailOptions);
     await transporter.sendMail(customerMailOptions);
 
