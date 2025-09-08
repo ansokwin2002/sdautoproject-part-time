@@ -11,9 +11,10 @@ import {
 
 export default function Footer() {
   const navLinks = [
-    { href: "/", label: "Home" },
-    { href: "/about", label: "About" },
-    { href: "/genuine-parts", label: "Genuine Parts" },
+    { href: "/genuine-parts", label: "Genuines Parts and Accessories" },
+    { href: "/home", label: "Home" },
+    { href: "/policy", label: "Policy" },
+    { href: "/faq", label: "FAQ" },
     { href: "/shipping", label: "Shipping" },
     { href: "/contact", label: "Contact Us" },
   ];

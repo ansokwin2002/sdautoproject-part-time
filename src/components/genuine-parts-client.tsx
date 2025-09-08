@@ -110,7 +110,7 @@ export default function GenuinePartsClient() {
 
   return (
     <div className="container mx-auto py-8">
-      <h1 className="text-4xl font-bold text-center mb-8 mt-16 md:mt-0">{viewParam === 'aftermarket' ? "Aftermarket Parts and Accessories" : "Genuine Parts"}</h1>
+      <h1 className="text-4xl font-bold text-center mb-8 mt-16 md:mt-0">{viewParam === 'aftermarket' ? "Aftermarket Parts and Accessories" : "Genuine Parts and Accessories"}</h1>
 
       {/* Brand Selection Slider */}
       <div className="relative w-full overflow-hidden mb-8 py-4 pr-24"> {/* Increased pr-12 to pr-24 */}
