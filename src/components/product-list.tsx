@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 
-const ITEMS_PER_PAGE = 8;
+const ITEMS_PER_PAGE = 24;
 
 // Custom hook for intersection observer
 const useIntersectionObserver = (options = {}) => {
