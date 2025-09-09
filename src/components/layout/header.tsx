@@ -9,50 +9,16 @@ import { Menu, MapPin, Mail, Phone, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 
-import { products } from "@/lib/products";
+import { getNavLinks } from "@/lib/nav-links";
 
-const getNavLinks = () => {
-  const allBrands = Array.from(new Set(products.map(product => product.brand)));
-  const brandsToRemove = ["Mitsubishi Parts", "Nissan Parts", "Porsche Parts", "Ram Parts", "Subaru Parts", "GMC Parts", "Isuzu Parts"];
-  const uniqueBrands = allBrands.filter(brand => !brandsToRemove.includes(brand)).sort();
-
-  const brandDropdownItems = uniqueBrands.map(brand => ({
-    href: `/genuine-parts?brand=${encodeURIComponent(brand)}`,
-    label: brand,
-  }));
-
-  return [
-    {
-      href: "/",
-      label: "Genuines Parts and Accessories",
-      hasDropdown: true,
-      dropdownItems: [
-        { href: "/", label: "All Parts and Accessories" },
-        { href: "/genuine-parts?brand=Ford", label: "Ford Genuine Parts and Accessories" },
-        { href: "/genuine-parts?brand=Isuzu", label: "Isuzu Genuine Parts and Accessories" },
-        { href: "/genuine-parts?brand=Toyota", label: "Toyota Genuine Parts and Accessories" },
-        { href: "/genuine-parts?brand=Mazda", label: "Mazda Genuine Parts and Accessories" },
-        { href: "/genuine-parts?brand=Mitsubishi", label: "Mitsubishi Genuine Parts and Accessories" },
-        { href: "/genuine-parts?brand=Nissan", label: "Nissan Genuine Parts and Accessories" },
-        { href: "/genuine-parts?brand=Honda", label: "Honda Genuine Parts and Accessories" },
-        { href: "/genuine-parts?brand=Suzuki", label: "Suzuki Genuine Parts and Accessories" },
-        { href: "/genuine-parts?view=aftermarket", label: "Aftermarket Parts and Accessories" },
-      ],
-    },
-    { href: "/home", label: "Home" },
-    { href: "/policy", label: "Policy" },
-    { href: "/faq", label: "FAQ" },
-    { href: "/shipping", label: "Shipping" },
-    { href: "/contact", label: "Contact Us" },
-  ];
-};
+const products = []; // This is a placeholder, as the product data is now fetched in nav-links.ts
 
 export default function Header() {
   const pathname = usePathname();
   const navLinks = getNavLinks();
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [isMobileDropdownOpen, setIsMobileDropdownOpen] = useState(false);
+  const [openMobileDropdown, setOpenMobileDropdown] = useState<string | null>(null);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
   const lastScrollY = useRef(0);
@@ -343,10 +309,11 @@ export default function Header() {
                     <nav className="flex flex-col space-y-6 text-base">
                       {navLinks.map((link) => {
                         if (link.hasDropdown && link.dropdownItems) {
+                          const isMobileDropdownOpen = openMobileDropdown === link.href;
                           return (
                             <div key={link.href} className="space-y-2">
                               <button
-                                onClick={() => setIsMobileDropdownOpen(!isMobileDropdownOpen)}
+                                onClick={() => setOpenMobileDropdown(isMobileDropdownOpen ? null : link.href)}
                                 className={`flex items-center justify-between w-full font-medium transition-colors duration-200 hover:text-blue-600 whitespace-nowrap overflow-hidden text-ellipsis ${
                                   pathname === link.href || link.dropdownItems.some(item => pathname === item.href)
                                     ? "text-blue-600" : "text-gray-700"
@@ -370,7 +337,7 @@ export default function Header() {
                                       }}
                                       onClick={() => {
                                         setIsSheetOpen(false);
-                                        setIsMobileDropdownOpen(false);
+                                        setOpenMobileDropdown(null);
                                       }}
                                     >
                                       {item.label}
