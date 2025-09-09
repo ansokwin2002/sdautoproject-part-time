@@ -102,9 +102,9 @@ export default function GenuinePartsClient() {
 
   const handleBrandClick = (brand: string | null) => {
     if (brand) {
-      router.push(`/?brand=${brand}`);
+      router.push(`/genuine-parts?brand=${encodeURIComponent(brand)}`);
     } else {
-      router.push(`/`);
+      router.push(`/genuine-parts`);
     }
   };
 

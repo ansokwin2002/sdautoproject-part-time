@@ -28,7 +28,7 @@ export const getNavLinks = () => {
         { href: "/genuine-parts?view=aftermarket", label: "Aftermarket Parts and Accessories" },
       ],
     },
-    { href: "/home", label: "Home" },
+    { href: "/", label: "Home" },
     { href: "/policy", label: "Policy" },
     { href: "/faq", label: "FAQ" },
     { href: "/shipping", label: "Shipping" },
