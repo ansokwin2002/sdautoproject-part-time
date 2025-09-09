@@ -21,7 +21,12 @@ interface ProductDetailClientProps {
 
 export default function ProductDetailClient({ productId }: ProductDetailClientProps) {
   const product = products.find((p) => p.id === productId);
-  const [selectedImage, setSelectedImage] = useState<string>('');
+
+  if (!product) {
+    notFound();
+  }
+
+  const [selectedImage, setSelectedImage] = useState<string>(product.images[0] || '');
   const [showMagnifier, setShowMagnifier] = useState(false);
   const [magnifierPosition, setMagnifierPosition] = useState({ x: 0, y: 0 });
   const imageRef = useRef<HTMLDivElement>(null);
@@ -29,12 +34,6 @@ export default function ProductDetailClient({ productId }: ProductDetailClientPr
   
 
   const router = useRouter();
-
-  useEffect(() => {
-    if (product) {
-      setSelectedImage(product.images[0]);
-    }
-  }, [product]);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!imageRef.current) return;
@@ -58,10 +57,6 @@ export default function ProductDetailClient({ productId }: ProductDetailClientPr
   const handleMouseLeave = () => {
     setShowMagnifier(false);
   };
-
-  if (!product) {
-    notFound();
-  }
 
   const otherProducts = products.filter((p) => p.id !== product.id);
 
