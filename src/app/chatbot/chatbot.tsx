@@ -612,33 +612,34 @@ export function Chatbot({ isOpen, onClose }: { isOpen: boolean; onClose: () => v
               ) : (
                 <div className="space-y-2">
                   {chatSessions.map((session) => (
-                    <div key={session.id} className="group">
+                    <div key={session.id} className="group relative">
+                      <div
+                        role="button"
+                        tabIndex={0}
+                        className="w-full text-left p-3 pr-10 h-auto hover:bg-blue-50 border border-transparent hover:border-blue-200 rounded-lg cursor-pointer transition-colors duration-150"
+                        onClick={() => loadChatSession(session)}
+                        onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') loadChatSession(session); }}
+                      >
+                        <div className="flex-1">
+                          <p className="font-medium text-sm text-gray-800 truncate">
+                            {session.title}
+                          </p>
+                          <p className="text-xs text-gray-500 mt-1">
+                            {new Date(session.createdAt).toLocaleDateString()} • {session.messages.length} messages
+                          </p>
+                        </div>
+                      </div>
                       <Button
                         variant="ghost"
-                        className="w-full text-left p-3 h-auto hover:bg-blue-50 border border-transparent hover:border-blue-200 rounded-lg"
-                        onClick={() => loadChatSession(session)}
+                        size="sm"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          deleteChatSession(session.id);
+                        }}
+                        className="absolute top-1/2 right-2 -translate-y-1/2 opacity-0 group-hover:opacity-100 p-1 h-auto text-red-500 hover:text-red-600 hover:bg-red-50 rounded-full"
+                        title={`Delete chat: ${session.title}`}
                       >
-                        <div className="flex justify-between items-start w-full">
-                          <div className="flex-1">
-                            <p className="font-medium text-sm text-gray-800 truncate">
-                              {session.title}
-                            </p>
-                            <p className="text-xs text-gray-500 mt-1">
-                              {new Date(session.createdAt).toLocaleDateString()} • {session.messages.length} messages
-                            </p>
-                          </div>
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              deleteChatSession(session.id);
-                            }}
-                            className="opacity-0 group-hover:opacity-100 p-1 h-auto text-red-500 hover:text-red-600"
-                          >
-                            <X className="h-3 w-3" />
-                          </Button>
-                        </div>
+                        <X className="h-3.5 w-3.5" />
                       </Button>
                     </div>
                   ))}
