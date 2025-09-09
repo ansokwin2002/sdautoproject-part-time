@@ -98,14 +98,15 @@ export async function POST(request: Request) {
     `;
 
     const adminMailOptions = {
-      from: process.env.EMAIL_USER,
+      from: `"SD Auto Part" <${process.env.EMAIL_USER}>`,
       to: 'ansokwin@gmail.com',
       subject: `New Auto Parts Inquiry from ${name}`,
+      replyTo: email,
       html: adminMailHtml,
     };
 
     const customerMailOptions = {
-      from: process.env.EMAIL_USER,
+      from: `"SD Auto Part" <${process.env.EMAIL_USER}>`,
       to: email,
       subject: 'Your Auto Parts Inquiry with SD Auto Part',
       html: customerMailHtml,
@@ -115,8 +116,12 @@ export async function POST(request: Request) {
     await transporter.sendMail(customerMailOptions);
 
     return NextResponse.json({ message: 'Emails sent successfully!' }, { status: 200 });
-  } catch (error) {
-    console.error('Error sending email:', error);
+  } catch (error: any) {
+    console.error('Error sending email:', {
+      message: error.message,
+      stack: error.stack,
+      response: error.response,
+    });
     return NextResponse.json({ message: 'Failed to send email.' }, { status: 500 });
   }
 }
