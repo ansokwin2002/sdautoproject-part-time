@@ -34,7 +34,7 @@ export default function ScrollToTopButton() {
       variant="outline"
       size="icon"
       className={cn(
-        'fixed bottom-8 right-8 rounded-full h-12 w-12 transition-opacity duration-300 z-50',
+        'fixed bottom-20 right-5 rounded-full h-12 w-12 transition-opacity duration-300 z-50',
         isVisible ? 'opacity-100' : 'opacity-0'
       )}
       onClick={scrollToTop}
