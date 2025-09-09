@@ -1,17 +1,26 @@
 import { NextResponse } from 'next/server';
 import nodemailer from 'nodemailer';
+import fs from 'fs';
+import path from 'path';
 
 export async function POST(request: Request) {
-  console.log('Processing contact form submission...');
-  console.log('--- Email Configuration ---');
-  console.log(`EMAIL_HOST: ${process.env.EMAIL_HOST}`)
-  console.log(`EMAIL_PORT: ${process.env.EMAIL_PORT}`)
-  console.log(`EMAIL_SECURE: ${process.env.EMAIL_SECURE}`)
-  console.log(`EMAIL_USER: ${process.env.EMAIL_USER}`)
-  console.log(`EMAIL_PASS is set: ${!!process.env.EMAIL_PASS}`)
-  console.log('--------------------------');
+  const logFilePath = path.join(process.cwd(), 'contact-form.log');
+  const log = (message: string) => {
+    const timestamp = new Date().toISOString();
+    fs.appendFileSync(logFilePath, `${timestamp} - ${message}\n`);
+  };
+
+  log('Processing contact form submission...');
+  log('--- Email Configuration ---');
+  log(`EMAIL_HOST: ${process.env.EMAIL_HOST}`)
+  log(`EMAIL_PORT: ${process.env.EMAIL_PORT}`)
+  log(`EMAIL_SECURE: ${process.env.EMAIL_SECURE}`)
+  log(`EMAIL_USER: ${process.env.EMAIL_USER}`)
+  log(`EMAIL_PASS is set: ${!!process.env.EMAIL_PASS}`)
+  log('--------------------------');
 
   try {
+
     const { 
       companyName, 
       name, 
@@ -126,6 +135,10 @@ export async function POST(request: Request) {
 
     return NextResponse.json({ message: 'Emails sent successfully!' }, { status: 200 });
   } catch (error: any) {
+    log('!!! FAILED TO SEND EMAIL !!!');
+    log(`Error Message: ${error.message}`);
+    log(`Error Stack: ${error.stack}`);
+    log(`Error Response: ${error.response}`);
     console.error('Error sending email:', {
       message: error.message,
       stack: error.stack,
