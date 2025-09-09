@@ -550,7 +550,7 @@ export function Chatbot({ isOpen, onClose }: { isOpen: boolean; onClose: () => v
   };
 
   return (
-    <Card className={`fixed bottom-20 right-4 w-96 h-[700px] flex flex-col shadow-2xl z-50 border-0 bg-white rounded-xl overflow-hidden transform transition-all duration-300 ease-out ${isOpen ? 'scale-100 opacity-100' : 'scale-95 opacity-0 pointer-events-none'}`}>
+    <Card className={`fixed inset-x-2 bottom-2 sm:bottom-20 sm:right-4 w-auto sm:w-96 h-[calc(100vh-40px)] sm:h-[700px] flex flex-col shadow-2xl z-50 border-0 bg-white rounded-xl overflow-hidden transform transition-all duration-300 ease-out ${isOpen ? 'scale-100 opacity-100' : 'scale-95 opacity-0 pointer-events-none'}`}>
       <CardHeader className="bg-gradient-to-r from-blue-700 to-blue-800 text-white p-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
