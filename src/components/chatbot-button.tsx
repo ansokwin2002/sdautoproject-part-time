@@ -11,7 +11,7 @@ export default function ChatbotButton({ onClick }: { onClick: () => void }) {
       size="icon"
       className={cn(
         'fixed bottom-8 right-5 rounded-full h-12 w-12 transition-opacity duration-300 z-50',
-        'opacity-100' // Always visible for now, can be made conditional later
+        'opacity-100 hidden' // Always visible for now, can be made conditional later
       )}
       onClick={onClick}
     >

@@ -735,7 +735,7 @@ export function ChatbotTrigger() {
   return (
     <>
       <Button
-        className="fixed bottom-4 right-4 md:bottom-6 md:right-6 rounded-full p-4 shadow-lg z-50 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 transition-all duration-300 hover:scale-110 hover:shadow-xl"
+        className="fixed bottom-4 right-4 md:bottom-6 md:right-6 rounded-full p-4 shadow-lg z-50 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 transition-all duration-300 hover:scale-110 hover:shadow-xl hidden"
         onClick={toggleChatbot}
         size="icon"
       >
