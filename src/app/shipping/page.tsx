@@ -178,16 +178,16 @@ export default function ShippingPage() {
             <AnimatedSection delay={100}>
               <div className="bg-white rounded-lg p-8 shadow-lg hover:shadow-xl transition-all duration-300 group text-center flex flex-col min-h-[300px] md:min-h-[500px]">
                 <div className="mb-6">
-                  <div className="w-24 h-24 mx-auto mb-4 flex items-center justify-center">
-                    <svg className="w-20 h-16 text-red-600" viewBox="0 0 100 80" fill="currentColor">
-                      {/* Australia Post Logo Simplified */}
-                      <circle cx="25" cy="40" r="20" />
-                      <rect x="45" y="25" width="30" height="30" rx="5" />
-                      <text x="50" y="35" fontSize="8" fill="white" fontWeight="bold">POST</text>
-                    </svg>
+                  <div className="relative w-48 h-48 mx-auto mb-4 flex items-center justify-center">
+                    <Image
+                      src="/assets/post.jpg"
+                      alt="Australia Post"
+                      fill
+                      className="object-contain"
+                    />
                   </div>
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3">By Ship Autocarparts</h3>
+                <h3 className="text-xl font-bold text-gray-900 mb-3">By Australia Post Express</h3>
                 <p className="text-gray-600 leading-relaxed flex-grow">
                   Reliable shipping through Australia Post network. Perfect for standard delivery across Australia with tracking included.
                 </p>
@@ -198,16 +198,18 @@ export default function ShippingPage() {
             <AnimatedSection delay={200}>
               <div className="bg-white rounded-lg p-8 shadow-lg hover:shadow-xl transition-all duration-300 group text-center flex flex-col min-h-[300px] md:min-h-[500px]">
                 <div className="mb-6">
-                  <div className="w-24 h-24 mx-auto mb-4 flex items-center justify-center">
-                    <svg className="w-16 h-16 text-gray-800" viewBox="0 0 100 100" fill="currentColor">
-                      {/* Airplane icon */}
-                      <path d="M85 45l-25-15V15c0-3-2-5-5-5s-5 2-5 5v15L25 45H10c-3 0-5 2-5 5s2 5 5 5h15l25 15v15c0 3 2 5 5 5s5-2 5-5V70l25-15h15c3 0 5-2 5-5s-2-5-5-5H85z"/>
-                    </svg>
+                  <div className="relative w-48 h-48 mx-auto mb-4 flex items-center justify-center">
+                    <Image
+                      src="/assets/dhl.svg"
+                      alt="DHL Logo"
+                      fill
+                      className=""
+                    />
                   </div>
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3">By Air</h3>
+                <h3 className="text-xl font-bold text-gray-900 mb-3 mt-auto">By DHL Express</h3>
                 <p className="text-gray-600 leading-relaxed flex-grow">
-                  Fast air freight delivery for urgent parts. Get your automotive components delivered quickly when time is critical.
+                  Trusted worldwide shipping with fast delivery times and full tracking.
                 </p>
               </div>
             </AnimatedSection>
@@ -216,20 +218,18 @@ export default function ShippingPage() {
             <AnimatedSection delay={300}>
               <div className="bg-white rounded-lg p-8 shadow-lg hover:shadow-xl transition-all duration-300 group text-center flex flex-col min-h-[300px] md:min-h-[500px]">
                 <div className="mb-6">
-                  <div className="w-24 h-24 mx-auto mb-4 flex items-center justify-center">
-                    <svg className="w-16 h-16 text-gray-800" viewBox="0 0 100 100" fill="currentColor">
-                      {/* Truck icon */}
-                      <rect x="10" y="40" width="50" height="25" rx="3"/>
-                      <rect x="55" y="35" width="25" height="30" rx="3"/>
-                      <circle cx="25" cy="75" r="8"/>
-                      <circle cx="70" cy="75" r="8"/>
-                      <rect x="15" y="45" width="15" height="8" fill="white"/>
-                    </svg>
+                  <div className="relative w-48 h-48 mx-auto mb-4 flex items-center justify-center">
+                    <Image
+                      src="/assets/interparcel.png"
+                      alt="Interparcel Delivery"
+                      fill
+                      className="object-contain"
+                    />
                   </div>
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3">By Land</h3>
+                <h3 className="text-xl font-bold text-gray-900 mb-3">By Interparcel</h3>
                 <p className="text-gray-600 leading-relaxed flex-grow">
-                  Ground transportation for local and interstate deliveries. Cost-effective option for heavy parts and bulk orders.
+                  Flexible and affordable courier services with multiple delivery options and tracking included.
                 </p>
               </div>
             </AnimatedSection>

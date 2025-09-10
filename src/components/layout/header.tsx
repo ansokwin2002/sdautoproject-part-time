@@ -129,7 +129,7 @@ export default function Header() {
                   <Link
                     key={item.href}
                     href={item.href}
-                    className={`block px-4 py-3 text-sm transition-all duration-150 hover:bg-blue-50 hover:text-blue-600 hover:translate-x-1 ${
+                    className={`block px-4 py-3 text-base transition-all duration-150 hover:bg-blue-50 hover:text-blue-600 hover:translate-x-1 ${
                       pathname === item.href ? "text-blue-600 bg-blue-50" : "text-gray-700"
                     }`}
                     style={{
@@ -264,7 +264,7 @@ export default function Header() {
             </div>
 
             {/* Desktop Navigation */}
-            <nav className="hidden md:flex items-center space-x-6 md:space-x-6 lg:space-x-10 text-base md:text-sm">
+            <nav className="hidden md:flex items-center space-x-6 md:space-x-6 lg:space-x-10 text-lg md:text-base">
               {navLinks.map((link) => (
                 <NavLink key={link.href} {...link} />
               ))}
