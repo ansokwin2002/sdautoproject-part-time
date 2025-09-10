@@ -2,18 +2,23 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
 import Image from 'next/image';
-import { X, ChevronLeft, ChevronRight } from 'lucide-react';
+import { X, ChevronLeft, ChevronRight, Play } from 'lucide-react';
 import { AnimatePresence, motion } from 'framer-motion';
 
+interface MediaItem {
+  type: 'image' | 'video';
+  url: string;
+}
+
 interface ImageGalleryModalProps {
-  images: string[];
+  media: MediaItem[];
   initialIndex: number;
   isOpen: boolean;
   onClose: () => void;
 }
 
 const ImageGalleryModal: React.FC<ImageGalleryModalProps> = ({
-  images,
+  media,
   initialIndex,
   isOpen,
   onClose,
@@ -26,15 +31,15 @@ const ImageGalleryModal: React.FC<ImageGalleryModalProps> = ({
 
   const handlePrev = useCallback(() => {
     setCurrentIndex((prevIndex) =>
-      prevIndex === 0 ? images.length - 1 : prevIndex - 1
+      prevIndex === 0 ? media.length - 1 : prevIndex - 1
     );
-  }, [images.length]);
+  }, [media.length]);
 
   const handleNext = useCallback(() => {
     setCurrentIndex((prevIndex) =>
-      prevIndex === images.length - 1 ? 0 : prevIndex + 1
+      prevIndex === media.length - 1 ? 0 : prevIndex + 1
     );
-  }, [images.length]);
+  }, [media.length]);
 
   const handleKeyDown = useCallback(
     (event: KeyboardEvent) => {
@@ -90,7 +95,7 @@ const ImageGalleryModal: React.FC<ImageGalleryModalProps> = ({
           <ChevronRight className="h-12 w-12" />
         </button>
 
-        {/* Image Display */}
+        {/* Media Display */}
         <AnimatePresence initial={false} mode="wait" custom={currentIndex}>
           <motion.div
             key={currentIndex}
@@ -100,35 +105,58 @@ const ImageGalleryModal: React.FC<ImageGalleryModalProps> = ({
             transition={{ duration: 0.3, ease: "easeOut" }}
             className="relative w-full h-full flex items-center justify-center"
           >
-            <Image
-              src={images[currentIndex]}
-              alt={`Product image ${currentIndex + 1}`}
-              fill
-              style={{ objectFit: 'contain' }}
-              className="rounded-lg"
-            />
+            {media[currentIndex].type === 'image' ? (
+              <Image
+                src={media[currentIndex].url}
+                alt={`Product image ${currentIndex + 1}`}
+                fill
+                style={{ objectFit: 'contain' }}
+                className="rounded-lg"
+              />
+            ) : (
+              <>
+                <video
+                  src={media[currentIndex].url}
+                  controls
+                  autoPlay
+                  loop
+                  playsInline
+                  className="w-full h-full object-contain rounded-lg"
+                />
+                {/* Video Overlay */}
+                <div className="absolute top-4 left-4 bg-black/70 text-white px-3 py-1.5 rounded-full text-xs font-semibold">
+                  Video
+                </div>
+              </>
+            )}
           </motion.div>
         </AnimatePresence>
 
-        {/* Image Counter */}
+        {/* Media Counter */}
         <div className="absolute bottom-24 left-1/2 -translate-x-1/2 bg-black/70 text-white px-4 py-2 rounded-full text-sm font-medium">
-          {currentIndex + 1} / {images.length}
+          {currentIndex + 1} / {media.length}
         </div>
 
         {/* Thumbnails */}
         <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 overflow-x-auto p-2 rounded-lg bg-black/70 max-w-full scrollbar-hide">
-          {images.map((image, index) => (
+          {media.map((item, index) => (
             <div
               key={index}
               className={`relative w-16 h-16 flex-shrink-0 cursor-pointer rounded-lg overflow-hidden border-2 ${currentIndex === index ? 'border-blue-500' : 'border-transparent'}`}
               onClick={() => setCurrentIndex(index)}
             >
-              <Image
-                src={image}
-                alt={`Thumbnail ${index + 1}`}
-                fill
-                className="object-cover"
-              />
+              {item.type === 'image' ? (
+                <Image
+                  src={item.url}
+                  alt={`Thumbnail ${index + 1}`}
+                  fill
+                  className="object-cover"
+                />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center bg-gray-800 text-white text-xs">
+                  <Play className="h-8 w-8 text-white" /> {/* Added Play icon */}
+                </div>
+              )}
             </div>
           ))}
         </div>

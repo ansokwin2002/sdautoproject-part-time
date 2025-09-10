@@ -15,6 +15,11 @@ import { useRouter } from "next/navigation";
 import ImageGalleryModal from '@/components/ImageGalleryModal';
 import { cn } from "@/lib/utils";
 
+interface MediaItem {
+  type: 'image' | 'video';
+  url: string;
+}
+
 interface ProductDetailClientProps {
   productId: string;
 }
@@ -26,7 +31,13 @@ export default function ProductDetailClient({ productId }: ProductDetailClientPr
     notFound();
   }
 
-  const [selectedImage, setSelectedImage] = useState<string>(product.images[0] || '');
+  // Construct the media array based on brand and available media
+  const allMedia: MediaItem[] = [
+    ...product.images.map(url => ({ type: 'image', url })),
+    ...(product.brand.toLowerCase().includes('ford') && product.videos ? product.videos.map(url => ({ type: 'video', url })) : [])
+  ];
+
+  const [selectedMedia, setSelectedMedia] = useState<MediaItem>(allMedia[0] || { type: 'image', url: '' });
   const [showMagnifier, setShowMagnifier] = useState(false);
   const [magnifierPosition, setMagnifierPosition] = useState({ x: 0, y: 0 });
   const imageRef = useRef<HTMLDivElement>(null);
@@ -83,19 +94,31 @@ export default function ProductDetailClient({ productId }: ProductDetailClientPr
           {/* Product Images Card */}
           <div className="order-1 h-full">
             <div className="bg-white rounded-xl border border-gray-100 overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 h-full p-6">
-              {/* Mobile: Main Image First */}
+              {/* Mobile: Main Media First */}
               <div className="block md:hidden mb-4">
                 <div
                   ref={imageRef}
                   className="relative w-full aspect-square rounded-xl overflow-hidden shadow-lg group cursor-pointer"
                   onClick={() => setIsModalOpen(true)}
                 >
-                  <Image
-                    src={selectedImage}
-                    alt={product.name}
-                    fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
+                  {selectedMedia.type === 'image' ? (
+                    <Image
+                      src={selectedMedia.url}
+                      alt={product.name}
+                      fill
+                      className="object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                  ) : (
+                    <video
+                      src={selectedMedia.url}
+                      controls={false} // No controls here, only in modal
+                      autoPlay
+                      loop
+                      muted // Mute for autoplay in preview
+                      playsInline
+                      className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-500"
+                    />
+                  )}
                   
                   {/* Overlays */}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
@@ -128,30 +151,36 @@ export default function ProductDetailClient({ productId }: ProductDetailClientPr
               {/* Mobile: Horizontal Scrolling Thumbnails */}
               <div className="block md:hidden">
                 <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-hide">
-                  {product.images.slice(0, 6).map((image, index) => (
+                  {allMedia.slice(0, 6).map((item, index) => (
                     <div
                       key={index}
                       className={cn(
                         "relative w-16 h-16 flex-shrink-0 cursor-pointer rounded-lg overflow-hidden border-2 transition-all duration-200 hover:scale-105",
-                        selectedImage === image ? 'border-blue-500 shadow-md' : 'border-gray-200 hover:border-gray-300'
+                        selectedMedia.url === item.url ? 'border-blue-500 shadow-md' : 'border-gray-200 hover:border-gray-300'
                       )}
-                      onClick={() => setSelectedImage(image)}
+                      onClick={() => setSelectedMedia(item)}
                     >
-                      <Image
-                        src={image}
-                        alt={`Thumbnail ${index + 1}`}
-                        fill
-                        className="object-cover"
-                      />
+                      {item.type === 'image' ? (
+                        <Image
+                          src={item.url}
+                          alt={`Thumbnail ${index + 1}`}
+                          fill
+                          className="object-cover"
+                        />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center bg-gray-800 text-white text-xs">
+                          Video
+                        </div>
+                      )}
                     </div>
                   ))}
-                  {product.images.length > 6 && (
+                  {allMedia.length > 6 && (
                     <div
                       className="relative w-16 h-16 flex-shrink-0 cursor-pointer rounded-lg overflow-hidden border-2 border-gray-300 flex items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200 hover:from-blue-50 hover:to-blue-100 hover:border-blue-300 transition-all duration-200"
                       onClick={() => setIsModalOpen(true)}
                     >
                       <span className="text-xs font-medium text-gray-600 text-center leading-tight">
-                        +{product.images.length - 6}<br/>more
+                        +{allMedia.length - 6}<br/>more
                       </span>
                     </div>
                   )}
@@ -162,23 +191,29 @@ export default function ProductDetailClient({ productId }: ProductDetailClientPr
               <div className="hidden md:flex gap-4 h-[400px]">
                 {/* Thumbnails */}
                 <div className="flex flex-col w-20 h-full">
-                  {product.images.length > 5 ? (
+                  {allMedia.length > 5 ? (
                     <>
-                      {product.images.slice(0, 4).map((image, index) => (
+                      {allMedia.slice(0, 4).map((item, index) => (
                         <div
                           key={index}
                           className={cn(
                             "relative w-20 h-[75px] cursor-pointer rounded-lg overflow-hidden border-2 mb-2 transition-all duration-200 hover:scale-105 group",
-                            selectedImage === image ? 'border-blue-500 shadow-md' : 'border-transparent hover:border-gray-300'
+                            selectedMedia.url === item.url ? 'border-blue-500 shadow-md' : 'border-transparent hover:border-gray-300'
                           )}
-                          onClick={() => setSelectedImage(image)}
+                          onClick={() => setSelectedMedia(item)}
                         >
-                          <Image
-                            src={image}
-                            alt={`Product thumbnail ${index + 1}`}
-                            fill
-                            className="object-cover group-hover:scale-110 transition-transform duration-300"
-                          />
+                          {item.type === 'image' ? (
+                            <Image
+                              src={item.url}
+                              alt={`Product thumbnail ${index + 1}`}
+                              fill
+                              className="object-cover group-hover:scale-110 transition-transform duration-300"
+                            />
+                          ) : (
+                            <div className="w-full h-full flex items-center justify-center bg-gray-800 text-white text-xs">
+                              Video
+                            </div>
+                          )}
                         </div>
                       ))}
                       <div
@@ -186,33 +221,39 @@ export default function ProductDetailClient({ productId }: ProductDetailClientPr
                         onClick={() => setIsModalOpen(true)}
                       >
                         <span className="text-xs font-medium text-gray-600 text-center group-hover:text-blue-600 transition-colors duration-200">
-                          +{product.images.length - 4}
+                          +{allMedia.length - 4}
                         </span>
                       </div>
                     </>
                   ) : (
-                    product.images.map((image, index) => (
+                    allMedia.map((item, index) => (
                       <div
                         key={index}
                         className={cn(
                           "relative w-20 flex-1 cursor-pointer rounded-lg overflow-hidden border-2 transition-all duration-200 hover:scale-105 group",
-                          selectedImage === image ? 'border-blue-500 shadow-md' : 'border-transparent hover:border-gray-300',
-                          index < product.images.length - 1 ? 'mb-2' : ''
+                          selectedMedia.url === item.url ? 'border-blue-500 shadow-md' : 'border-transparent hover:border-gray-300',
+                          index < allMedia.length - 1 ? 'mb-2' : ''
                         )}
-                        onClick={() => setSelectedImage(image)}
+                        onClick={() => setSelectedMedia(item)}
                       >
-                        <Image
-                          src={image}
-                          alt={`Product thumbnail ${index + 1}`}
-                          fill
-                          className="object-cover group-hover:scale-110 transition-transform duration-300"
-                        />
+                        {item.type === 'image' ? (
+                          <Image
+                            src={item.url}
+                            alt={`Product thumbnail ${index + 1}`}
+                            fill
+                            className="object-cover group-hover:scale-110 transition-transform duration-300"
+                          />
+                        ) : (
+                          <div className="w-full h-full flex items-center justify-center bg-gray-800 text-white text-xs">
+                            Video
+                          </div>
+                        )}
                       </div>
                     ))
                   )}
                 </div>
 
-                {/* Main Image */}
+                {/* Main Media */}
                 <div className="flex-1 h-full">
                   <div
                     ref={imageRef}
@@ -221,12 +262,24 @@ export default function ProductDetailClient({ productId }: ProductDetailClientPr
                     onMouseEnter={handleMouseEnter}
                     onMouseLeave={handleMouseLeave}
                   >
-                    <Image
-                      src={selectedImage}
-                      alt={product.name}
-                      fill
-                      className="object-cover group-hover:scale-105 transition-transform duration-500"
-                    />
+                    {selectedMedia.type === 'image' ? (
+                      <Image
+                        src={selectedMedia.url}
+                        alt={product.name}
+                        fill
+                        className="object-cover group-hover:scale-105 transition-transform duration-500"
+                      />
+                    ) : (
+                      <video
+                        src={selectedMedia.url}
+                        controls={false} // No controls here, only in modal
+                        autoPlay
+                        loop
+                        muted // Mute for autoplay in preview
+                        playsInline
+                        className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-500"
+                      />
+                    )}
                     
                     {/* Overlays */}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
@@ -247,7 +300,7 @@ export default function ProductDetailClient({ productId }: ProductDetailClientPr
                     )}
 
                     {/* Magnifier indicator */}
-                    {showMagnifier && (
+                    {showMagnifier && selectedMedia.type === 'image' && ( // Only show magnifier for images
                       <div
                         className="absolute w-16 h-16 border-2 border-blue-500 bg-blue-500/20 pointer-events-none rounded-full"
                         style={{
@@ -265,12 +318,12 @@ export default function ProductDetailClient({ productId }: ProductDetailClientPr
           {/* Product Details Card */}
           <div className="order-2 relative h-full">
             {/* Desktop Magnifier Overlay */}
-            {showMagnifier && (
+            {showMagnifier && selectedMedia.type === 'image' && ( // Only show magnifier for images
               <div className="hidden lg:block absolute inset-0 z-50 rounded-xl overflow-hidden bg-white shadow-2xl border-2 border-blue-200">
                 <div
                   className="w-full h-full bg-no-repeat"
                   style={{
-                    backgroundImage: `url(${selectedImage})`,
+                    backgroundImage: `url(${selectedMedia.url})`,
                     backgroundSize: '300%',
                     backgroundPosition: `${magnifierPosition.x}% ${magnifierPosition.y}%`,
                   }}
@@ -417,8 +470,8 @@ export default function ProductDetailClient({ productId }: ProductDetailClientPr
       {/* Image Gallery Modal */}
       {product && (
         <ImageGalleryModal
-          images={product.images}
-          initialIndex={product.images.indexOf(selectedImage) !== -1 ? product.images.indexOf(selectedImage) : 0}
+          media={allMedia}
+          initialIndex={allMedia.findIndex(item => item.url === selectedMedia.url)}
           isOpen={isModalOpen}
           onClose={() => setIsModalOpen(false)}
         />

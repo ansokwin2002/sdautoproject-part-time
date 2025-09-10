@@ -5,6 +5,7 @@ export interface Product {
   price: number;
   originalPrice?: number;
   images: string[];
+  videos?: string[]; // Added this line
   brand: string;
   code: string;
   tag: string;
@@ -119,6 +120,9 @@ export const products: Product[] = [
       "https://picsum.photos/seed/F0001_6/400/400",
       "https://picsum.photos/seed/F0001_7/400/400",
       "https://picsum.photos/seed/F0001_8/400/400"
+    ],
+    videos: [ // Added sample video
+      "https://www.w3schools.com/html/mov_bbb.mp4"
     ],
     brand: "Ford Parts",
     code: "FORD RANGER 18-22",
@@ -697,6 +701,11 @@ export const products: Product[] = [
       "https://picsum.photos/seed/F001_NEW_6/400/400",
       "https://picsum.photos/seed/F001_NEW_7/400/400",
       "https://picsum.photos/seed/F001_NEW_8/400/400"
+    ],
+    videos: [ // Added sample videos
+      "https://www.w3schools.com/html/mov_bbb.mp4",
+      "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+      "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4"
     ],
     brand: "Ford Parts",
     code: "F_GENERIC_1",
