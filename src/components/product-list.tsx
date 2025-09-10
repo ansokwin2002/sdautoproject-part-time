@@ -90,7 +90,9 @@ export default function ProductList({ products: initialProducts, showContainer =
     let filtered = productSource.filter(product =>
       (selectedBrand === 'all' || product.brand.toLowerCase() === selectedBrand.toLowerCase()) &&
       (product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-       product.description.toLowerCase().includes(searchTerm.toLowerCase()))
+       product.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+       product.brand.toLowerCase().includes(searchTerm.toLowerCase()) ||
+       (product.partNumber && product.partNumber.toLowerCase().includes(searchTerm.toLowerCase())))
     );
 
     const [sortBy, order] = sortOrder.split('-');

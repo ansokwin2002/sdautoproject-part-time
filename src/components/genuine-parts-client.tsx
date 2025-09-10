@@ -9,7 +9,7 @@ import { useSearchParams, useRouter } from 'next/navigation'; // Import useRoute
 import Image from 'next/image';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { ChevronLeft, ChevronRight } from 'lucide-react'; // Added ChevronLeft, ChevronRight
+
 
 export default function GenuinePartsClient() {
   const searchParams = useSearchParams();
@@ -38,36 +38,7 @@ export default function GenuinePartsClient() {
 
   const [selectedBrand, setSelectedBrand] = useState<string | null>(initialBrand);
   const [loading, setLoading] = useState(true);
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [visibleCards, setVisibleCards] = useState(7); // New state for responsive cards per view
-
-  useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth < 640) { // sm breakpoint
-        setVisibleCards(2);
-      } else if (window.innerWidth < 768) { // md breakpoint
-        setVisibleCards(3);
-      } else if (window.innerWidth < 1024) { // lg breakpoint
-        setVisibleCards(4);
-      } else if (window.innerWidth < 1280) { // xl breakpoint
-        setVisibleCards(5);
-      } else {
-        setVisibleCards(7);
-      }
-    };
-
-    handleResize(); // Set initial value
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
-  const handlePrev = useCallback(() => {
-    setCurrentIndex(prevIndex => Math.max(prevIndex - 1, 0));
-  }, []);
-
-  const handleNext = useCallback(() => {
-    setCurrentIndex(prevIndex => Math.min(prevIndex + 1, uniqueBrands.length - visibleCards)); // Use visibleCards
-  }, [uniqueBrands, visibleCards]);
+  
 
   useEffect(() => {
     setSelectedBrand(initialBrand);
@@ -97,7 +68,7 @@ export default function GenuinePartsClient() {
     "Nissan Parts": "https://logos-world.net/wp-content/uploads/2021/03/Nissan-Logo.png",
     "Honda Parts": "https://logos-world.net/wp-content/uploads/2021/03/Honda-Logo.png",
     "Suzuki Parts": "https://logos-world.net/wp-content/uploads/2021/03/Suzuki-Logo.png",
-    "Aftermarket": "https://via.placeholder.com/48?text=AM", // Placeholder for Aftermarket
+    "Aftermarket": "data:image/svg+xml;charset=UTF-8,%3csvg width='150' height='150' viewBox='0 0 150 150' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='150' height='150' fill='%23ccc'/%3e%3ctext x='50%25' y='50%25' font-family='Arial' font-size='40' fill='%23333' text-anchor='middle' dominant-baseline='middle'%3eAM%3c/text%3e%3c/svg%3e", // Placeholder for Aftermarket
   };
 
   const handleBrandClick = (brand: string | null) => {
@@ -112,83 +83,58 @@ export default function GenuinePartsClient() {
     <div className="container mx-auto py-8">
       <h1 className="text-4xl font-bold text-center mb-8 mt-16 md:mt-0">{viewParam === 'aftermarket' ? "Aftermarket Parts and Accessories" : "Genuine Parts and Accessories"}</h1>
 
-      {/* Brand Selection Slider */}
-      <div className="relative w-full overflow-hidden mb-8 py-4 pr-24"> {/* Increased pr-12 to pr-24 */}
-        <div
-          className="flex transition-transform duration-500 ease-in-out gap-2"
-          style={{ transform: `translateX(-${currentIndex * (100 / visibleCards)}%)` }} // Use visibleCards
-        >
-          {loading ? (
-            Array.from({ length: 8 }).map((_, index) => (
-              <div key={index} className="flex-none flex flex-col items-center ml-6" style={{ width: `calc(100% / ${visibleCards})` }}> {/* Use visibleCards */}
-                <Skeleton className="w-20 h-20 rounded-full mb-2" />
-                <Skeleton className="w-24 h-4" />
-              </div>
-            ))
-          ) : (
-            <>
-              {/* All Brands Button */}
-              <div className="flex-none flex flex-col items-center ml-6" style={{ width: `calc(100% / ${visibleCards})` }}> {/* Use visibleCards */}
+      {/* Brand Selection Grid */}
+      <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-4 mb-8 py-4">
+        {loading ? (
+          Array.from({ length: 8 }).map((_, index) => (
+            <div key={index} className="flex flex-col items-center">
+              <Skeleton className="w-20 h-20 rounded-full mb-2" />
+              <Skeleton className="w-24 h-4" />
+            </div>
+          ))
+        ) : (
+          <>
+            {/* All Brands Button */}
+            <div className="flex flex-col items-center">
+              <Button
+                variant={selectedBrand === null ? 'default' : 'outline'}
+                onClick={() => handleBrandClick(null)}
+                className="w-24 h-24 sm:w-28 sm:h-28 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-lg p-2 mb-2"
+              >
+                <span className="text-sm font-medium">All</span>
+              </Button>
+              <span className="text-sm text-center font-medium">All Brands</span>
+            </div>
+
+            {/* Brand Buttons */}
+            {uniqueBrands.map(brand => (
+              <div key={brand} className="flex flex-col items-center">
                 <Button
-                  variant={selectedBrand === null ? 'default' : 'outline'}
-                  onClick={() => handleBrandClick(null)}
-                  className="w-20 h-20 rounded-full p-2 mb-2"
+                  variant={selectedBrand === brand ? 'default' : 'outline'}
+                  onClick={() => handleBrandClick(brand)}
+                  className="w-24 h-24 sm:w-28 sm:h-28 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-lg p-2 mb-2 hover:scale-105 transition-transform"
                 >
-                  <span className="text-sm font-medium">All</span>
+                  {brandLogos[brand] ? (
+                    <Image
+                      src={brandLogos[brand]}
+                      alt={`${brand} Logo`}
+                      width={152}
+                      height={152}
+                      className="object-contain max-w-full max-h-full"
+                    />
+                  ) : (
+                    <span className="text-xs font-bold text-center">
+                      {brand.replace(' Parts', '').substring(0, 4)}
+                    </span>
+                  )}
                 </Button>
-                <span className="text-sm text-center font-medium">All Brands</span>
+                <span className="text-sm text-center font-medium">
+                  {brand.replace(' Parts', '')}
+                </span>
               </div>
-
-              {/* Brand Buttons */}
-              {uniqueBrands.map(brand => (
-                <div key={brand} className="flex-none flex flex-col items-center" style={{ width: `calc(100% / ${visibleCards})` }}> {/* Use visibleCards */}
-                  <Button
-                    variant={selectedBrand === brand ? 'default' : 'outline'}
-                    onClick={() => handleBrandClick(brand)}
-                    className="w-20 h-20 rounded-full p-2 mb-2 hover:scale-105 transition-transform"
-                  >
-                    {brandLogos[brand] ? (
-                      <Image
-                        src={brandLogos[brand]}
-                        alt={`${brand} Logo`}
-                        width={48}
-                        height={48}
-                        className="object-contain"
-                      />
-                    ) : (
-                      <span className="text-xs font-bold text-center">
-                        {brand.replace(' Parts', '').substring(0, 4)}
-                      </span>
-                    )}
-                  </Button>
-                  <span className="text-sm text-center font-medium">
-                    {visibleCards <= 3 ? brand.replace(' Parts', '').split(' ')[0] : brand.replace(' Parts', '')}
-                  </span>
-                </div>
-              ))}
-            </>
-          )}
-        </div>
-
-        {/* Navigation Buttons */}
-        <Button
-          variant="outline"
-          size="icon"
-          className="absolute left-0 top-1/2 -translate-y-1/2"
-          onClick={handlePrev}
-          disabled={currentIndex === 0}
-        >
-          <ChevronLeft className="h-4 w-4" />
-        </Button>
-        <Button
-          variant="outline"
-          size="icon"
-          className="absolute right-0 top-1/2 -translate-y-1/2"
-          onClick={handleNext}
-          disabled={currentIndex >= uniqueBrands.length - visibleCards}
-        >
-          <ChevronRight className="h-4 w-4" />
-        </Button>
+            ))}
+          </>
+        )}
       </div>
 
       <ProductList products={filteredProducts} showContainer={false} selectedBrand={selectedBrand} allowedBrands={allowedBrands} />

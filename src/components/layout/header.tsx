@@ -214,7 +214,7 @@ export default function Header() {
             <div className="flex flex-col lg:flex-row justify-between items-center py-3 text-sm text-gray-600">
               <div className="flex items-center space-x-2 mb-1 lg:mb-0">
                 <MapPin className="h-4 w-4 text-blue-600 flex-shrink-0" />
-                <span className="min-w-0 text-xs sm:text-sm break-words">SD AUTO PART 87 Kookaburra Avenue Werribee, Victoria 3030 Australia</span>
+                <span className="min-w-0 text-xs sm:text-sm break-words">SD AUTO PART Werribee, Victoria 3030 Australia</span>
               </div>
               <div className="flex flex-col sm:flex-row items-center space-x-0 sm:space-x-2 md:space-x-4 lg:space-x-6">
                 <div className="flex items-center space-x-1">
@@ -256,15 +256,15 @@ export default function Header() {
                     <span className="text-white font-bold text-xl italic">SD</span>
                   </div>
                 </div>
-                <div className="hidden sm:block">
+                <div className="hidden lg:block">
                   <div className="text-2xl font-bold text-gray-800">SD AUTO</div>
-                  <div className="text-sm text-gray-500 -mt-1">AUTOMOTIVE PARTS</div>
+                  <div className="text-sm text-gray-500 -mt-1">Parts and Accessories</div>
                 </div>
               </Link>
             </div>
 
             {/* Desktop Navigation */}
-            <nav className="hidden md:flex items-center space-x-6 md:space-x-6 lg:space-x-10 text-base md:text-base">
+            <nav className="hidden md:flex items-center space-x-6 md:space-x-6 lg:space-x-10 text-base md:text-sm">
               {navLinks.map((link) => (
                 <NavLink key={link.href} {...link} />
               ))}
@@ -302,7 +302,7 @@ export default function Header() {
                       </div>
                       <div>
                         <div className="text-xl font-bold text-gray-800">SD AUTO</div>
-                        <div className="text-xs text-gray-500 -mt-1">AUTOMOTIVE PARTS</div>
+                        <div className="text-xs text-gray-500 -mt-1">Parts and Accessories</div>
                       </div>
                     </div>
                     
@@ -368,7 +368,7 @@ export default function Header() {
                       <div className="space-y-3 text-sm text-gray-600">
                         <div className="flex items-center space-x-2">
                           <MapPin className="h-4 w-4 text-blue-600 flex-shrink-0" />
-                          <span className="min-w-0 text-xs">SD AUTO PART 87 Kookaburra Avenue Werribee, Victoria 3030 Australia</span>
+                          <span className="min-w-0 text-xs">SD AUTO PART Werribee, Victoria 3030 Australia</span>
                         </div>
                         <div className="flex items-center space-x-2">
                           <Mail className="h-4 w-4 text-blue-600 flex-shrink-0" />

@@ -45,7 +45,7 @@ const ProductCard = ({ product, className, loading }: ProductCardProps) => {
         {/* Tag */}
         <div className="absolute top-4 left-4">
           <span className="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-3 py-1.5 text-xs font-semibold rounded-full shadow-lg backdrop-blur-sm">
-            {product.tag}
+            {product.tag.replace(' Parts', '')}
           </span>
         </div>
 
@@ -84,7 +84,7 @@ const ProductCard = ({ product, className, loading }: ProductCardProps) => {
           <div className="flex items-center text-sm text-gray-600">
             <Package size={16} className="mr-2 text-gray-400" />
             <span className="font-medium text-gray-800">Brand:</span>
-            <span className="ml-2">{product.brand}</span>
+            <span className="ml-2">{product.brand.replace(' Parts', '')}</span>
           </div>
 
           {product.partNumber && (

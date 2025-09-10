@@ -148,7 +148,7 @@ export default function ContactPage() {
     vehicleMakeModel: '',
     vehicleYear: '',
     engineCapacity: '',
-    partsRequired: ''
+    message: ''
   });
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -166,8 +166,8 @@ export default function ContactPage() {
       newErrors.email = 'Please enter a valid email address.';
     }
     
-    if (formData.partsRequired.length < 10) {
-      newErrors.partsRequired = 'Parts information must be at least 10 characters.';
+    if (formData.message.length < 10) {
+      newErrors.message = 'Message must be at least 10 characters.';
     }
     
     return newErrors;
@@ -224,7 +224,7 @@ export default function ContactPage() {
           vehicleMakeModel: '',
           vehicleYear: '',
           engineCapacity: '',
-          partsRequired: ''
+          message: ''
         });
         setErrors({});
       } else {
@@ -269,9 +269,9 @@ export default function ContactPage() {
         <AnimatedCard delay={300}>
           <Card className="shadow-lg mx-auto">
             <CardHeader className="text-center">
-              <CardTitle className="text-2xl">Product Inquiry Form</CardTitle>
+              <CardTitle className="text-2xl">Email Enquiry Form</CardTitle>
               <CardDescription className="text-base">
-                Provide your details and we'll get back to you shortly.
+                Please complete this form to send us your enquiry.
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -391,17 +391,17 @@ export default function ContactPage() {
                 
                 <div>
                   <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                    Parts Required / Other Information *
+                    Message *
                   </label>
                   <Textarea
-                    placeholder="Please describe the parts you need, including part numbers if available..."
-                    className={`min-h-[150px] ${errors.partsRequired ? 'border-red-500' : ''}`}
-                    value={formData.partsRequired}
-                    onChange={(e) => handleInputChange('partsRequired', e.target.value)}
+                    placeholder="Your message..."
+                    className={`min-h-[150px] ${errors.message ? 'border-red-500' : ''}`}
+                    value={formData.message}
+                    onChange={(e) => handleInputChange('message', e.target.value)}
                     disabled={isSubmitting}
                   />
-                  {errors.partsRequired && (
-                    <p className="text-sm font-medium text-red-500 mt-1">{errors.partsRequired}</p>
+                  {errors.message && (
+                    <p className="text-sm font-medium text-red-500 mt-1">{errors.message}</p>
                   )}
                 </div>
                 
@@ -446,7 +446,6 @@ export default function ContactPage() {
                   <div className="flex-grow flex items-center justify-center">
                     <p className="text-sm text-muted-foreground leading-relaxed">
                       SD AUTO PART<br />
-                      87 Kookaburra Avenue<br />
                       Werribee, Victoria 3030<br />
                       Australia
                     </p>
@@ -523,7 +522,7 @@ export default function ContactPage() {
             <Card className="shadow-lg overflow-hidden">
               <div className="relative w-full h-[500px]">
                 <iframe
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3149.0000000000005!2d144.6796815!3d-37.8847459!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6ad685f5ea485f2b%3A0x5bafe966a5c282c2!2s87%20Kookaburra%20Ave%2C%20Werribee%20VIC%203030%2C%20Australia!5e0!3m2!1sen!2sus!4v1700000000000!5m2!1sen!2sus"
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4227500.000000001!2d133.775136!3d-25.274398!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2b2bfd076787c5df%3A0x538267a1955b1352!2sAustralia!5e0!3m2!1sen!2sus!4v1678886400000!5m2!1sen!2sus"
                   width="100%"
                   height="100%"
                   style={{ border: 0 }}

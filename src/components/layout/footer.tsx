@@ -48,7 +48,7 @@ export default function Footer() {
           <div>
             <h3 className="font-semibold mb-4">Contact Us</h3>
             <ul className="space-y-2 text-sm text-muted-foreground">
-              <li>SD AUTO PART 87 Kookaburra Avenue Werribee, Victoria 3030 Australia</li>
+              <li>SD AUTO PART Werribee, Victoria 3030 Australia</li>
               <li>+61 460 786 533</li>
               <li>sdautoaustralia@gmail.com</li>
             </ul>
