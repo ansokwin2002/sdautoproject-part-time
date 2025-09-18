@@ -124,9 +124,9 @@ export default function ShippingPage() {
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <AnimatedSection className="relative h-full order-2 md:order-1" delay={200}>
               <Image 
-                src="https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80" 
-                alt="Modern Ford truck on desert road" 
-                data-ai-hint="Ford truck automotive desert road"
+                src="https://images.unsplash.com/photo-1587293852726-70cdb56c2866?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80" 
+                alt="Modern warehouse with organized shipping boxes and logistics operations" 
+                data-ai-hint="Warehouse shipping logistics boxes storage"
                 fill 
                 className="object-cover rounded-lg shadow-xl"
               />
@@ -140,8 +140,13 @@ export default function ShippingPage() {
                 </AnimatedSection>
                 <AnimatedSection delay={200}>
                   <p className="text-gray-600 text-lg leading-relaxed mb-8">
-                    Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit. Aliqu diam amet diam et eos. Clita erat ipsum et lorem et sit, sed stet lorem sit clita duo justo magna dolore erat amet Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit. Aliqu diam amet diam et eos. Clita erat ipsum et lorem et sit, sed stet lorem sit clita duo justo magna dolore erat amet
-                    Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit. Aliqu diam amet diam et eos. Clita erat ipsum et lorem et sit, sed stet lorem sit clita duo justo magna dolore erat amet Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit. Aliqu diam amet diam et eos. Clita erat ipsum et lorem et sit, sed stet lorem sit clita duo justo magna dolore erat amet
+                    Our company offers a wide range of delivery options to meet urgent needs while ensuring competitive pricing.
+                    <br /><br />
+                    <strong>For customers within Australia:</strong> Upon receiving an order, we promptly begin the packaging process to ensure the safety of the goods during transit. We dispatch all shipments from our store in Melbourne via Australia Post to the address provided in the order. Orders received before 1 PM will be processed and shipped on the same day. For orders placed after 1 PM, shipments will be dispatched the following business day, excluding weekends (Saturday and Sunday).
+                    <br /><br />
+                    <strong>For international customers:</strong> For those residing in certain Asian countries near Cambodia, we dispatch goods from our store in Phnom Penh via EMS service or, in cases of urgency, via DHL. For customers in more distant regions, shipments will be sent from our Melbourne store via Australia Post, or, for urgent deliveries, via DHL.
+                    <br /><br />
+                    <strong>Stock Availability:</strong> 95% of the products we offer are readily available in our store. For a small number of specialized items, we require 3 to 5 days to prepare the order before dispatch. In such cases, customers will be notified immediately after order receipt. Customers may cancel their orders at any time and receive a full refund if they are unable to wait.
                   </p>
                 </AnimatedSection>
                 <AnimatedSection delay={300}>

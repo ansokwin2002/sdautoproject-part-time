@@ -25,7 +25,7 @@ export const getNavLinks = () => {
         { href: "/genuine-parts?brand=Nissan", label: "Nissan Genuine Parts" },
         { href: "/genuine-parts?brand=Honda", label: "Honda Genuine Parts" },
         { href: "/genuine-parts?brand=Suzuki", label: "Suzuki Genuine Parts" },
-        { href: "/genuine-parts?view=aftermarket", label: "Aftermarket Parts" },
+        { href: "/genuine-parts?view=aftermarket", label: "Aftermarket Accessories" },
       ],
     },
     { href: "/", label: "Home" },
