@@ -1,3 +1,5 @@
+'use client';
+
 import Link from 'next/link';
 import { Facebook, Send } from 'lucide-react';
 import TikTokIcon from '@/components/icons/tiktok';
@@ -8,8 +10,15 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { useEffect, useState } from 'react';
 
 export default function Footer() {
+  const [currentYear, setCurrentYear] = useState(2024);
+  
+  useEffect(() => {
+    setCurrentYear(new Date().getFullYear());
+  }, []);
+  
   const navLinks = [
     { href: "/genuine-parts", label: "Genuines Parts and Accessories" },
     { href: "/home", label: "Home" },
@@ -26,10 +35,10 @@ export default function Footer() {
           <div className="flex flex-col">
             <Link href="/" className="flex items-center space-x-2 mb-4">
               <Logo className="h-8 w-8 text-primary" />
-              <span className="font-bold text-lg">SD AutoCar</span>
+              <span className="font-bold text-lg">SD Auto</span>
             </Link>
             <p className="text-muted-foreground text-sm">
-              Your trusted partner in automotive care and excellence.
+              15 years of expertise in quality auto parts sourcing from Thailand, UK, and America.
             </p>
              <div className="flex space-x-4 mt-4">
               <Link href="/contact" aria-label="Facebook" className="text-muted-foreground hover:text-primary"><Facebook className="h-5 w-5" /></Link>
@@ -48,7 +57,7 @@ export default function Footer() {
           <div>
             <h3 className="font-semibold mb-4">Contact Us</h3>
             <ul className="space-y-2 text-sm text-muted-foreground">
-              <li>SD AUTO PART Werribee, Victoria 3030 Australia</li>
+              <li>SD AUTO Werribee, Victoria 3030 Australia</li>
               <li>+61 460 786 533</li>
               <li>sdautoaustralia@gmail.com</li>
             </ul>
@@ -63,7 +72,7 @@ export default function Footer() {
           </div>
         </div>
         <div className="mt-8 border-t border-border pt-8 text-center text-sm text-muted-foreground">
-          <p>&copy; {new Date().getFullYear()} SD AutoCar Showcase. All Rights Reserved. | Developed by An Sokwin</p>
+          <p>&copy; {currentYear} SD Auto Showcase. All Rights Reserved. | Developed by <Link href="https://ansokwin.reancode.online" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 hover:underline transition-colors duration-200">An Sokwin</Link></p>
         </div>
       </div>
     </footer>

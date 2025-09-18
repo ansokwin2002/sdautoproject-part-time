@@ -47,50 +47,72 @@ const useIntersectionObserver = (options = {}) => {
 };
 
 const heroSlides = [
+  // Ford Ranger Brand Card
   {
     id: 1,
-    image: "https://images.unsplash.com/photo-1584345604476-8ec5e12e42dd?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80",
-    title: "Excellence in Every Detail",
-    subtitle: "SD AutoCar offers premium automotive services, from routine maintenance to full-scale restorations.",
+    image: "https://weudealerimagesprd.blob.core.windows.net/za3024/news/FordRangerGroup_046.jpg",
+    title: "Ford Ranger Next Gen (Ford)",
+    subtitle: "Experience the all-new Ford Ranger with advanced technology, superior performance, and legendary Ford toughness.",
     primaryButton: {
-      text: "Our Services",
-      href: "/services"
+      text: "View Ford Ranger",
+      href: "/ford-ranger"
     },
     secondaryButton: {
-      text: "Book Now",
+      text: "Book Test Drive",
       href: "/contact"
     },
-    aiHint: "Ford Mustang sports car automotive"
+    aiHint: "Ford Ranger next generation pickup truck"
   },
+  
+  // Isuzu D-Max Brand Card
   {
     id: 2,
-    image: "https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80",
-    title: "Genuine Parts & Expert Care",
-    subtitle: "Only the finest genuine parts combined with decades of automotive expertise to keep your vehicle running perfectly.",
+    image: "https://www.topgear.com/sites/default/files/2025/05/01.%20Isuzu%20D-MAX%20V-Cross%20001.jpg",
+    title: "Isuzu D-Max (Isuzu)",
+    subtitle: "The legendary Isuzu D-Max delivers unmatched durability, reliability, and performance for work and adventure.",
     primaryButton: {
-      text: "Browse Parts",
-      href: "/genuine-parts"
+      text: "View D-Max",
+      href: "/isuzu-dmax"
+    },
+    secondaryButton: {
+      text: "Get Quote",
+      href: "/quote"
+    },
+    aiHint: "Isuzu D-Max pickup truck"
+  },
+  
+  // Nissan Navara Brand Card
+  {
+    id: 3,
+    image: "https://media.ed.edmunds-media.com/nissan/z/2025/oem/2025_nissan_z_coupe_nismo_fq_oem_1_1600.jpg",
+    title: "Nissan Navara (Nissan)",
+    subtitle: "The Nissan Navara combines intelligent design with rugged capability for the modern pickup truck experience.",
+    primaryButton: {
+      text: "View Navara",
+      href: "/nissan-navara"
     },
     secondaryButton: {
       text: "Learn More",
       href: "/about"
     },
-    aiHint: "Mazda CX-5 SUV automotive"
+    aiHint: "Nissan Navara pickup truck"
   },
+  
+  // Mitsubishi Triton Brand Card
   {
-    id: 3,
-    image: "https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80",
-    title: "Fast & Reliable Shipping",
-    subtitle: "Get your genuine auto parts delivered quickly with our nationwide shipping network. Quality parts, delivered on time.",
+    id: 4,
+    image: "https://smartcdn.gprod.postmedia.digital/driving/wp-content/uploads/2023/07/Mitsubishi-Triton-2-e1690572030982.jpg",
+    title: "Mitsubishi Triton (Mitsubishi)",
+    subtitle: "The Mitsubishi Triton delivers exceptional off-road performance and everyday versatility with proven reliability.",
     primaryButton: {
-      text: "Shipping Info",
-      href: "/shipping"
+      text: "View Triton",
+      href: "/mitsubishi-triton"
     },
     secondaryButton: {
-      text: "Contact Us",
-      href: "/contact"
+      text: "Service Center",
+      href: "/service"
     },
-    aiHint: "Toyota Camry sedan automotive"
+    aiHint: "Mitsubishi Triton pickup truck"
   }
 ];
 
@@ -411,9 +433,9 @@ export default function Home() {
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <AnimatedSection className="relative h-full order-2 md:order-1" delay={200}>
               <Image 
-                src="https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80" 
-                alt="Modern Ford truck on desert road" 
-                data-ai-hint="Ford truck automotive desert road"
+                src="https://images.unsplash.com/photo-1486496572940-2bb2341fdbdf?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80" 
+                alt="Auto parts and automotive service" 
+                data-ai-hint="auto parts automotive service garage"
                 fill 
                 className="object-cover rounded-lg shadow-xl"
               />
@@ -461,12 +483,12 @@ export default function Home() {
             
           </AnimatedSection>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 max-w-6xl mx-auto items-stretch">
             {/* By Ship - Australia Post */}
             <AnimatedSection delay={100}>
-              <div className="bg-white rounded-lg p-8 shadow-lg hover:shadow-xl transition-all duration-300 group text-center flex flex-col min-h-[300px] md:min-h-[500px]">
-                <div className="mb-6">
-                  <div className="relative w-48 h-48 mx-auto mb-4 flex items-center justify-center">
+              <div className="bg-white rounded-lg p-4 md:p-6 lg:p-8 shadow-lg hover:shadow-xl transition-all duration-300 group text-center flex flex-col h-full">
+                <div className="mb-4 md:mb-6">
+                  <div className="relative w-32 h-32 md:w-40 md:h-40 lg:w-48 lg:h-48 mx-auto mb-3 md:mb-4 flex items-center justify-center">
                     <Image
                       src="/assets/post.jpg"
                       alt="Australia Post"
@@ -475,8 +497,8 @@ export default function Home() {
                     />
                   </div>
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3">By Australia Post Express</h3>
-                <p className="text-gray-600 leading-relaxed flex-grow">
+                <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-2 md:mb-3">By Australia Post Express</h3>
+                <p className="text-sm md:text-base text-gray-600 leading-relaxed flex-grow">
                   Reliable shipping through Australia Post network. Perfect for standard delivery across Australia with tracking included.
                 </p>
               </div>
@@ -484,19 +506,19 @@ export default function Home() {
 
             {/* By Air */}
             <AnimatedSection delay={200}>
-              <div className="bg-white rounded-lg p-8 shadow-lg hover:shadow-xl transition-all duration-300 group text-center flex flex-col min-h-[300px] md:min-h-[500px]">
-                <div className="mb-6">
-                  <div className="relative w-48 h-48 mx-auto mb-4 flex items-center justify-center">
+              <div className="bg-white rounded-lg p-4 md:p-6 lg:p-8 shadow-lg hover:shadow-xl transition-all duration-300 group text-center flex flex-col h-full">
+                <div className="mb-4 md:mb-6">
+                  <div className="relative w-32 h-32 md:w-40 md:h-40 lg:w-48 lg:h-48 mx-auto mb-3 md:mb-4 flex items-center justify-center">
                     <Image
                       src="/assets/dhl.svg"
                       alt="DHL Logo"
                       fill
-                      className=""
+                      className="object-contain"
                     />
                   </div>
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3 mt-auto">By DHL Express</h3>
-                <p className="text-gray-600 leading-relaxed flex-grow">
+                <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-2 md:mb-3">By DHL Express</h3>
+                <p className="text-sm md:text-base text-gray-600 leading-relaxed flex-grow">
                   Trusted worldwide shipping with fast delivery times and full tracking.
                 </p>
               </div>
@@ -504,9 +526,9 @@ export default function Home() {
 
             {/* By Land */}
             <AnimatedSection delay={300}>
-              <div className="bg-white rounded-lg p-8 shadow-lg hover:shadow-xl transition-all duration-300 group text-center flex flex-col min-h-[300px] md:min-h-[500px]">
-                <div className="mb-6">
-                  <div className="relative w-48 h-48 mx-auto mb-4 flex items-center justify-center">
+              <div className="bg-white rounded-lg p-4 md:p-6 lg:p-8 shadow-lg hover:shadow-xl transition-all duration-300 group text-center flex flex-col h-full">
+                <div className="mb-4 md:mb-6">
+                  <div className="relative w-32 h-32 md:w-40 md:h-40 lg:w-48 lg:h-48 mx-auto mb-3 md:mb-4 flex items-center justify-center">
                     <Image
                       src="/assets/interparcel.png"
                       alt="Interparcel Delivery"
@@ -515,8 +537,8 @@ export default function Home() {
                     />
                   </div>
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3">By Interparcel</h3>
-                <p className="text-gray-600 leading-relaxed flex-grow">
+                <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-2 md:mb-3">By Interparcel</h3>
+                <p className="text-sm md:text-base text-gray-600 leading-relaxed flex-grow">
                   Flexible and affordable courier services with multiple delivery options and tracking included.
                 </p>
               </div>
@@ -528,134 +550,7 @@ export default function Home() {
       <ProductList showContainer={true} />
 
      {/* Latest Blog Section */}
-      <section className="py-16 md:py-20 bg-white">
-        <div className="container mx-auto">
-          <AnimatedSection className="text-center mb-16">
-            <div className="w-16 h-1 bg-orange-400 mx-auto mb-4"></div>
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Latest Blog</h2>
-            <p className="text-gray-600 text-lg">Stay updated with our latest news and insights</p>
-          </AnimatedSection>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-            {/* Blog Post 1 */}
-                        
-
-            {/* Blog Post 2 */}
-            <AnimatedSection delay={200}>
-              <div className="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 group">
-                <div className="relative aspect-[4/3]">
-                  <Image 
-                    src="https://images.unsplash.com/photo-1566576912321-d58ddd7a6088?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80"
-                    alt="Package delivery service"
-                    fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
-                </div>
-                <div className="p-6 flex flex-col min-h-[200px] md:min-h-[500px]">
-                  <h3 className="text-xl font-bold text-gray-900 mb-3">
-                    Best Delivery Service provided by us will make sure on your hand with safe
-                  </h3>
-                  <p className="text-gray-600 mb-4 flex-grow">
-                    Experience peace of mind with our premium delivery service that ensures your automotive parts arrive safely and on time, every time.
-                  </p>
-                  <div className="flex flex-col items-start space-y-2">
-                    <span className="text-sm text-gray-500">December 10, 2024</span>
-                   <Button
-                      variant="ghost"
-                      size="sm"
-                      asChild
-                      className="text-white bg-blue-600 hover:bg-blue-700 hover:scale-105 transition-all duration-200 rounded-md px-4 py-2"
-                    >
-                      <Link href="/blog/transportation-quality">
-                        Read More <ArrowRight className="ml-1 h-4 w-4" />
-                      </Link>
-                    </Button>
-                  </div>
-                </div>
-              </div>
-            </AnimatedSection>
-
-            {/* Blog Post 3 */}
-            <AnimatedSection delay={300}>
-              <div className="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 group">
-                <div className="relative aspect-[4/3]">
-                  <Image 
-                    src="https://images.unsplash.com/photo-1486496572940-2bb2341fdbdf?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80"
-                    alt="Local garage automotive service"
-                    fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
-                </div>
-                <div className="p-6 flex flex-col min-h-[200px] md:min-h-[500px]">
-                  <h3 className="text-xl font-bold text-gray-900 mb-3">
-                    Mostly, Garage in Local always order our products
-                  </h3>
-                  <p className="text-gray-600 mb-4 flex-grow">
-                    Local garages trust us for quality automotive parts. Discover why professional mechanics choose SD Auto Parts for their repair needs.
-                  </p>
-                  <div className="flex flex-col items-start space-y-2">
-                    <span className="text-sm text-gray-500">December 5, 2024</span>
-                    <Button
-                        variant="ghost"
-                        size="sm"
-                        asChild
-                        className="text-white bg-blue-600 hover:bg-blue-700 hover:scale-105 transition-all duration-200 rounded-md px-4 py-2"
-                      >
-                        <Link href="/blog/transportation-quality">
-                          Read More <ArrowRight className="ml-1 h-4 w-4" />
-                        </Link>
-                      </Button>
-                  </div>
-                </div>
-              </div>
-            </AnimatedSection>
-
-            {/* Blog Post 2 */}
-            <AnimatedCard delay={200}>
-              <div className="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 group">
-                <div className="relative aspect-[4/3]">
-                  <Image 
-                    src="https://images.unsplash.com/photo-1566576912321-d58ddd7a6088?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80"
-                    alt="Package delivery service"
-                    fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
-                </div>
-                <div className="p-6 flex flex-col min-h-[200px] md:min-h-[500px]">
-                  <h3 className="text-xl font-bold text-gray-900 mb-3">
-                    Best Delivery Service provided by us will make sure on your hand with safe
-                  </h3>
-                  <p className="text-gray-600 mb-4 flex-grow">
-                    Experience peace of mind with our premium delivery service that ensures your automotive parts arrive safely and on time, every time.
-                  </p>
-                  <div className="flex flex-col items-start space-y-2">
-                    <span className="text-sm text-gray-500">December 10, 2024</span>
-                   <Button
-                      variant="ghost"
-                      size="sm"
-                      asChild
-                      className="text-white bg-blue-600 hover:bg-blue-700 hover:scale-105 transition-all duration-200 rounded-md px-4 py-2"
-                    >
-                      <Link href="/blog/transportation-quality">
-                        Read More <ArrowRight className="ml-1 h-4 w-4" />
-                      </Link>
-                    </Button>
-                  </div>
-                </div>
-              </div>
-            </AnimatedCard>
-          </div>
-
-          {/* View All Blog Posts Button */}
-          {/* <AnimatedSection className="text-center mt-12">
-            <Button size="lg" asChild className="hover:scale-105 transition-transform duration-200">
-              <Link href="/blog">
-                View All Post <ArrowRight className="ml-2 h-5 w-5" />
-              </Link>
-            </Button>
-          </AnimatedSection> */}
-        </div>
-      </section>
+     
 
       {/* Why Choose Section */}
       <section className="py-16 md:py-24 bg-background">
@@ -671,11 +566,11 @@ export default function Home() {
           </AnimatedSection>
           <div>
             <AnimatedSection>
-              <h2 className="text-3xl md:text-4xl font-bold font-headline">Why Choose SD AutoCar Products?</h2>
+              <h2 className="text-3xl md:text-4xl font-bold font-headline">Why Choose SD Auto?</h2>
             </AnimatedSection>
             <AnimatedSection delay={100}>
               <p className="text-muted-foreground mt-4 mb-6 text-lg">
-                We provide top-quality car parts and accessories that ensure your vehicle runs smoothly and safely. Your satisfaction is our priority.
+                With 15 years of proven experience in the automotive parts industry, SD Auto specializes in sourcing quality components from Thailand, UK, and America. We understand the challenges of high dealer prices and offer reliable alternatives without compromising on quality.
               </p>
             </AnimatedSection>
             <ul className="space-y-4">
@@ -685,8 +580,8 @@ export default function Home() {
                     <Wrench className="h-5 w-5" />
                   </div>
                   <div>
-                    <h4 className="font-semibold">Premium Quality</h4>
-                    <p className="text-muted-foreground">All products are made with high-quality materials to ensure durability and performance.</p>
+                    <h4 className="font-semibold">15 Years Experience</h4>
+                    <p className="text-muted-foreground">Established expertise in automotive parts sourcing from Thailand, UK, and America with proven track record.</p>
                   </div>
                 </li>
               </AnimatedSection>
@@ -696,8 +591,8 @@ export default function Home() {
                     <Sparkles className="h-5 w-5" />
                   </div>
                   <div>
-                    <h4 className="font-semibold">Affordable Prices</h4>
-                    <p className="text-muted-foreground">Get the best value for money with competitive pricing and great deals on all products.</p>
+                    <h4 className="font-semibold">Competitive Pricing</h4>
+                    <p className="text-muted-foreground">We offer cost-effective alternatives to high dealer prices while maintaining quality standards for all vehicle types.</p>
                   </div>
                 </li>
               </AnimatedSection>
@@ -707,8 +602,8 @@ export default function Home() {
                     <Car className="h-5 w-5" />
                   </div>
                   <div>
-                    <h4 className="font-semibold">Wide Selection</h4>
-                    <p className="text-muted-foreground">We offer a broad range of car parts and accessories to meet all your automotive needs.</p>
+                    <h4 className="font-semibold">Global Sourcing Network</h4>
+                    <p className="text-muted-foreground">Specialized access to parts for any vehicle through our established supply chains across multiple countries.</p>
                   </div>
                 </li>
               </AnimatedSection>

@@ -8,16 +8,14 @@ export default function GenuinePartsLoadingSkeleton() {
     <div className="container mx-auto py-8">
       <Skeleton className="h-12 w-1/3 mx-auto mb-8 mt-16 md:mt-0" /> {/* Title Skeleton */}
 
-      {/* Brand Selection Slider Skeleton */}
-      <div className="relative w-full overflow-hidden mb-8 py-4 pr-24">
-        <div className="flex gap-2">
-          {Array.from({ length: 7 }).map((_, index) => (
-            <div key={index} className="flex-none flex flex-col items-center w-[calc(100%/7)]">
-              <Skeleton className="w-20 h-20 rounded-full mb-2" />
-              <Skeleton className="w-24 h-4" />
-            </div>
-          ))}
-        </div>
+      {/* Brand Selection Grid Skeleton */}
+      <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-4 mb-8 py-4">
+        {Array.from({ length: 10 }).map((_, index) => (
+          <div key={index} className="flex flex-col items-center">
+            <Skeleton className="w-24 h-24 sm:w-28 sm:h-28 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-lg p-2 mb-2" />
+            <Skeleton className="w-16 sm:w-20 md:w-24 h-4" />
+          </div>
+        ))}
       </div>
 
       {/* Product List Skeleton */}

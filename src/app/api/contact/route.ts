@@ -49,7 +49,7 @@ export async function POST(request: Request) {
     <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; background-color: #f4f4f4; padding: 20px;">
       <div style="max-width: 600px; margin: 0 auto; background-color: #fff; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); overflow: hidden;">
         <div style="background-color: #ffffff; color: #333333; padding: 20px; text-align: center; border-bottom: 1px solid #eee;">
-          <img src="${logoUrl}" alt="SD Auto Part Logo" style="max-width: 150px; margin-bottom: 10px;"/>
+          <img src="${logoUrl}" alt="SD Auto Logo" style="max-width: 150px; margin-bottom: 10px;"/>
           <h1 style="margin: 0;">New Auto Parts Inquiry</h1>
         </div>
         <div style="padding: 30px;">
@@ -83,7 +83,7 @@ export async function POST(request: Request) {
     <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; background-color: #f4f4f4; padding: 20px;">
       <div style="max-width: 600px; margin: 0 auto; background-color: #fff; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); overflow: hidden;">
         <div style="background-color: #ffffff; color: #333333; padding: 20px; text-align: center; border-bottom: 1px solid #eee;">
-          <img src="${logoUrl}" alt="SD Auto Part Logo" style="max-width: 150px; margin-bottom: 10px;"/>
+          <img src="${logoUrl}" alt="SD Auto Logo" style="max-width: 150px; margin-bottom: 10px;"/>
           <h1 style="margin: 0;">Thank You For Your Inquiry!</h1>
         </div>
         <div style="padding: 30px;">
@@ -108,7 +108,7 @@ export async function POST(request: Request) {
           <p style="margin-top: 30px;">We will get back to you with a quote as soon as possible. If you have any questions, please reply directly to this email.</p>
         </div>
         <div style="background-color: #f4f4f4; color: #777; padding: 15px; text-align: center; font-size: 12px;">
-          <p>&copy; ${new Date().getFullYear()} SD Auto Part. All rights reserved.</p>
+          <p>&copy; ${new Date().getFullYear()} SD Auto. All rights reserved.</p>
           <p>87 Kookaburra Avenue, Werribee, Victoria 3030, Australia</p>
         </div>
       </div>
@@ -116,7 +116,7 @@ export async function POST(request: Request) {
     `;
 
     const adminMailOptions = {
-      from: `"SD Auto Part" <${process.env.EMAIL_USER}>`,
+      from: `"SD Auto" <${process.env.EMAIL_USER}>`,
       to: 'ansokwin@gmail.com',
       subject: `New Auto Parts Inquiry from ${name}`,
       replyTo: email,
@@ -124,9 +124,9 @@ export async function POST(request: Request) {
     };
 
     const customerMailOptions = {
-      from: `"SD Auto Part" <${process.env.EMAIL_USER}>`,
+      from: `"SD Auto" <${process.env.EMAIL_USER}>`,
       to: email,
-      subject: 'Your Auto Parts Inquiry with SD Auto Part',
+      subject: 'Your Auto Parts Inquiry with SD Auto',
       html: customerMailHtml,
     };
 

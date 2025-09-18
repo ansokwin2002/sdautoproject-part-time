@@ -81,15 +81,15 @@ export default function GenuinePartsClient() {
 
   return (
     <div className="container mx-auto py-8">
-      <h1 className="text-4xl font-bold text-center mb-8 mt-16 md:mt-0">{viewParam === 'aftermarket' ? "Aftermarket Parts and Accessories" : "Genuine Parts and Accessories"}</h1>
+      <h1 className="text-4xl font-bold text-center mb-8 mt-16 md:mt-0">{viewParam === 'aftermarket' ? "Aftermarket Accessories" : "Genuine Parts and Accessories"}</h1>
 
       {/* Brand Selection Grid */}
       <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-4 mb-8 py-4">
         {loading ? (
-          Array.from({ length: 8 }).map((_, index) => (
+          Array.from({ length: 10 }).map((_, index) => (
             <div key={index} className="flex flex-col items-center">
-              <Skeleton className="w-20 h-20 rounded-full mb-2" />
-              <Skeleton className="w-24 h-4" />
+              <Skeleton className="w-24 h-24 sm:w-28 sm:h-28 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-lg p-2 mb-2" />
+              <Skeleton className="w-16 sm:w-20 md:w-24 h-4" />
             </div>
           ))
         ) : (

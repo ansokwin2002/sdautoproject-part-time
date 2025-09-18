@@ -14,7 +14,7 @@ import { ChatbotTrigger } from '@/app/chatbot/chatbot'; // Corrected import
 // Note: Metadata export is not supported in Client Components. 
 // If you need to use metadata, consider moving this to a Server Component or a layout.tsx in a parent directory.
 // export const metadata: Metadata = {
-//   title: 'SD AutoCar Showcase',
+//   title: 'SD Auto Showcase',
 //   description: 'Your trusted partner in automotive care and excellence.',
 //   icons: {
 //     icon: '/favicon.ico',

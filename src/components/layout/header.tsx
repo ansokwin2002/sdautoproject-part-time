@@ -129,7 +129,7 @@ export default function Header() {
                   <Link
                     key={item.href}
                     href={item.href}
-                    className={`block px-4 py-3 text-base transition-all duration-150 hover:bg-blue-50 hover:text-blue-600 hover:translate-x-1 ${
+                    className={`block px-3 md:px-4 py-2 md:py-3 text-sm md:text-sm lg:text-base transition-all duration-150 hover:bg-blue-50 hover:text-blue-600 hover:translate-x-1 ${
                       pathname === item.href ? "text-blue-600 bg-blue-50" : "text-gray-700"
                     }`}
                     style={{
@@ -214,7 +214,7 @@ export default function Header() {
             <div className="flex flex-col lg:flex-row justify-between items-center py-3 text-sm text-gray-600">
               <div className="flex items-center space-x-2 mb-1 lg:mb-0">
                 <MapPin className="h-4 w-4 text-blue-600 flex-shrink-0" />
-                <span className="min-w-0 text-xs sm:text-sm break-words">SD AUTO PART Werribee, Victoria 3030 Australia</span>
+                <span className="min-w-0 text-xs sm:text-sm break-words">SD AUTO Werribee, Victoria 3030 Australia</span>
               </div>
               <div className="flex flex-col sm:flex-row items-center space-x-0 sm:space-x-2 md:space-x-4 lg:space-x-6">
                 <div className="flex items-center space-x-1">
@@ -235,14 +235,14 @@ export default function Header() {
           <div className="flex h-32 items-center justify-between">
             {/* Logo - Increased size */}
             <div className="flex items-center">
-              <Link href="/" className="flex items-center space-x-4">
-                <div className="relative w-16 h-16">
+              <Link href="/" className="flex items-center space-x-2 md:space-x-3 lg:space-x-4">
+                <div className="relative w-12 md:w-14 lg:w-16 h-12 md:h-14 lg:h-16">
                   <Image
                     src="/assets/logo.png"
                     alt="SD Auto Logo"
                     width={64}
                     height={64}
-                    className="w-16 h-16 object-contain"
+                    className="w-12 md:w-14 lg:w-16 h-12 md:h-14 lg:h-16 object-contain"
                     priority
                     onError={(e) => {
                       console.log('Image failed to load from /assets/logo.png');
@@ -252,8 +252,8 @@ export default function Header() {
                       if (fallback) fallback.style.display = 'flex';
                     }}
                   />
-                  <div className="fallback-logo w-16 h-16 bg-gradient-to-br from-blue-600 to-blue-800 rounded-lg items-center justify-center shadow-lg absolute top-0 left-0 hidden">
-                    <span className="text-white font-bold text-xl italic">SD</span>
+                  <div className="fallback-logo w-12 md:w-14 lg:w-16 h-12 md:h-14 lg:h-16 bg-gradient-to-br from-blue-600 to-blue-800 rounded-lg items-center justify-center shadow-lg absolute top-0 left-0 hidden">
+                    <span className="text-white font-bold text-lg md:text-xl italic">SD</span>
                   </div>
                 </div>
                 <div className="hidden lg:block">
@@ -264,7 +264,7 @@ export default function Header() {
             </div>
 
             {/* Desktop Navigation */}
-            <nav className="hidden md:flex items-center space-x-6 md:space-x-6 lg:space-x-10 text-lg md:text-base">
+            <nav className="hidden md:flex items-center space-x-3 md:space-x-4 lg:space-x-10 text-sm md:text-sm lg:text-base">
               {navLinks.map((link) => (
                 <NavLink key={link.href} {...link} />
               ))}
@@ -368,7 +368,7 @@ export default function Header() {
                       <div className="space-y-3 text-sm text-gray-600">
                         <div className="flex items-center space-x-2">
                           <MapPin className="h-4 w-4 text-blue-600 flex-shrink-0" />
-                          <span className="min-w-0 text-xs">SD AUTO PART Werribee, Victoria 3030 Australia</span>
+                          <span className="min-w-0 text-xs">SD AUTO Werribee, Victoria 3030 Australia</span>
                         </div>
                         <div className="flex items-center space-x-2">
                           <Mail className="h-4 w-4 text-blue-600 flex-shrink-0" />

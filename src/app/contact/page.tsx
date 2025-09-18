@@ -445,7 +445,7 @@ export default function ContactPage() {
                   <h3 className="font-semibold mb-2">Address</h3>
                   <div className="flex-grow flex items-center justify-center">
                     <p className="text-sm text-muted-foreground leading-relaxed">
-                      SD AUTO PART<br />
+                      SD AUTO<br />
                       Werribee, Victoria 3030<br />
                       Australia
                     </p>

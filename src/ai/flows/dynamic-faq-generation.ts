@@ -1,7 +1,7 @@
 /**
  * @fileOverview Dynamic FAQ generation flow using Genkit.
  *
- * - generateFAQAnswerFlow - A flow that generates answers to FAQs about SD AutoCar services.
+ * - generateFAQAnswerFlow - A flow that generates answers to FAQs about SD Auto services.
  * - FAQInput - The input type for the generateFAQAnswer function.
  * - FAQOutput - The return type for the generateFAQAnswer function.
  */
@@ -11,7 +11,7 @@ import {z} from 'genkit';
 
 const FAQInputSchema = z.object({
   question: z.string().describe('The question to be answered.'),
-  context: z.string().describe('Context about SD AutoCar services.'),
+  context: z.string().describe('Context about SD Auto services.'),
 });
 export type FAQInput = z.infer<typeof FAQInputSchema>;
 
@@ -24,7 +24,7 @@ const faqPrompt = ai.definePrompt({
   name: 'faqPrompt',
   input: {schema: FAQInputSchema},
   output: {schema: FAQOutputSchema},
-  prompt: `You are an AI assistant providing answers to frequently asked questions about SD AutoCar services.
+  prompt: `You are an AI assistant providing answers to frequently asked questions about SD Auto services.
   Use the context provided to answer the question accurately and helpfully.
 
   Context: {{{context}}}
