@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Phone, Mail, MapPin, Clock, CheckCircle, AlertCircle } from "lucide-react";
+import { Phone, Mail, MapPin, Clock, CheckCircle, AlertCircle, MessageCircle } from "lucide-react";
 
 // Custom hook for intersection observer
 const useIntersectionObserver = (options = {}) => {
@@ -426,7 +426,7 @@ export default function ContactPage() {
 
         {/* Contact Information Section - Second */}
         <AnimatedSection delay={400}>
-          <div className="max-w-4xl mx-auto">
+          <div className="max-w-6xl mx-auto">
             <div className="text-center mb-12">
               <h2 className="text-3xl font-bold font-headline mb-4">Contact Information</h2>
               <p className="text-muted-foreground text-lg">
@@ -434,17 +434,17 @@ export default function ContactPage() {
               </p>
             </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 md:gap-6">
               <Card className="shadow-md hover:shadow-lg transition-shadow duration-300 h-full">
-                <CardContent className="p-6 text-center flex flex-col">
-                  <div className="flex justify-center mb-4">
-                    <div className="p-3 bg-primary/10 rounded-full">
-                      <MapPin className="h-6 w-6 text-primary" />
+                <CardContent className="p-4 sm:p-6 text-center flex flex-col min-h-[140px] sm:min-h-[160px]">
+                  <div className="flex justify-center mb-3 sm:mb-4">
+                    <div className="p-2 sm:p-3 bg-primary/10 rounded-full">
+                      <MapPin className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
                     </div>
                   </div>
-                  <h3 className="font-semibold mb-2">Address</h3>
+                  <h3 className="font-semibold mb-2 text-sm sm:text-base">Address</h3>
                   <div className="flex-grow flex items-center justify-center">
-                    <p className="text-sm text-muted-foreground leading-relaxed">
+                    <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
                       SD AUTO<br />
                       Werribee, Victoria 3030<br />
                       Australia
@@ -454,16 +454,16 @@ export default function ContactPage() {
               </Card>
 
               <Card className="shadow-md hover:shadow-lg transition-shadow duration-300 h-full">
-                <CardContent className="p-6 text-center flex flex-col">
-                  <div className="flex justify-center mb-4">
-                    <div className="p-3 bg-primary/10 rounded-full">
-                      <Phone className="h-6 w-6 text-primary" />
+                <CardContent className="p-4 sm:p-6 text-center flex flex-col min-h-[140px] sm:min-h-[160px]">
+                  <div className="flex justify-center mb-3 sm:mb-4">
+                    <div className="p-2 sm:p-3 bg-primary/10 rounded-full">
+                      <Phone className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
                     </div>
                   </div>
-                  <h3 className="font-semibold mb-2">Phone</h3>
+                  <h3 className="font-semibold mb-2 text-sm sm:text-base">Phone</h3>
                   <div className="flex-grow flex items-center justify-center">
-                    <p className="text-sm text-muted-foreground">
-                      <a href="tel:+61460786533" className="hover:text-primary transition-colors">
+                    <p className="text-xs sm:text-sm text-muted-foreground">
+                      <a href="tel:+61460786533" className="hover:text-primary transition-colors break-all">
                         +61 460 786 533
                       </a>
                     </p>
@@ -472,16 +472,34 @@ export default function ContactPage() {
               </Card>
 
               <Card className="shadow-md hover:shadow-lg transition-shadow duration-300 h-full">
-                <CardContent className="p-6 text-center flex flex-col">
-                  <div className="flex justify-center mb-4">
-                    <div className="p-3 bg-primary/10 rounded-full">
-                      <Mail className="h-6 w-6 text-primary" />
+                <CardContent className="p-4 sm:p-6 text-center flex flex-col min-h-[140px] sm:min-h-[160px]">
+                  <div className="flex justify-center mb-3 sm:mb-4">
+                    <div className="p-2 sm:p-3 bg-green-100 rounded-full">
+                      <MessageCircle className="h-5 w-5 sm:h-6 sm:w-6 text-green-600" />
                     </div>
                   </div>
-                  <h3 className="font-semibold mb-2">Email</h3>
+                  <h3 className="font-semibold mb-2 text-sm sm:text-base">WhatsApp</h3>
                   <div className="flex-grow flex items-center justify-center">
-                    <p className="text-sm text-muted-foreground">
-                      <a href="mailto:sdautoaustralia@gmail.com" className="hover:text-primary transition-colors">
+                    <p className="text-xs sm:text-sm text-muted-foreground">
+                      <a href="https://wa.me/61460786533" target="_blank" rel="noopener noreferrer" className="hover:text-green-600 transition-colors break-all">
+                        +61 460 786 533
+                      </a>
+                    </p>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="shadow-md hover:shadow-lg transition-shadow duration-300 h-full">
+                <CardContent className="p-4 sm:p-6 text-center flex flex-col min-h-[140px] sm:min-h-[160px]">
+                  <div className="flex justify-center mb-3 sm:mb-4">
+                    <div className="p-2 sm:p-3 bg-primary/10 rounded-full">
+                      <Mail className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
+                    </div>
+                  </div>
+                  <h3 className="font-semibold mb-2 text-sm sm:text-base">Email</h3>
+                  <div className="flex-grow flex items-center justify-center">
+                    <p className="text-xs sm:text-sm text-muted-foreground">
+                      <a href="mailto:sdautoaustralia@gmail.com" className="hover:text-primary transition-colors break-all">
                         sdautoaustralia@gmail.com
                       </a>
                     </p>
@@ -490,17 +508,17 @@ export default function ContactPage() {
               </Card>
 
               <Card className="shadow-md hover:shadow-lg transition-shadow duration-300 h-full">
-                <CardContent className="p-6 text-center flex flex-col">
-                  <div className="flex justify-center mb-4">
-                    <div className="p-3 bg-primary/10 rounded-full">
-                      <Clock className="h-6 w-6 text-primary" />
+                <CardContent className="p-4 sm:p-6 text-center flex flex-col min-h-[140px] sm:min-h-[160px]">
+                  <div className="flex justify-center mb-3 sm:mb-4">
+                    <div className="p-2 sm:p-3 bg-primary/10 rounded-full">
+                      <Clock className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
                     </div>
                   </div>
-                  <h3 className="font-semibold mb-2">Business Hours</h3>
+                  <h3 className="font-semibold mb-2 text-sm sm:text-base">Business Hours</h3>
                   <div className="flex-grow flex items-center justify-center">
-                    <p className="text-sm text-muted-foreground leading-relaxed">
-                      Monday - Friday<br />
-                      8:00 AM - 6:00 PM
+                    <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+                      Monday - Saturday<br />
+                      9am-6pm
                     </p>
                   </div>
                 </CardContent>

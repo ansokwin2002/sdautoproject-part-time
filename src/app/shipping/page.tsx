@@ -124,7 +124,7 @@ export default function ShippingPage() {
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <AnimatedSection className="relative h-full order-2 md:order-1" delay={200}>
               <Image 
-                src="https://images.unsplash.com/photo-1587293852726-70cdb56c2866?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80" 
+                src="https://sdmntpraustraliaeast.oaiusercontent.com/files/00000000-ab34-61fa-8aee-bbb30fc3c5e2/raw?se=2025-09-25T14%3A12%3A33Z&sp=r&sv=2024-08-04&sr=b&scid=f8fad558-9291-5712-b5f2-3ac8437abfb9&skoid=cb94e22a-e3df-4e6a-9e17-1696f40fa435&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2025-09-24T17%3A19%3A22Z&ske=2025-09-25T17%3A19%3A22Z&sks=b&skv=2024-08-04&sig=DcvYfdpxjppPnpt3tKnJXkLew3I/eNeEC8c218XgtgQ%3D" 
                 alt="Modern warehouse with organized shipping boxes and logistics operations" 
                 data-ai-hint="Warehouse shipping logistics boxes storage"
                 fill 

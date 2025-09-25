@@ -29,9 +29,9 @@ export const getNavLinks = () => {
       ],
     },
     { href: "/", label: "Home" },
+    { href: "/shipping", label: "Shipping" },
     { href: "/policy", label: "Policy" },
     { href: "/faq", label: "FAQ" },
-    { href: "/shipping", label: "Shipping" },
     { href: "/contact", label: "Contact Us" },
   ];
 };

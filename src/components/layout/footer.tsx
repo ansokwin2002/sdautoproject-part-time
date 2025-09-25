@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { Facebook, Send } from 'lucide-react';
+import { Facebook, Send, MessageCircle } from 'lucide-react';
 import TikTokIcon from '@/components/icons/tiktok';
 import Logo from '@/components/icons/logo';
 import {
@@ -21,10 +21,10 @@ export default function Footer() {
   
   const navLinks = [
     { href: "/genuine-parts", label: "Genuines Parts and Accessories" },
-    { href: "/home", label: "Home" },
+    { href: "/", label: "Home" },
+    { href: "/shipping", label: "Shipping" },
     { href: "/policy", label: "Policy" },
     { href: "/faq", label: "FAQ" },
-    { href: "/shipping", label: "Shipping" },
     { href: "/contact", label: "Contact Us" },
   ];
 
@@ -42,6 +42,7 @@ export default function Footer() {
             </p>
              <div className="flex space-x-4 mt-4">
               <Link href="/contact" aria-label="Facebook" className="text-muted-foreground hover:text-primary"><Facebook className="h-5 w-5" /></Link>
+              <Link href="https://wa.me/61460786533" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" className="text-muted-foreground hover:text-green-600"><MessageCircle className="h-5 w-5" /></Link>
               <Link href="/contact" aria-label="Telegram" className="text-muted-foreground hover:text-primary"><Send className="h-5 w-5" /></Link>
               <Link href="/contact" aria-label="TikTok" className="text-muted-foreground hover:text-primary"><TikTokIcon className="h-5 w-5" /></Link>
             </div>
@@ -58,16 +59,16 @@ export default function Footer() {
             <h3 className="font-semibold mb-4">Contact Us</h3>
             <ul className="space-y-2 text-sm text-muted-foreground">
               <li>SD AUTO Werribee, Victoria 3030 Australia</li>
-              <li>+61 460 786 533</li>
-              <li>sdautoaustralia@gmail.com</li>
+              <li><a href="tel:+61460786533" className="hover:text-primary transition-colors">+61 460 786 533</a></li>
+              <li><a href="https://wa.me/61460786533" target="_blank" rel="noopener noreferrer" className="hover:text-green-600 transition-colors">WhatsApp: +61 460 786 533</a></li>
+              <li><a href="mailto:sdautoaustralia@gmail.com" className="hover:text-primary transition-colors">sdautoaustralia@gmail.com</a></li>
             </ul>
           </div>
            <div>
             <h3 className="font-semibold mb-4">Business Hours</h3>
             <ul className="space-y-2 text-sm text-muted-foreground">
-              <li>Mon - Fri: 8:00 AM - 6:00 PM</li>
-              <li>Sat: 9:00 AM - 3:00 PM</li>
-              <li>Sun: Closed</li>
+              <li>Monday - Saturday: 9am-6pm</li>
+              <li>Sunday: Closed</li>
             </ul>
           </div>
         </div>
