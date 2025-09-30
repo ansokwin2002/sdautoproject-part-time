@@ -65,7 +65,7 @@ const AnimatedCard = ({ children, className = "", delay = 0 }) => {
 
 export default function ProductList({ products: initialProducts, showContainer = true, selectedBrand: propSelectedBrand, allowedBrands: propAllowedBrands }: { products?: import("@/lib/products").Product[], showContainer?: boolean, selectedBrand?: string | null, allowedBrands?: string[] }) {
   const [searchTerm, setSearchTerm] = useState('');
-  const [sortOrder, setSortOrder] = useState('name-asc');
+  const [sortOrder, setSortOrder] = useState('default');
   const [selectedBrand, setSelectedBrand] = useState<string>(propSelectedBrand || 'all'); // Use propSelectedBrand as initial state
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(true);
@@ -95,20 +95,24 @@ export default function ProductList({ products: initialProducts, showContainer =
        (product.partNumber && product.partNumber.toLowerCase().includes(searchTerm.toLowerCase())))
     );
 
-    const [sortBy, order] = sortOrder.split('-');
+    if (sortOrder !== 'default') {
+      const [sortBy, order] = sortOrder.split('-');
 
-    filtered.sort((a, b) => {
-      if (sortBy === 'name') {
-        const nameA = a.name.toLowerCase();
-        const nameB = b.name.toLowerCase();
-        if (nameA < nameB) return order === 'asc' ? -1 : 1;
-        if (nameA > nameB) return order === 'asc' ? 1 : -1;
+      filtered.sort((a, b) => {
+        if (sortBy === 'name') {
+          const nameA = a.name.toLowerCase();
+          const nameB = b.name.toLowerCase();
+          if (nameA < nameB) return order === 'asc' ? -1 : 1;
+          if (nameA > nameB) return order === 'asc' ? 1 : -1;
+          return 0;
+        } else if (sortBy === 'price') {
+          const priceA = parseFloat(a.price.replace(/[^\d.-]/g, ''));
+          const priceB = parseFloat(b.price.replace(/[^\d.-]/g, ''));
+          return order === 'asc' ? priceA - priceB : priceB - priceA;
+        }
         return 0;
-      } else if (sortBy === 'price') {
-        return order === 'asc' ? a.price - b.price : b.price - a.price;
-      }
-      return 0;
-    });
+      });
+    }
 
     return filtered;
   }, [searchTerm, sortOrder, selectedBrand, productSource]); // Add selectedBrand to dependencies
@@ -143,6 +147,7 @@ export default function ProductList({ products: initialProducts, showContainer =
                 <SelectValue placeholder="Sort by" />
               </SelectTrigger>
               <SelectContent>
+                <SelectItem value="default">Default Order</SelectItem>
                 <SelectItem value="name-asc">Name: A to Z</SelectItem>
                 <SelectItem value="name-desc">Name: Z to A</SelectItem>
                 <SelectItem value="price-asc">Price: Low to High</SelectItem>

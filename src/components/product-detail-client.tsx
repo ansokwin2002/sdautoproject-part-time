@@ -425,16 +425,16 @@ export default function ProductDetailClient({ productId }: ProductDetailClientPr
                 <div className="border-t border-gray-100 pt-6 mt-auto">
                   <div className="flex items-center justify-between mb-6">
                     <div className="flex items-center gap-3">
-                      <span className="text-2xl md:text-3xl font-bold text-gray-900">
-                        ${product.price.toFixed(2)}
+                      <span className="text-4xl font-bold text-gray-900">
+                        {product.price}
                       </span>
                       {product.originalPrice && (
                         <>
                           <span className="text-lg md:text-xl text-gray-400 line-through">
                             ${product.originalPrice.toFixed(2)}
                           </span>
-                          <span className="bg-red-100 text-red-700 px-2 py-1 rounded-full text-xs font-medium">
-                            {Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)}% OFF
+                          <span className="bg-red-100 text-red-800 px-3 py-1 rounded-full text-sm font-semibold">
+                            {Math.round(((product.originalPrice - parseFloat(product.price.replace(/[^\d.-]/g, ''))) / product.originalPrice) * 100)}% OFF
                           </span>
                         </>
                       )}

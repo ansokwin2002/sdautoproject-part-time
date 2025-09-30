@@ -47,72 +47,140 @@ const useIntersectionObserver = (options = {}) => {
 };
 
 const heroSlides = [
-  // Ford Ranger Brand Card
+  // Ford Genuine Parts - 1st in dropdown
   {
     id: 1,
-    image: "https://weudealerimagesprd.blob.core.windows.net/za3024/news/FordRangerGroup_046.jpg",
-    title: "Ford Ranger Next Gen (Ford)",
-    subtitle: "Experience the all-new Ford Ranger with advanced technology, superior performance, and legendary Ford toughness.",
+    image: "https://images.unsplash.com/photo-1612825173281-9a193378527e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
+    title: "Ford Genuine Parts",
+    subtitle: "Built Ford Tough - Experience legendary durability and performance with Ford's complete range of genuine parts and accessories.",
     primaryButton: {
-      text: "View Ford Ranger",
-      href: "/ford-ranger"
+      text: "View Ford Parts",
+      href: "/genuine-parts?brand=Ford"
     },
     secondaryButton: {
-      text: "Book Test Drive",
+      text: "Contact Us",
       href: "/contact"
     },
-    aiHint: "Ford Ranger next generation pickup truck"
+    aiHint: "Ford Mustang sports car"
   },
   
-  // Isuzu D-Max Brand Card
+  // Isuzu Genuine Parts - 2nd in dropdown
   {
     id: 2,
-    image: "https://www.topgear.com/sites/default/files/2025/05/01.%20Isuzu%20D-MAX%20V-Cross%20001.jpg",
-    title: "Isuzu D-Max (Isuzu)",
-    subtitle: "The legendary Isuzu D-Max delivers unmatched durability, reliability, and performance for work and adventure.",
+    image: "https://images.unsplash.com/photo-1544636331-e26879cd4d9b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
+    title: "Isuzu Genuine Parts",
+    subtitle: "Go the Distance - Commercial grade durability and strength with Isuzu's reliable genuine parts for every journey.",
     primaryButton: {
-      text: "View D-Max",
-      href: "/isuzu-dmax"
+      text: "View Isuzu Parts",
+      href: "/genuine-parts?brand=Isuzu"
     },
     secondaryButton: {
       text: "Get Quote",
-      href: "/quote"
+      href: "/contact"
     },
     aiHint: "Isuzu D-Max pickup truck"
   },
   
-  // Nissan Navara Brand Card
+  // Toyota Genuine Parts - 3rd in dropdown
   {
     id: 3,
-    image: "https://media.ed.edmunds-media.com/nissan/z/2025/oem/2025_nissan_z_coupe_nismo_fq_oem_1_1600.jpg",
-    title: "Nissan Navara (Nissan)",
-    subtitle: "The Nissan Navara combines intelligent design with rugged capability for the modern pickup truck experience.",
+    image: "https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
+    title: "Toyota Genuine Parts",
+    subtitle: "Let's Go Places - Reliability and innovation in every part. Discover Toyota's world-class genuine automotive components.",
     primaryButton: {
-      text: "View Navara",
-      href: "/nissan-navara"
+      text: "View Toyota Parts",
+      href: "/genuine-parts?brand=Toyota"
     },
     secondaryButton: {
       text: "Learn More",
       href: "/about"
     },
-    aiHint: "Nissan Navara pickup truck"
+    aiHint: "Toyota Camry sedan"
   },
   
-  // Mitsubishi Triton Brand Card
+  // Mazda Genuine Parts - 4th in dropdown
   {
     id: 4,
-    image: "https://smartcdn.gprod.postmedia.digital/driving/wp-content/uploads/2023/07/Mitsubishi-Triton-2-e1690572030982.jpg",
-    title: "Mitsubishi Triton (Mitsubishi)",
-    subtitle: "The Mitsubishi Triton delivers exceptional off-road performance and everyday versatility with proven reliability.",
+    image: "https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
+    title: "Mazda Genuine Parts",
+    subtitle: "Driving Matters - Precision engineering and stylish design combined with quality genuine parts for the ultimate driving experience.",
     primaryButton: {
-      text: "View Triton",
-      href: "/mitsubishi-triton"
+      text: "View Mazda Parts",
+      href: "/genuine-parts?brand=Mazda"
+    },
+    secondaryButton: {
+      text: "Contact Us",
+      href: "/contact"
+    },
+    aiHint: "Mazda CX-5 SUV"
+  },
+  
+  // Mitsubishi Genuine Parts - 5th in dropdown
+  {
+    id: 5,
+    image: "https://images.unsplash.com/photo-1583121274602-3e2820c69888?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
+    title: "Mitsubishi Genuine Parts",
+    subtitle: "Drive your Ambition - Proven performance and reliability with Mitsubishi's innovative genuine parts and authentic replacements.",
+    primaryButton: {
+      text: "View Mitsubishi Parts",
+      href: "/genuine-parts?brand=Mitsubishi"
     },
     secondaryButton: {
       text: "Service Center",
-      href: "/service"
+      href: "/contact"
     },
-    aiHint: "Mitsubishi Triton pickup truck"
+    aiHint: "Mitsubishi Lancer Evolution"
+  },
+  
+  // Nissan Genuine Parts - 6th in dropdown
+  {
+    id: 6,
+    image: "https://images.unsplash.com/photo-1605559424843-9e4c228bf1c2?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
+    title: "Nissan Genuine Parts",
+    subtitle: "Innovation That Excites - Cutting-edge automotive solutions with Nissan's advanced technology and genuine parts for every model.",
+    primaryButton: {
+      text: "View Nissan Parts",
+      href: "/genuine-parts?brand=Nissan"
+    },
+    secondaryButton: {
+      text: "Learn More",
+      href: "/about"
+    },
+    aiHint: "Nissan GT-R sports car"
+  },
+  
+  // Honda Genuine Parts - 7th in dropdown
+  {
+    id: 7,
+    image: "https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
+    title: "Honda Genuine Parts",
+    subtitle: "The Power of Dreams - Advanced technology and efficiency with Honda's reliable vehicles and high-quality genuine parts.",
+    primaryButton: {
+      text: "View Honda Parts",
+      href: "/genuine-parts?brand=Honda"
+    },
+    secondaryButton: {
+      text: "Contact Us",
+      href: "/contact"
+    },
+    aiHint: "Honda Civic Type R"
+  },
+  
+  // Suzuki Genuine Parts - 8th in dropdown
+  {
+    id: 8,
+    image: "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
+    title: "Suzuki Genuine Parts",
+    subtitle: "Way of Life - Compact efficiency and versatile performance with Suzuki's practical vehicles and authentic genuine parts.",
+    primaryButton: {
+      text: "View Suzuki Parts",
+      href: "/genuine-parts?brand=Suzuki"
+    },
+    secondaryButton: {
+      text: "Get Quote",
+      href: "/contact"
+    },
+    aiHint: "Suzuki Swift Sport"
   }
 ];
 
@@ -412,6 +480,224 @@ function HeroCarousel() {
   );
 }
 
+// Car Brand Slider Component
+function CarBrandSlider() {
+  const [currentBrandIndex, setCurrentBrandIndex] = useState(0);
+  const [isAutoPlaying, setIsAutoPlaying] = useState(true);
+
+  const carBrands = [
+    {
+      name: "Ford",
+      description: "Built Ford Tough - Experience legendary durability and performance",
+      image: "https://images.unsplash.com/photo-1612825173281-9a193378527e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
+      href: "/genuine-parts?brand=Ford",
+      logo: "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODAiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCA4MCAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjgwIiBoZWlnaHQ9IjMyIiByeD0iNCIgZmlsbD0iIzAwMzQ3QyIvPgo8dGV4dCB4PSI0MCIgeT0iMjAiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZm9udC13ZWlnaHQ9ImJvbGQiIGZpbGw9IndoaXRlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5GT1JEPC90ZXh0Pgo8L3N2Zz4K"
+    },
+    {
+      name: "Isuzu",
+      description: "Go the Distance - Commercial grade durability and strength",
+      image: "https://images.unsplash.com/photo-1544636331-e26879cd4d9b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
+      href: "/genuine-parts?brand=Isuzu",
+      logo: "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODAiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCA4MCAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjgwIiBoZWlnaHQ9IjMyIiByeD0iNCIgZmlsbD0iI0VEMUMyNCIvPgo8dGV4dCB4PSI0MCIgeT0iMjAiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxMiIgZm9udC13ZWlnaHQ9ImJvbGQiIGZpbGw9IndoaXRlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5JU1VaVTwvdGV4dD4KPC9zdmc+Cg=="
+    },
+    {
+      name: "Toyota",
+      description: "Let's Go Places - Reliability and innovation in every part",
+      image: "https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
+      href: "/genuine-parts?brand=Toyota",
+      logo: "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODAiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCA4MCAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjgwIiBoZWlnaHQ9IjMyIiByeD0iNCIgZmlsbD0iI0VCMDAxQiIvPgo8dGV4dCB4PSI0MCIgeT0iMjAiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxMSIgZm9udC13ZWlnaHQ9ImJvbGQiIGZpbGw9IndoaXRlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5UT1lPVEE8L3RleHQ+Cjwvc3ZnPgo="
+    },
+    {
+      name: "Mazda",
+      description: "Driving Matters - Precision engineering and stylish design",
+      image: "https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
+      href: "/genuine-parts?brand=Mazda",
+      logo: "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODAiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCA4MCAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjgwIiBoZWlnaHQ9IjMyIiByeD0iNCIgZmlsbD0iIzAwMDAwMCIvPgo8dGV4dCB4PSI0MCIgeT0iMjAiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxMiIgZm9udC13ZWlnaHQ9ImJvbGQiIGZpbGw9IndoaXRlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5NQVpEQTwvdGV4dD4KPC9zdmc+Cg=="
+    },
+    {
+      name: "Mitsubishi",
+      description: "Drive your Ambition - Proven performance and reliability",
+      image: "https://images.unsplash.com/photo-1583121274602-3e2820c69888?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
+      href: "/genuine-parts?brand=Mitsubishi",
+      logo: "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODAiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCA4MCAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjgwIiBoZWlnaHQ9IjMyIiByeD0iNCIgZmlsbD0iI0RDMTQzQyIvPgo8dGV4dCB4PSI0MCIgeT0iMjAiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSI5IiBmb250LXdlaWdodD0iYm9sZCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiPk1JVFNVQklTSEk8L3RleHQ+Cjwvc3ZnPgo="
+    },
+    {
+      name: "Nissan",
+      description: "Innovation That Excites - Cutting-edge automotive solutions",
+      image: "https://images.unsplash.com/photo-1605559424843-9e4c228bf1c2?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
+      href: "/genuine-parts?brand=Nissan",
+      logo: "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODAiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCA4MCAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjgwIiBoZWlnaHQ9IjMyIiByeD0iNCIgZmlsbD0iIzAwMDAwMCIvPgo8dGV4dCB4PSI0MCIgeT0iMjAiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxMiIgZm9udC13ZWlnaHQ9ImJvbGQiIGZpbGw9IndoaXRlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5OSVNTQU48L3RleHQ+Cjwvc3ZnPgo="
+    },
+    {
+      name: "Honda",
+      description: "The Power of Dreams - Advanced technology and efficiency",
+      image: "https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
+      href: "/genuine-parts?brand=Honda",
+      logo: "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODAiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCA4MCAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjgwIiBoZWlnaHQ9IjMyIiByeD0iNCIgZmlsbD0iI0VEMUMyNCIvPgo8dGV4dCB4PSI0MCIgeT0iMjAiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxMiIgZm9udC13ZWlnaHQ9ImJvbGQiIGZpbGw9IndoaXRlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5IT05EQTwvdGV4dD4KPC9zdmc+Cg=="
+    },
+    {
+      name: "Suzuki",
+      description: "Way of Life - Compact efficiency and versatile performance",
+      image: "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
+      href: "/genuine-parts?brand=Suzuki",
+      logo: "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODAiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCA4MCAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjgwIiBoZWlnaHQ9IjMyIiByeD0iNCIgZmlsbD0iIzAwNzNFNiIvPgo8dGV4dCB4PSI0MCIgeT0iMjAiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxMSIgZm9udC13ZWlnaHQ9ImJvbGQiIGZpbGw9IndoaXRlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5TVVpVS0k8L3RleHQ+Cjwvc3ZnPgo="
+    }
+  ];
+
+  const nextBrand = useCallback(() => {
+    setCurrentBrandIndex((prev) => (prev + 1) % carBrands.length);
+  }, [carBrands.length]);
+
+  const prevBrand = useCallback(() => {
+    setCurrentBrandIndex((prev) => (prev - 1 + carBrands.length) % carBrands.length);
+  }, [carBrands.length]);
+
+  // Auto-play functionality
+  useEffect(() => {
+    if (!isAutoPlaying) return;
+    
+    const interval = setInterval(nextBrand, 4000);
+    return () => clearInterval(interval);
+  }, [isAutoPlaying, nextBrand]);
+
+  const getVisibleBrands = () => {
+    const brands = [];
+    for (let i = 0; i < 3; i++) {
+      const index = (currentBrandIndex + i) % carBrands.length;
+      brands.push({ ...carBrands[index], displayIndex: i });
+    }
+    return brands;
+  };
+
+  return (
+    <section className="py-12 md:py-16 bg-white border-b">
+      <div className="container mx-auto">
+        <AnimatedSection className="text-center mb-12">
+          <div className="w-16 h-1 bg-primary mx-auto mb-4"></div>
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Shop by Brand</h2>
+          <p className="text-gray-600 text-lg max-w-2xl mx-auto">
+            Discover genuine parts and accessories for your favorite automotive brands
+          </p>
+        </AnimatedSection>
+
+        <div className="relative">
+          {/* Main Brand Display */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            {getVisibleBrands().map((brand, index) => (
+              <AnimatedCard 
+                key={`${brand.name}-${currentBrandIndex}`} 
+                delay={index * 100}
+                className={`transition-all duration-500 ${
+                  index === 1 ? 'md:scale-105 md:z-10' : 'md:scale-95 md:opacity-75'
+                }`}
+              >
+                <Link href={brand.href} className="group block">
+                  <Card className="overflow-hidden hover:shadow-xl transition-all duration-300 group-hover:scale-105 h-full">
+                    <div className="relative h-48 md:h-56">
+                      <Image
+                        src={brand.image}
+                        alt={`${brand.name} vehicles`}
+                        fill
+                        className="object-cover group-hover:scale-110 transition-transform duration-500"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+                      
+                      {/* Brand Logo */}
+                      <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm rounded-lg p-2">
+                        <div className="relative w-12 h-8">
+                          <Image
+                            src={brand.logo}
+                            alt={`${brand.name} logo`}
+                            fill
+                            className="object-contain"
+                          />
+                        </div>
+                      </div>
+                      
+                      {/* Content Overlay */}
+                      <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
+                        <h3 className="text-2xl font-bold mb-2">{brand.name}</h3>
+                        <p className="text-sm opacity-90 group-hover:opacity-100 transition-opacity">
+                          {brand.description}
+                        </p>
+                      </div>
+                    </div>
+                    
+                    <CardContent className="p-4">
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm font-medium text-gray-600">View Parts</span>
+                        <ArrowRight className="h-4 w-4 text-primary group-hover:translate-x-1 transition-transform" />
+                      </div>
+                    </CardContent>
+                  </Card>
+                </Link>
+              </AnimatedCard>
+            ))}
+          </div>
+
+          {/* Navigation Controls */}
+          <div className="flex items-center justify-center space-x-4">
+            <button
+              onClick={prevBrand}
+              className="bg-gray-100 hover:bg-gray-200 rounded-full p-3 transition-all duration-300 hover:scale-110"
+              aria-label="Previous brand"
+            >
+              <ChevronLeft className="h-5 w-5 text-gray-600" />
+            </button>
+            
+            {/* Brand Indicators */}
+            <div className="flex space-x-2">
+              {carBrands.map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => setCurrentBrandIndex(index)}
+                  className={`transition-all duration-300 rounded-full ${
+                    index === currentBrandIndex
+                      ? 'w-8 h-2 bg-primary'
+                      : 'w-2 h-2 bg-gray-300 hover:bg-gray-400'
+                  }`}
+                  aria-label={`Go to ${carBrands[index].name}`}
+                />
+              ))}
+            </div>
+            
+            <button
+              onClick={nextBrand}
+              className="bg-gray-100 hover:bg-gray-200 rounded-full p-3 transition-all duration-300 hover:scale-110"
+              aria-label="Next brand"
+            >
+              <ChevronRight className="h-5 w-5 text-gray-600" />
+            </button>
+          </div>
+
+          {/* Auto-play Toggle */}
+          <div className="flex justify-center mt-6">
+            <button
+              onClick={() => setIsAutoPlaying(!isAutoPlaying)}
+              className="text-sm text-gray-500 hover:text-gray-700 transition-colors flex items-center space-x-2"
+            >
+              {isAutoPlaying ? (
+                <><Pause className="h-4 w-4" /> <span>Pause</span></>
+              ) : (
+                <><Play className="h-4 w-4" /> <span>Play</span></>
+              )}
+            </button>
+          </div>
+        </div>
+
+        {/* View All Brands Button */}
+        <AnimatedSection delay={400} className="text-center mt-12">
+          <Button size="lg" asChild className="hover:scale-105 transition-transform duration-200">
+            <Link href="/genuine-parts">
+              View All Brands & Parts <ArrowRight className="ml-2 h-5 w-5" />
+            </Link>
+          </Button>
+        </AnimatedSection>
+      </div>
+    </section>
+  );
+}
+
 export default function Home() {
   const [loading, setLoading] = useState(true);
 
@@ -426,6 +712,9 @@ export default function Home() {
   return (
     <div className="flex flex-col">
       <HeroCarousel />
+      
+      {/* Car Brand Slider */}
+      <CarBrandSlider />
 
       {/* Welcome Section */}
       <section className="py-16 md:py-20 bg-gradient-to-b from-gray-50 to-white">

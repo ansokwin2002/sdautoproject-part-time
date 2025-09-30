@@ -19,7 +19,7 @@ const ProductCard = ({ product, className, loading }: ProductCardProps) => {
   }
 
   const discountPercentage = product.originalPrice 
-    ? Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)
+    ? Math.round(((product.originalPrice - parseFloat(product.price.replace(/[^\d.-]/g, ''))) / product.originalPrice) * 100)
     : 0;
 
   return (
@@ -32,7 +32,7 @@ const ProductCard = ({ product, className, loading }: ProductCardProps) => {
       <div className="relative aspect-[4/3] overflow-hidden bg-gray-50">
         <Link href={`/product/${product.id}`} className="block h-full">
           <SafeImage
-            src={product.image}
+            src={product.images[0]}
             alt={product.name}
             fill
             className="object-cover group-hover:scale-110 transition-transform duration-500"
@@ -138,7 +138,7 @@ const ProductCard = ({ product, className, loading }: ProductCardProps) => {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <span className="text-2xl font-bold text-gray-900">
-                ${product.price.toFixed(2)}
+                {product.price}
               </span>
               
             </div>

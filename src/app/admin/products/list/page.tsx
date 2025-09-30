@@ -105,7 +105,7 @@ export default function ProductListPage() {
                 <TableCell className="font-medium">{product.name}</TableCell>
                 <TableCell>{product.code}</TableCell>
                 <TableCell>{product.brand}</TableCell>
-                <TableCell>${product.price.toFixed(2)}</TableCell>
+                <TableCell>{product.price}</TableCell>
                 <TableCell>{product.tag}</TableCell>
                 <TableCell className="text-right">
                   <Button variant="ghost" size="icon" className="mr-2">
