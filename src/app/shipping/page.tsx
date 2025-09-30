@@ -49,10 +49,10 @@ const AnimatedSection = ({ children, className = "", delay = 0 }) => {
   return (
     <div
       ref={ref}
-      className={`transition-all duration-1000 ease-out ${
+      className={`transition-all duration-400 ease-out ${
         isIntersecting 
           ? 'opacity-100 translate-y-0' 
-          : 'opacity-0 translate-y-12'
+          : 'opacity-0 translate-y-6'
       } ${className}`}
       style={{ transitionDelay: `${delay}ms` }}
     >
@@ -67,10 +67,10 @@ const AnimatedCard = ({ children, className = "", delay = 0 }) => {
   return (
     <div
       ref={ref}
-      className={`transition-all duration-800 ease-out ${
+      className={`transition-all duration-300 ease-out ${
         isIntersecting 
           ? 'opacity-100 translate-y-0 scale-100' 
-          : 'opacity-0 translate-y-8 scale-95'
+          : 'opacity-0 translate-y-4 scale-98'
       } ${className}`}
       style={{ transitionDelay: `${delay}ms` }}
     >
@@ -85,10 +85,10 @@ const AnimatedText = ({ children, className = "", delay = 0 }) => {
   return (
     <div
       ref={ref}
-      className={`transition-all duration-700 ease-out ${
+      className={`transition-all duration-350 ease-out ${
         isIntersecting 
           ? 'opacity-100 translate-x-0' 
-          : 'opacity-0 -translate-x-8'
+          : 'opacity-0 -translate-x-4'
       } ${className}`}
       style={{ transitionDelay: `${delay}ms` }}
     >
@@ -103,10 +103,10 @@ const AnimatedImage = ({ children, className = "", delay = 0 }) => {
   return (
     <div
       ref={ref}
-      className={`transition-all duration-900 ease-out ${
+      className={`transition-all duration-400 ease-out ${
         isIntersecting 
           ? 'opacity-100 translate-x-0 scale-100' 
-          : 'opacity-0 translate-x-12 scale-95'
+          : 'opacity-0 translate-x-6 scale-98'
       } ${className}`}
       style={{ transitionDelay: `${delay}ms` }}
     >
@@ -124,7 +124,7 @@ export default function ShippingPage() {
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <AnimatedSection className="relative h-full order-2 md:order-1" delay={200}>
               <Image 
-                src="https://sdmntpraustraliaeast.oaiusercontent.com/files/00000000-ab34-61fa-8aee-bbb30fc3c5e2/raw?se=2025-09-25T14%3A12%3A33Z&sp=r&sv=2024-08-04&sr=b&scid=f8fad558-9291-5712-b5f2-3ac8437abfb9&skoid=cb94e22a-e3df-4e6a-9e17-1696f40fa435&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2025-09-24T17%3A19%3A22Z&ske=2025-09-25T17%3A19%3A22Z&sks=b&skv=2024-08-04&sig=DcvYfdpxjppPnpt3tKnJXkLew3I/eNeEC8c218XgtgQ%3D" 
+                src="/assets/images/p_shipping.png" 
                 alt="Modern warehouse with organized shipping boxes and logistics operations" 
                 data-ai-hint="Warehouse shipping logistics boxes storage"
                 fill 
@@ -178,12 +178,12 @@ export default function ShippingPage() {
             
           </AnimatedSection>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 max-w-6xl mx-auto items-stretch">
             {/* By Ship - Australia Post */}
             <AnimatedSection delay={100}>
-              <div className="bg-white rounded-lg p-8 shadow-lg hover:shadow-xl transition-all duration-300 group text-center flex flex-col min-h-[300px] md:min-h-[500px]">
-                <div className="mb-6">
-                  <div className="relative w-48 h-48 mx-auto mb-4 flex items-center justify-center">
+              <div className="bg-white rounded-lg p-4 md:p-6 lg:p-8 shadow-lg hover:shadow-xl transition-all duration-300 group text-center flex flex-col h-full">
+                <div className="mb-4 md:mb-6">
+                  <div className="relative w-32 h-32 md:w-40 md:h-40 lg:w-48 lg:h-48 mx-auto mb-3 md:mb-4 flex items-center justify-center">
                     <Image
                       src="/assets/post.jpg"
                       alt="Australia Post"
@@ -192,8 +192,8 @@ export default function ShippingPage() {
                     />
                   </div>
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3">By Australia Post Express</h3>
-                <p className="text-gray-600 leading-relaxed flex-grow">
+                <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-2 md:mb-3">By Australia Post Express</h3>
+                <p className="text-sm md:text-base text-gray-600 leading-relaxed flex-grow">
                   Reliable shipping through Australia Post network. Perfect for standard delivery across Australia with tracking included.
                 </p>
               </div>
@@ -201,19 +201,19 @@ export default function ShippingPage() {
 
             {/* By Air */}
             <AnimatedSection delay={200}>
-              <div className="bg-white rounded-lg p-8 shadow-lg hover:shadow-xl transition-all duration-300 group text-center flex flex-col min-h-[300px] md:min-h-[500px]">
-                <div className="mb-6">
-                  <div className="relative w-48 h-48 mx-auto mb-4 flex items-center justify-center">
+              <div className="bg-white rounded-lg p-4 md:p-6 lg:p-8 shadow-lg hover:shadow-xl transition-all duration-300 group text-center flex flex-col h-full">
+                <div className="mb-4 md:mb-6">
+                  <div className="relative w-32 h-32 md:w-40 md:h-40 lg:w-48 lg:h-48 mx-auto mb-3 md:mb-4 flex items-center justify-center">
                     <Image
                       src="/assets/dhl.svg"
                       alt="DHL Logo"
                       fill
-                      className=""
+                      className="object-contain"
                     />
                   </div>
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3 mt-auto">By DHL Express</h3>
-                <p className="text-gray-600 leading-relaxed flex-grow">
+                <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-2 md:mb-3">By DHL Express</h3>
+                <p className="text-sm md:text-base text-gray-600 leading-relaxed flex-grow">
                   Trusted worldwide shipping with fast delivery times and full tracking.
                 </p>
               </div>
@@ -221,9 +221,9 @@ export default function ShippingPage() {
 
             {/* By Land */}
             <AnimatedSection delay={300}>
-              <div className="bg-white rounded-lg p-8 shadow-lg hover:shadow-xl transition-all duration-300 group text-center flex flex-col min-h-[300px] md:min-h-[500px]">
-                <div className="mb-6">
-                  <div className="relative w-48 h-48 mx-auto mb-4 flex items-center justify-center">
+              <div className="bg-white rounded-lg p-4 md:p-6 lg:p-8 shadow-lg hover:shadow-xl transition-all duration-300 group text-center flex flex-col h-full">
+                <div className="mb-4 md:mb-6">
+                  <div className="relative w-32 h-32 md:w-40 md:h-40 lg:w-48 lg:h-48 mx-auto mb-3 md:mb-4 flex items-center justify-center">
                     <Image
                       src="/assets/interparcel.png"
                       alt="Interparcel Delivery"
@@ -232,8 +232,8 @@ export default function ShippingPage() {
                     />
                   </div>
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3">By Interparcel</h3>
-                <p className="text-gray-600 leading-relaxed flex-grow">
+                <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-2 md:mb-3">By Interparcel</h3>
+                <p className="text-sm md:text-base text-gray-600 leading-relaxed flex-grow">
                   Flexible and affordable courier services with multiple delivery options and tracking included.
                 </p>
               </div>

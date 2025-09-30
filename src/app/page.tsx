@@ -50,7 +50,7 @@ const heroSlides = [
   // Ford Genuine Parts - 1st in dropdown
   {
     id: 1,
-    image: "https://www.motorbiscuit.com/wp-content/uploads/2024/07/2024-Ford-F-150-2.jpg",
+    image: "https://media.cnn.com/api/v1/images/stellar/prod/230509104454-02-ford-ranger-reveal.jpg?c=16x9&q=h_833,w_1480,c_fill",
     title: "Ford Genuine Parts",
     subtitle: "Built Ford Tough - Experience legendary durability and performance with Ford's complete range of genuine parts and accessories.",
     primaryButton: {
@@ -67,7 +67,7 @@ const heroSlides = [
   // Isuzu Genuine Parts - 2nd in dropdown
   {
     id: 2,
-    image: "https://www.isuzuphil.com/storage/app/uploads/public/667/40b/f33/66740bf33f159417430061.jpg",
+    image: "https://imgcdn.oto.com/large/gallery/exterior/17/2483/isuzu-d-max-2021-front-angle-low-view-402309.jpg",
     title: "Isuzu Genuine Parts",
     subtitle: "Go the Distance - Commercial grade durability and strength with Isuzu's reliable genuine parts for every journey.",
     primaryButton: {
@@ -169,7 +169,7 @@ const heroSlides = [
   // Suzuki Genuine Parts - 8th in dropdown
   {
     id: 8,
-    image: "https://www.dhnet.be/resizer/v2/L7UKI37TS5HPPJITE7S5QAXWII.jpg?auth=5701f45669d7b83e908ee3996b92348154664ca84247e78afd4ca8ffbf27c271&width=1200&height=800&quality=85&focal=1280%2C853",
+    image: "https://seo-cms.autoscout24.ch/wp-content/uploads/2025/03/613197B-1024x683.jpg",
     title: "Suzuki Genuine Parts",
     subtitle: "Way of Life - Compact efficiency and versatile performance with Suzuki's practical vehicles and authentic genuine parts.",
     primaryButton: {
@@ -348,7 +348,7 @@ function HeroCarousel() {
   const currentSlideData = heroSlides[currentSlide];
 
   return (
-    <section className="relative h-[60vh] md:h-[70vh] w-full overflow-hidden group">
+    <section className="relative h-[70vh] md:h-[80vh] w-full overflow-hidden group">
       {/* Background Images with Smooth Transition */}
       <div className="relative w-full h-full">
         {heroSlides.map((slide, index) => (
@@ -365,7 +365,7 @@ function HeroCarousel() {
               alt={slide.title}
               data-ai-hint={slide.aiHint}
               fill
-              className="object-cover"
+              className="object-cover object-center"
               priority={index === 0}
             />
           </div>
