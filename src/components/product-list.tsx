@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useMemo, useRef, useEffect } from 'react';
+import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 import { products } from "@/lib/products";
 import ProductCard from "@/components/product-card";
 import { Input } from "@/components/ui/input";
@@ -51,10 +52,10 @@ const AnimatedCard = ({ children, className = "", delay = 0 }) => {
   return (
     <div
       ref={ref}
-      className={`transition-all duration-800 ease-out ${
+      className={`transition-all duration-300 ease-out ${
         isIntersecting 
           ? 'opacity-100 translate-y-0 scale-100' 
-          : 'opacity-0 translate-y-8 scale-95'
+          : 'opacity-0 translate-y-4 scale-98'
       } ${className}`}
       style={{ transitionDelay: `${delay}ms` }}
     >
@@ -64,6 +65,9 @@ const AnimatedCard = ({ children, className = "", delay = 0 }) => {
 };
 
 export default function ProductList({ products: initialProducts, showContainer = true, selectedBrand: propSelectedBrand, allowedBrands: propAllowedBrands }: { products?: import("@/lib/products").Product[], showContainer?: boolean, selectedBrand?: string | null, allowedBrands?: string[] }) {
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
   const [searchTerm, setSearchTerm] = useState('');
   const [sortOrder, setSortOrder] = useState('default');
   const [selectedBrand, setSelectedBrand] = useState<string>(propSelectedBrand || 'all'); // Use propSelectedBrand as initial state
@@ -78,9 +82,7 @@ export default function ProductList({ products: initialProducts, showContainer =
   }, [propSelectedBrand]);
 
   const uniqueBrands = useMemo(() => {
-    const brands = Array.from(new Set(productSource.map((p) => p.brand))).filter(brand => propAllowedBrands ? propAllowedBrands.includes(brand) : true);
-    
-    // Sort brands in the desired order
+    // Define the complete brand order including brands without products
     const brandOrder = [
       "Ford Parts",
       "Isuzu Parts", 
@@ -93,7 +95,17 @@ export default function ProductList({ products: initialProducts, showContainer =
       "Aftermarket"
     ];
     
-    return brands.sort((a, b) => {
+    // Get brands that actually have products
+    const brandsWithProducts = Array.from(new Set(productSource.map((p) => p.brand))).filter(brand => propAllowedBrands ? propAllowedBrands.includes(brand) : true);
+    
+    // If propAllowedBrands is provided, use the complete brand order (including brands without products)
+    // Otherwise, only show brands that have products
+    if (propAllowedBrands) {
+      return brandOrder.filter(brand => propAllowedBrands.includes(brand));
+    }
+    
+    // For regular product list (not genuine-parts page), only show brands with products
+    return brandsWithProducts.sort((a, b) => {
       const aIndex = brandOrder.indexOf(a);
       const bIndex = brandOrder.indexOf(b);
       
@@ -179,6 +191,20 @@ export default function ProductList({ products: initialProducts, showContainer =
     currentPage * ITEMS_PER_PAGE
   );
 
+  // Handle brand selection change and update URL
+  const handleBrandChange = (brand: string) => {
+    setSelectedBrand(brand);
+    
+    // Only update URL if we're on the genuine-parts page and have allowedBrands (indicating we should update URLs)
+    if (pathname === '/genuine-parts' && propAllowedBrands) {
+      if (brand === 'all') {
+        router.push('/genuine-parts');
+      } else {
+        router.push(`/genuine-parts?brand=${encodeURIComponent(brand)}`);
+      }
+    }
+  };
+
   // Reset currentPage and searchTerm when filters change
   useEffect(() => {
     setCurrentPage(1);
@@ -210,7 +236,7 @@ export default function ProductList({ products: initialProducts, showContainer =
                 <SelectItem value="price-desc">Price: High to Low</SelectItem>
               </SelectContent>
             </Select>
-            <Select onValueChange={setSelectedBrand} value={selectedBrand}>
+            <Select onValueChange={handleBrandChange} value={selectedBrand}>
               <SelectTrigger className="w-full sm:w-[180px]">
                 <SelectValue placeholder="Filter by brand" />
               </SelectTrigger>
@@ -229,12 +255,12 @@ export default function ProductList({ products: initialProducts, showContainer =
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-5">
           {loading
             ? Array.from({ length: ITEMS_PER_PAGE }).map((_, index) => (
-                <AnimatedCard key={index} delay={(index + 1) * 100}>
+                <AnimatedCard key={index} delay={index * 30}>
                   <ProductCard loading />
                 </AnimatedCard>
               ))
             : paginatedProducts.map((product, index) => (
-                <AnimatedCard key={product.id} delay={(index + 1) * 100}>
+                <AnimatedCard key={product.id} delay={index * 30}>
                   <ProductCard product={product} />
                 </AnimatedCard>
               ))}

@@ -50,12 +50,12 @@ const heroSlides = [
   // Ford Genuine Parts - 1st in dropdown
   {
     id: 1,
-    image: "https://images.unsplash.com/photo-1612825173281-9a193378527e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
+    image: "https://www.motorbiscuit.com/wp-content/uploads/2024/07/2024-Ford-F-150-2.jpg",
     title: "Ford Genuine Parts",
     subtitle: "Built Ford Tough - Experience legendary durability and performance with Ford's complete range of genuine parts and accessories.",
     primaryButton: {
       text: "View Ford Parts",
-      href: "/genuine-parts?brand=Ford"
+      href: "/genuine-parts?brand=Ford%20Parts"
     },
     secondaryButton: {
       text: "Contact Us",
@@ -67,12 +67,12 @@ const heroSlides = [
   // Isuzu Genuine Parts - 2nd in dropdown
   {
     id: 2,
-    image: "https://images.unsplash.com/photo-1544636331-e26879cd4d9b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
+    image: "https://www.isuzuphil.com/storage/app/uploads/public/667/40b/f33/66740bf33f159417430061.jpg",
     title: "Isuzu Genuine Parts",
     subtitle: "Go the Distance - Commercial grade durability and strength with Isuzu's reliable genuine parts for every journey.",
     primaryButton: {
       text: "View Isuzu Parts",
-      href: "/genuine-parts?brand=Isuzu"
+      href: "/genuine-parts?brand=Isuzu%20Parts"
     },
     secondaryButton: {
       text: "Get Quote",
@@ -84,12 +84,12 @@ const heroSlides = [
   // Toyota Genuine Parts - 3rd in dropdown
   {
     id: 3,
-    image: "https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
+    image: "https://www.toyota.com.la/content/dam/toyota-blueprint/discover-toyota/toyota-electrified/toyota-electrification/toyota-xev-phev.jpg",
     title: "Toyota Genuine Parts",
     subtitle: "Let's Go Places - Reliability and innovation in every part. Discover Toyota's world-class genuine automotive components.",
     primaryButton: {
       text: "View Toyota Parts",
-      href: "/genuine-parts?brand=Toyota"
+      href: "/genuine-parts?brand=Toyota%20Parts"
     },
     secondaryButton: {
       text: "Learn More",
@@ -101,12 +101,12 @@ const heroSlides = [
   // Mazda Genuine Parts - 4th in dropdown
   {
     id: 4,
-    image: "https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
+    image: "https://www.topgear.com/sites/default/files/2025/01/2024-Mazda3-e-Skyactiv-G-Exclusive-Line-01.jpg",
     title: "Mazda Genuine Parts",
     subtitle: "Driving Matters - Precision engineering and stylish design combined with quality genuine parts for the ultimate driving experience.",
     primaryButton: {
       text: "View Mazda Parts",
-      href: "/genuine-parts?brand=Mazda"
+      href: "/genuine-parts?brand=Mazda%20Parts"
     },
     secondaryButton: {
       text: "Contact Us",
@@ -118,12 +118,12 @@ const heroSlides = [
   // Mitsubishi Genuine Parts - 5th in dropdown
   {
     id: 5,
-    image: "https://images.unsplash.com/photo-1583121274602-3e2820c69888?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
+    image: "https://res.cloudinary.com/total-dealer/image/upload/w_3840,f_auto,q_75/v1/production/yftnz3w1keymgla1toe5sfs5m53q",
     title: "Mitsubishi Genuine Parts",
     subtitle: "Drive your Ambition - Proven performance and reliability with Mitsubishi's innovative genuine parts and authentic replacements.",
     primaryButton: {
       text: "View Mitsubishi Parts",
-      href: "/genuine-parts?brand=Mitsubishi"
+      href: "/genuine-parts?brand=Mitsubishi%20Parts"
     },
     secondaryButton: {
       text: "Service Center",
@@ -135,12 +135,12 @@ const heroSlides = [
   // Nissan Genuine Parts - 6th in dropdown
   {
     id: 6,
-    image: "https://images.unsplash.com/photo-1605559424843-9e4c228bf1c2?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
+    image: "https://www.topgear.com/sites/default/files/2024/09/240314-01_GT-R_MY25_009.jpg",
     title: "Nissan Genuine Parts",
     subtitle: "Innovation That Excites - Cutting-edge automotive solutions with Nissan's advanced technology and genuine parts for every model.",
     primaryButton: {
       text: "View Nissan Parts",
-      href: "/genuine-parts?brand=Nissan"
+      href: "/genuine-parts?brand=Nissan%20Parts"
     },
     secondaryButton: {
       text: "Learn More",
@@ -152,12 +152,12 @@ const heroSlides = [
   // Honda Genuine Parts - 7th in dropdown
   {
     id: 7,
-    image: "https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
+    image: "https://media.ed.edmunds-media.com/honda/civic/2026/oem/2026_honda_civic_sedan_si_fq_oem_1_1280.jpg",
     title: "Honda Genuine Parts",
     subtitle: "The Power of Dreams - Advanced technology and efficiency with Honda's reliable vehicles and high-quality genuine parts.",
     primaryButton: {
       text: "View Honda Parts",
-      href: "/genuine-parts?brand=Honda"
+      href: "/genuine-parts?brand=Honda%20Parts"
     },
     secondaryButton: {
       text: "Contact Us",
@@ -169,12 +169,12 @@ const heroSlides = [
   // Suzuki Genuine Parts - 8th in dropdown
   {
     id: 8,
-    image: "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
+    image: "https://www.dhnet.be/resizer/v2/L7UKI37TS5HPPJITE7S5QAXWII.jpg?auth=5701f45669d7b83e908ee3996b92348154664ca84247e78afd4ca8ffbf27c271&width=1200&height=800&quality=85&focal=1280%2C853",
     title: "Suzuki Genuine Parts",
     subtitle: "Way of Life - Compact efficiency and versatile performance with Suzuki's practical vehicles and authentic genuine parts.",
     primaryButton: {
       text: "View Suzuki Parts",
-      href: "/genuine-parts?brand=Suzuki"
+      href: "/genuine-parts?brand=Suzuki%20Parts"
     },
     secondaryButton: {
       text: "Get Quote",
@@ -230,10 +230,10 @@ const AnimatedSection = ({ children, className = "", delay = 0 }) => {
   return (
     <div
       ref={ref}
-      className={`transition-all duration-1000 ease-out ${
+      className={`transition-all duration-400 ease-out ${
         isIntersecting 
           ? 'opacity-100 translate-y-0' 
-          : 'opacity-0 translate-y-12'
+          : 'opacity-0 translate-y-6'
       } ${className}`}
       style={{ transitionDelay: `${delay}ms` }}
     >
@@ -248,10 +248,10 @@ const AnimatedCard = ({ children, className = "", delay = 0 }) => {
   return (
     <div
       ref={ref}
-      className={`transition-all duration-800 ease-out ${
+      className={`transition-all duration-300 ease-out ${
         isIntersecting 
           ? 'opacity-100 translate-y-0 scale-100' 
-          : 'opacity-0 translate-y-8 scale-95'
+          : 'opacity-0 translate-y-4 scale-98'
       } ${className}`}
       style={{ transitionDelay: `${delay}ms` }}
     >
@@ -266,10 +266,10 @@ const AnimatedText = ({ children, className = "", delay = 0 }) => {
   return (
     <div
       ref={ref}
-      className={`transition-all duration-700 ease-out ${
+      className={`transition-all duration-350 ease-out ${
         isIntersecting 
           ? 'opacity-100 translate-x-0' 
-          : 'opacity-0 -translate-x-8'
+          : 'opacity-0 -translate-x-4'
       } ${className}`}
       style={{ transitionDelay: `${delay}ms` }}
     >
@@ -284,10 +284,10 @@ const AnimatedImage = ({ children, className = "", delay = 0 }) => {
   return (
     <div
       ref={ref}
-      className={`transition-all duration-900 ease-out ${
+      className={`transition-all duration-400 ease-out ${
         isIntersecting 
           ? 'opacity-100 translate-x-0 scale-100' 
-          : 'opacity-0 translate-x-12 scale-95'
+          : 'opacity-0 translate-x-6 scale-98'
       } ${className}`}
       style={{ transitionDelay: `${delay}ms` }}
     >
@@ -615,7 +615,7 @@ export default function Home() {
         </div>
       </section>
 
-      <ProductList showContainer={true} />
+      <ProductList showContainer={true} allowedBrands={["Ford Parts", "Isuzu Parts", "Toyota Parts", "Mazda Parts", "Mitsubishi Parts", "Nissan Parts", "Honda Parts", "Suzuki Parts", "Aftermarket"]} />
 
      {/* Latest Blog Section */}
      

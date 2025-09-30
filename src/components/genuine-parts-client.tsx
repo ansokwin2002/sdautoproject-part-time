@@ -19,10 +19,18 @@ export default function GenuinePartsClient() {
   const allowedBrands = useMemo(() => ["Ford Parts", "Isuzu Parts", "Toyota Parts", "Mazda Parts", "Mitsubishi Parts", "Nissan Parts", "Honda Parts", "Suzuki Parts", "Aftermarket"], []);
 
   const initialBrand = useMemo(() => {
-    if (initialBrandParam && !initialBrandParam.endsWith(' Parts') && initialBrandParam !== 'Aftermarket') {
-      const brandWithParts = `${initialBrandParam} Parts`;
-      if (allowedBrands.includes(brandWithParts)) {
-        return brandWithParts;
+    if (initialBrandParam) {
+      // If the URL already has the full brand name (e.g., "Isuzu Parts"), use it directly
+      if (allowedBrands.includes(initialBrandParam)) {
+        return initialBrandParam;
+      }
+      
+      // If the URL has just the brand name (e.g., "Isuzu"), convert it to full name
+      if (!initialBrandParam.endsWith(' Parts') && initialBrandParam !== 'Aftermarket') {
+        const brandWithParts = `${initialBrandParam} Parts`;
+        if (allowedBrands.includes(brandWithParts)) {
+          return brandWithParts;
+        }
       }
     }
     return initialBrandParam;
@@ -112,6 +120,7 @@ export default function GenuinePartsClient() {
 
   const handleBrandClick = (brand: string | null) => {
     if (brand) {
+      // Use the full brand name in the URL for professional appearance
       router.push(`/genuine-parts?brand=${encodeURIComponent(brand)}`);
     } else {
       router.push(`/genuine-parts`);
