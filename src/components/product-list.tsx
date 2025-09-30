@@ -77,7 +77,36 @@ export default function ProductList({ products: initialProducts, showContainer =
     setSelectedBrand(propSelectedBrand || 'all');
   }, [propSelectedBrand]);
 
-  const uniqueBrands = Array.from(new Set(productSource.map((p) => p.brand))).filter(brand => propAllowedBrands ? propAllowedBrands.includes(brand) : true);
+  const uniqueBrands = useMemo(() => {
+    const brands = Array.from(new Set(productSource.map((p) => p.brand))).filter(brand => propAllowedBrands ? propAllowedBrands.includes(brand) : true);
+    
+    // Sort brands in the desired order
+    const brandOrder = [
+      "Ford Parts",
+      "Isuzu Parts", 
+      "Toyota Parts",
+      "Mazda Parts",
+      "Mitsubishi Parts",
+      "Nissan Parts",
+      "Honda Parts",
+      "Suzuki Parts",
+      "Aftermarket"
+    ];
+    
+    return brands.sort((a, b) => {
+      const aIndex = brandOrder.indexOf(a);
+      const bIndex = brandOrder.indexOf(b);
+      
+      if (aIndex !== -1 && bIndex !== -1) {
+        return aIndex - bIndex;
+      }
+      
+      if (aIndex !== -1) return -1;
+      if (bIndex !== -1) return 1;
+      
+      return a.localeCompare(b);
+    });
+  }, [productSource, propAllowedBrands]);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -111,6 +140,33 @@ export default function ProductList({ products: initialProducts, showContainer =
           return order === 'asc' ? priceA - priceB : priceB - priceA;
         }
         return 0;
+      });
+    } else if (selectedBrand === 'all') {
+      // When showing all brands with default sorting, sort by brand order
+      const brandOrder = [
+        "Ford Parts",
+        "Isuzu Parts", 
+        "Toyota Parts",
+        "Mazda Parts",
+        "Mitsubishi Parts",
+        "Nissan Parts",
+        "Honda Parts",
+        "Suzuki Parts",
+        "Aftermarket"
+      ];
+      
+      filtered.sort((a, b) => {
+        const aIndex = brandOrder.indexOf(a.brand);
+        const bIndex = brandOrder.indexOf(b.brand);
+        
+        if (aIndex !== -1 && bIndex !== -1) {
+          return aIndex - bIndex;
+        }
+        
+        if (aIndex !== -1) return -1;
+        if (bIndex !== -1) return 1;
+        
+        return a.brand.localeCompare(b.brand);
       });
     }
 

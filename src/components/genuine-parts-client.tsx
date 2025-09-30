@@ -16,10 +16,10 @@ export default function GenuinePartsClient() {
   const router = useRouter(); // Get router instance
   const initialBrandParam = searchParams.get('brand');
   const viewParam = searchParams.get('view');
-  const allowedBrands = useMemo(() => ["Ford Parts", "Isuzu Parts", "Toyota Parts", "Mazda Parts", "Mitsubishi Parts", "Nissan Parts", "Honda Parts", "Suzuki Parts"], []);
+  const allowedBrands = useMemo(() => ["Ford Parts", "Isuzu Parts", "Toyota Parts", "Mazda Parts", "Mitsubishi Parts", "Nissan Parts", "Honda Parts", "Suzuki Parts", "Aftermarket"], []);
 
   const initialBrand = useMemo(() => {
-    if (initialBrandParam && !initialBrandParam.endsWith(' Parts')) {
+    if (initialBrandParam && !initialBrandParam.endsWith(' Parts') && initialBrandParam !== 'Aftermarket') {
       const brandWithParts = `${initialBrandParam} Parts`;
       if (allowedBrands.includes(brandWithParts)) {
         return brandWithParts;
@@ -33,7 +33,18 @@ export default function GenuinePartsClient() {
   }, [allowedBrands]);
 
   const uniqueBrands = useMemo(() => {
-    return ["Ford Parts", "Isuzu Parts", "Toyota Parts", "Mazda Parts", "Mitsubishi Parts", "Nissan Parts", "Honda Parts", "Suzuki Parts", "Aftermarket"];
+    // Define the exact order you want the brands to appear
+    return [
+      "Ford Parts", 
+      "Isuzu Parts", 
+      "Toyota Parts", 
+      "Mazda Parts", 
+      "Mitsubishi Parts", 
+      "Nissan Parts", 
+      "Honda Parts", 
+      "Suzuki Parts", 
+      "Aftermarket"
+    ];
   }, []);
 
   const [selectedBrand, setSelectedBrand] = useState<string | null>(initialBrand);
@@ -53,7 +64,35 @@ export default function GenuinePartsClient() {
 
   const filteredProducts = useMemo(() => {
     if (!selectedBrand) {
-      return filteredProductSource;
+      // When showing all brands, sort by the specific brand order you want
+      const brandOrder = [
+        "Ford Parts",
+        "Isuzu Parts", 
+        "Toyota Parts",
+        "Mazda Parts",
+        "Mitsubishi Parts",
+        "Nissan Parts",
+        "Honda Parts",
+        "Suzuki Parts",
+        "Aftermarket"
+      ];
+      
+      return filteredProductSource.sort((a, b) => {
+        const aIndex = brandOrder.indexOf(a.brand);
+        const bIndex = brandOrder.indexOf(b.brand);
+        
+        // If both brands are in the order list, sort by their position
+        if (aIndex !== -1 && bIndex !== -1) {
+          return aIndex - bIndex;
+        }
+        
+        // If only one brand is in the order list, prioritize it
+        if (aIndex !== -1) return -1;
+        if (bIndex !== -1) return 1;
+        
+        // If neither brand is in the order list, sort alphabetically
+        return a.brand.localeCompare(b.brand);
+      });
     }
     // Compare product.brand with selectedBrand
     return filteredProductSource.filter(product => product.brand === selectedBrand);

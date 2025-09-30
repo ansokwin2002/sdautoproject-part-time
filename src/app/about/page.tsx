@@ -140,9 +140,7 @@ export default function AboutPage() {
                 </AnimatedText>
                 <AnimatedText delay={200}>
                   <p className="text-gray-600 text-lg leading-relaxed mb-8">
-                    SD Auto Parts has earned 15 years of experience with auto parts business specializing in parts for any vehicle from Thailand, UK, and America. If you have any difficulty to get any part for your vehicle because of dealer's price is too high, please don't hesitate to contact us at{' '}
-                    <span className="font-semibold text-blue-600">0460786533</span>, email:{' '}
-                    <span className="font-semibold text-blue-600">sdautaustralia@gmail.com</span>. Thank You!...
+                    SD Auto is an Australian family-owned and operated business, officially registered with the Australian Taxation Office (ATO) in 2023, and based in Werribee, Melbourne. We specialize in selling 100% genuine parts for popular Thailand-made brands such as Ford, Isuzu, Toyota, Mazda, Mitsubishi, Nissan, Honda, and Suzuki at affordable prices. We offer worldwide shipping with the best rates to your address. With 15 years of experience in the auto parts industry, we guarantee to provide you with the correct part for your vehicle at the best price and service. Contact us today!
                   </p>
                 </AnimatedText>
                 <AnimatedSection delay={300}>
