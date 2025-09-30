@@ -29,13 +29,13 @@ const ProductCard = ({ product, className, loading }: ProductCardProps) => {
       className
     )}>
       {/* Image Section */}
-      <div className="relative aspect-[4/3] overflow-hidden bg-gray-50">
-        <Link href={`/product/${product.id}`} className="block h-full">
+      <div className="relative aspect-[4/3] overflow-hidden bg-gray-50 flex items-center justify-center">
+        <Link href={`/product/${product.id}`} className="block h-full w-full">
           <SafeImage
             src={product.images[0]}
             alt={product.name}
             fill
-            className="object-cover group-hover:scale-110 transition-transform duration-500"
+            className="object-contain group-hover:scale-105 transition-transform duration-500 p-2"
           />
         </Link>
         
