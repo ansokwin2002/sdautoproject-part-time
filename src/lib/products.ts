@@ -1619,7 +1619,7 @@ export const products: Product[] = [
     id: "F001_NEW",
     name: "FORD RANGER Next Gen BLACK Ford Oval Badge for Tailgate Wildtrak XLT Sport XL",
     description: "",
-    price: "$1,650.00",
+    price: "$142.00",
     images: [
       "/assets/images/brand/ford/01/p1.webp",
       "/assets/images/brand/ford/01/p2.webp",

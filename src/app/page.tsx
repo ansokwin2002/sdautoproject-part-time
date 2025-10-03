@@ -8,7 +8,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { products } from "@/lib/products";
 import ProductCard from "@/components/product-card";
 import ProductList from "@/components/product-list";
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useCallback, useRef, Suspense } from "react";
 
 // Custom hook for intersection observer
 const useIntersectionObserver = (options = {}) => {
@@ -50,7 +50,23 @@ const heroSlides = [
   // Ford Genuine Parts - 1st in dropdown
   {
     id: 1,
-    image: "https://media.cnn.com/api/v1/images/stellar/prod/230509104454-02-ford-ranger-reveal.jpg?c=16x9&q=h_833,w_1480,c_fill",
+    image: "/assets/slide/ford.jpg",
+    title: "Ford Genuine Parts",
+    subtitle: "Built Ford Tough - Experience legendary durability and performance with Ford's complete range of genuine parts and accessories.",
+    primaryButton: {
+      text: "View Ford Parts",
+      href: "/genuine-parts?brand=Ford%20Parts"
+    },
+    secondaryButton: {
+      text: "Contact Us",
+      href: "/contact"
+    },
+    aiHint: "Ford Mustang sports car"
+  },
+
+   {
+    id: 2,
+    image: "/assets/slide/ford2.jpg",
     title: "Ford Genuine Parts",
     subtitle: "Built Ford Tough - Experience legendary durability and performance with Ford's complete range of genuine parts and accessories.",
     primaryButton: {
@@ -64,10 +80,11 @@ const heroSlides = [
     aiHint: "Ford Mustang sports car"
   },
   
+  
   // Isuzu Genuine Parts - 2nd in dropdown
   {
-    id: 2,
-    image: "https://imgcdn.oto.com/large/gallery/exterior/17/2483/isuzu-d-max-2021-front-angle-low-view-402309.jpg",
+    id: 3,
+    image: "/assets/slide/isuzu.jpg",
     title: "Isuzu Genuine Parts",
     subtitle: "Go the Distance - Commercial grade durability and strength with Isuzu's reliable genuine parts for every journey.",
     primaryButton: {
@@ -83,8 +100,8 @@ const heroSlides = [
   
   // Toyota Genuine Parts - 3rd in dropdown
   {
-    id: 3,
-    image: "https://www.toyota.com.la/content/dam/toyota-blueprint/discover-toyota/toyota-electrified/toyota-electrification/toyota-xev-phev.jpg",
+    id: 4,
+    image: "/assets/slide/toyota.jpg",
     title: "Toyota Genuine Parts",
     subtitle: "Let's Go Places - Reliability and innovation in every part. Discover Toyota's world-class genuine automotive components.",
     primaryButton: {
@@ -100,8 +117,23 @@ const heroSlides = [
   
   // Mazda Genuine Parts - 4th in dropdown
   {
-    id: 4,
-    image: "https://www.topgear.com/sites/default/files/2025/01/2024-Mazda3-e-Skyactiv-G-Exclusive-Line-01.jpg",
+    id: 5,
+    image: "/assets/slide/mazda.jpg",
+    title: "Mazda Genuine Parts",
+    subtitle: "Driving Matters - Precision engineering and stylish design combined with quality genuine parts for the ultimate driving experience.",
+    primaryButton: {
+      text: "View Mazda Parts",
+      href: "/genuine-parts?brand=Mazda%20Parts"
+    },
+    secondaryButton: {
+      text: "Contact Us",
+      href: "/contact"
+    },
+    aiHint: "Mazda CX-5 SUV"
+  },
+  {
+    id: 6,
+    image: "/assets/slide/mazada2.jpg",
     title: "Mazda Genuine Parts",
     subtitle: "Driving Matters - Precision engineering and stylish design combined with quality genuine parts for the ultimate driving experience.",
     primaryButton: {
@@ -117,8 +149,8 @@ const heroSlides = [
   
   // Mitsubishi Genuine Parts - 5th in dropdown
   {
-    id: 5,
-    image: "https://res.cloudinary.com/total-dealer/image/upload/w_3840,f_auto,q_75/v1/production/yftnz3w1keymgla1toe5sfs5m53q",
+    id: 7,
+    image: "/assets/slide/mitsubishi.jpg",
     title: "Mitsubishi Genuine Parts",
     subtitle: "Drive your Ambition - Proven performance and reliability with Mitsubishi's innovative genuine parts and authentic replacements.",
     primaryButton: {
@@ -131,57 +163,7 @@ const heroSlides = [
     },
     aiHint: "Mitsubishi Lancer Evolution"
   },
-  
-  // Nissan Genuine Parts - 6th in dropdown
-  {
-    id: 6,
-    image: "https://www.topgear.com/sites/default/files/2024/09/240314-01_GT-R_MY25_009.jpg",
-    title: "Nissan Genuine Parts",
-    subtitle: "Innovation That Excites - Cutting-edge automotive solutions with Nissan's advanced technology and genuine parts for every model.",
-    primaryButton: {
-      text: "View Nissan Parts",
-      href: "/genuine-parts?brand=Nissan%20Parts"
-    },
-    secondaryButton: {
-      text: "Learn More",
-      href: "/about"
-    },
-    aiHint: "Nissan GT-R sports car"
-  },
-  
-  // Honda Genuine Parts - 7th in dropdown
-  {
-    id: 7,
-    image: "https://media.ed.edmunds-media.com/honda/civic/2026/oem/2026_honda_civic_sedan_si_fq_oem_1_1280.jpg",
-    title: "Honda Genuine Parts",
-    subtitle: "The Power of Dreams - Advanced technology and efficiency with Honda's reliable vehicles and high-quality genuine parts.",
-    primaryButton: {
-      text: "View Honda Parts",
-      href: "/genuine-parts?brand=Honda%20Parts"
-    },
-    secondaryButton: {
-      text: "Contact Us",
-      href: "/contact"
-    },
-    aiHint: "Honda Civic Type R"
-  },
-  
-  // Suzuki Genuine Parts - 8th in dropdown
-  {
-    id: 8,
-    image: "https://seo-cms.autoscout24.ch/wp-content/uploads/2025/03/613197B-1024x683.jpg",
-    title: "Suzuki Genuine Parts",
-    subtitle: "Way of Life - Compact efficiency and versatile performance with Suzuki's practical vehicles and authentic genuine parts.",
-    primaryButton: {
-      text: "View Suzuki Parts",
-      href: "/genuine-parts?brand=Suzuki%20Parts"
-    },
-    secondaryButton: {
-      text: "Get Quote",
-      href: "/contact"
-    },
-    aiHint: "Suzuki Swift Sport"
-  }
+
 ];
 
 const featuredCars = [
@@ -615,7 +597,24 @@ export default function Home() {
         </div>
       </section>
 
-      <ProductList showContainer={true} allowedBrands={["Ford Parts", "Isuzu Parts", "Toyota Parts", "Mazda Parts", "Mitsubishi Parts", "Nissan Parts", "Honda Parts", "Suzuki Parts", "Aftermarket"]} />
+      <Suspense fallback={
+        <section className="py-16 md:py-20 bg-gray-50">
+          <div className="container mx-auto">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-5">
+              {Array.from({ length: 8 }).map((_, index) => (
+                <div key={index} className="bg-white rounded-lg p-4 shadow-sm animate-pulse">
+                  <div className="w-full h-48 bg-gray-200 rounded-lg mb-4"></div>
+                  <div className="h-4 bg-gray-200 rounded mb-2"></div>
+                  <div className="h-3 bg-gray-200 rounded mb-4"></div>
+                  <div className="h-8 bg-gray-200 rounded"></div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      }>
+        <ProductList showContainer={true} allowedBrands={["Ford Parts", "Isuzu Parts", "Toyota Parts", "Mazda Parts", "Mitsubishi Parts", "Nissan Parts", "Honda Parts", "Suzuki Parts", "Aftermarket"]} />
+      </Suspense>
 
      {/* Latest Blog Section */}
      
