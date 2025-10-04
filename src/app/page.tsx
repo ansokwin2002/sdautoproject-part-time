@@ -485,7 +485,7 @@ export default function Home() {
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <AnimatedSection className="relative h-full order-2 md:order-1" delay={200}>
               <Image 
-                src="https://images.unsplash.com/photo-1486496572940-2bb2341fdbdf?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80" 
+                src="assets/home/p1.webp" 
                 alt="Auto parts and automotive service" 
                 data-ai-hint="auto parts automotive service garage"
                 fill 
@@ -639,7 +639,7 @@ export default function Home() {
         <div className="container mx-auto grid md:grid-cols-2 gap-12 items-center">
           <AnimatedSection className="relative h-full" delay={200}>
             <Image
-              src="https://images.unsplash.com/photo-1486496572940-2bb2341fdbdf?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80"
+              src="assets/home/p1.webp"
               alt="High-quality car products"
               data-ai-hint="car parts automotive products"
               fill
@@ -693,69 +693,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-
-      {/* Location Map Section */}
-      <section className="py-16 md:py-20 bg-gray-50 relative z-20">
-        <div className="container mx-auto">
-          <AnimatedSection className="text-center mb-12">
-            <div className="w-16 h-1 bg-orange-400 mx-auto mb-4"></div>
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Visit Our Melbourne Store</h2>
-            <p className="text-gray-600 text-lg max-w-3xl mx-auto">
-              Located in Werribee, Melbourne, our main store offers in-person assistance, parts pickup, and expert advice. Come visit us for all your automotive parts needs.
-            </p>
-          </AnimatedSection>
-          
-          <AnimatedSection delay={200}>
-            <div className="max-w-5xl mx-auto">
-              <div className="bg-white rounded-lg shadow-lg overflow-hidden">
-                <div className="relative w-full h-[400px] md:h-[500px]">
-                  <iframe
-                    src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d3024156.3!2d144.9631!3d-37.8136!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sau!4v1678886400000!5m2!1sen!2sau"
-                    width="100%"
-                    height="100%"
-                    style={{ border: 0 }}
-                    allowFullScreen={true}
-                    loading="lazy"
-                    referrerPolicy="no-referrer-when-downgrade"
-                    className="rounded-t-lg"
-                    title="SD Auto Location Map"
-                  ></iframe>
-                </div>
-                <div className="p-6 bg-white border-t">
-                  <div className="grid md:grid-cols-3 gap-6 text-center">
-                    <div className="flex flex-col items-center">
-                      <div className="bg-primary/10 p-3 rounded-full mb-3">
-                        <MapPin className="h-6 w-6 text-primary" />
-                      </div>
-                      <h3 className="font-semibold text-gray-900 mb-1">Address</h3>
-                      <p className="text-gray-600 text-sm">Werribee, Victoria 3030, Australia</p>
-                    </div>
-                    <div className="flex flex-col items-center">
-                      <div className="bg-primary/10 p-3 rounded-full mb-3">
-                        <Clock className="h-6 w-6 text-primary" />
-                      </div>
-                      <h3 className="font-semibold text-gray-900 mb-1">Business Hours</h3>
-                      <p className="text-gray-600 text-sm">Monday - Saturday<br />9am - 6pm</p>
-                    </div>
-                    <div className="flex flex-col items-center">
-                      <div className="bg-primary/10 p-3 rounded-full mb-3">
-                        <Phone className="h-6 w-6 text-primary" />
-                      </div>
-                      <h3 className="font-semibold text-gray-900 mb-1">Contact</h3>
-                      <p className="text-gray-600 text-sm">
-                        <a href="tel:+61460786533" className="hover:text-primary transition-colors">
-                          +61 460 786 533
-                        </a>
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </AnimatedSection>
-        </div>
-      </section>
-
     </div>
   );
 }

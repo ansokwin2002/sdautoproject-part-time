@@ -122,14 +122,34 @@ export default function ShippingPage() {
       <section className="py-16 md:py-20 bg-gradient-to-b from-gray-50 to-white">
         <div className="container mx-auto">
           <div className="grid md:grid-cols-2 gap-12 items-center">
-            <AnimatedSection className="relative h-full order-2 md:order-1" delay={200}>
-              <Image 
-                src="/assets/images/p_shipping.png" 
-                alt="Modern warehouse with organized shipping boxes and logistics operations" 
-                data-ai-hint="Warehouse shipping logistics boxes storage"
-                fill 
-                className="object-cover rounded-lg shadow-xl"
-              />
+            <AnimatedSection className="order-2 md:order-1" delay={200}>
+              <div className="space-y-6">
+                {/* First Image - t.png */}
+                <div className="relative">
+                  <Image 
+                    src="/assets/t.png" 
+                    alt="Shipping and logistics operations" 
+                    data-ai-hint="Shipping logistics operations"
+                    width={600}
+                    height={300}
+                    className="w-full h-auto rounded-xl shadow-2xl"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent rounded-xl"></div>
+                </div>
+                
+                {/* Second Image - m.png */}
+                <div className="relative">
+                  <Image 
+                    src="/assets/m.png" 
+                    alt="Modern warehouse with organized shipping boxes and logistics operations" 
+                    data-ai-hint="Warehouse shipping logistics boxes storage"
+                    width={600}
+                    height={300}
+                    className="w-full h-auto rounded-xl shadow-2xl"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent rounded-xl"></div>
+                </div>
+              </div>
             </AnimatedSection>
             <div className="order-1 md:order-2">
               <div className="max-w-xl">
