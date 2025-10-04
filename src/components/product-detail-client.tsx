@@ -38,8 +38,8 @@ export default function ProductDetailClient({ productId }: ProductDetailClientPr
   ];
 
   const [selectedMedia, setSelectedMedia] = useState<MediaItem>(allMedia[0] || { type: 'image', url: '' });
-  const [showMagnifier, setShowMagnifier] = useState(false);
-  const [magnifierPosition, setMagnifierPosition] = useState({ x: 0, y: 0 });
+  const [isHovering, setIsHovering] = useState(false);
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const imageRef = useRef<HTMLDivElement>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   
@@ -56,17 +56,17 @@ export default function ProductDetailClient({ productId }: ProductDetailClientPr
     const clampedX = Math.max(0, Math.min(100, x));
     const clampedY = Math.max(0, Math.min(100, y));
 
-    setMagnifierPosition({ x: clampedX, y: clampedY });
+    setMousePosition({ x: clampedX, y: clampedY });
   };
 
   const handleMouseEnter = () => {
-    if (window.innerWidth >= 1024) {
-      setShowMagnifier(true);
+    if (window.innerWidth >= 1024 && selectedMedia.type === 'image') {
+      setIsHovering(true);
     }
   };
 
   const handleMouseLeave = () => {
-    setShowMagnifier(false);
+    setIsHovering(false);
   };
 
   const otherProducts = products.filter((p) => p.id !== product.id);
@@ -231,7 +231,13 @@ export default function ProductDetailClient({ productId }: ProductDetailClientPr
                         src={selectedMedia.url}
                         alt={product.name}
                         fill
-                        className="object-cover group-hover:scale-105 transition-transform duration-500"
+                        className="object-cover transition-all duration-300 ease-out"
+                        style={{
+                          transform: isHovering 
+                            ? `scale(2) translate(${(50 - mousePosition.x) * 0.5}%, ${(50 - mousePosition.y) * 0.5}%)` 
+                            : 'scale(1)',
+                          transformOrigin: `${mousePosition.x}% ${mousePosition.y}%`
+                        }}
                       />
                     ) : (
                       <video
@@ -274,15 +280,11 @@ export default function ProductDetailClient({ productId }: ProductDetailClientPr
                       </button>
                     </div>
 
-                    {/* Magnifier indicator */}
-                    {showMagnifier && selectedMedia.type === 'image' && ( // Only show magnifier for images
-                      <div
-                        className="absolute w-16 h-16 border-2 border-blue-500 bg-blue-500/20 pointer-events-none rounded-full"
-                        style={{
-                          left: `calc(${magnifierPosition.x}% - 32px)`,
-                          top: `calc(${magnifierPosition.y}% - 32px)`,
-                        }}
-                      />
+                    {/* Zoom indicator */}
+                    {isHovering && selectedMedia.type === 'image' && (
+                      <div className="absolute top-4 left-4 bg-black/70 text-white px-3 py-2 rounded-lg text-sm font-medium backdrop-blur-sm">
+                        2x Zoom
+                      </div>
                     )}
                   </div>
                 </div>
@@ -292,26 +294,6 @@ export default function ProductDetailClient({ productId }: ProductDetailClientPr
 
           {/* Product Details Card */}
           <div className="order-2 relative h-full">
-            {/* Desktop Magnifier Overlay */}
-            {showMagnifier && selectedMedia.type === 'image' && ( // Only show magnifier for images
-              <div className="hidden lg:block absolute inset-0 z-50 rounded-xl overflow-hidden bg-white shadow-2xl border-2 border-blue-200">
-                <div
-                  className="w-full h-full bg-no-repeat"
-                  style={{
-                    backgroundImage: `url(${selectedMedia.url})`,
-                    backgroundSize: '300%',
-                    backgroundPosition: `${magnifierPosition.x}% ${magnifierPosition.y}%`,
-                  }}
-                />
-                <div className="absolute top-4 right-4 bg-black/80 text-white px-3 py-2 rounded-lg text-sm font-medium">
-                  3x Zoom
-                </div>
-                <div className="absolute bottom-4 left-4 bg-black/80 text-white px-3 py-2 rounded-lg text-sm">
-                  Move mouse to explore
-                </div>
-              </div>
-            )}
-
             {/* Product Information Card */}
             <div className="bg-white rounded-xl border border-gray-100 overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 h-full flex flex-col">
               <div className="p-6 flex flex-col flex-grow">
