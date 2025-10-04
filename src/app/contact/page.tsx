@@ -533,22 +533,29 @@ export default function ContactPage() {
             <div className="text-center mb-8">
               <h2 className="text-3xl font-bold font-headline mb-4">Find Us</h2>
               <p className="text-muted-foreground text-lg">
-                Visit our location in Werribee, Victoria for in-person assistance.
+                Visit our main store location in Werribee, Melbourne, Victoria for in-person assistance and parts pickup.
               </p>
             </div>
             
             <Card className="shadow-lg overflow-hidden">
               <div className="relative w-full h-[500px]">
                 <iframe
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4227500.000000001!2d133.775136!3d-25.274398!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2b2bfd076787c5df%3A0x538267a1955b1352!2sAustralia!5e0!3m2!1sen!2sus!4v1678886400000!5m2!1sen!2sus"
+                  src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d3024156.3!2d144.9631!3d-37.8136!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sau!4v1678886400000!5m2!1sen!2sau"
                   width="100%"
                   height="100%"
                   style={{ border: 0 }}
-                  allowFullScreen={false}
-                  loading="lazy"
+                  allowFullScreen={true}
+                  loading="eager"
                   referrerPolicy="no-referrer-when-downgrade"
                   className="rounded-lg"
+                  title="SD Auto Location Map"
                 ></iframe>
+              </div>
+              <div className="p-4 bg-gray-50 border-t">
+                <div className="flex items-center justify-center gap-2 text-sm text-gray-600">
+                  <MapPin className="h-4 w-4" />
+                  <span>SD Auto - Main Store: Werribee, Melbourne, Victoria 3030, Australia</span>
+                </div>
               </div>
             </Card>
           </div>

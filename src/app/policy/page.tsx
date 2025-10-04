@@ -67,42 +67,27 @@ export default function PolicyPage() {
         <div className="max-w-4xl mx-auto">
           <AnimatedSection delay={100}>
             <div className="bg-gray-50 rounded-lg p-8 mb-12 shadow-sm">
-              <h2 className="text-2xl font-bold text-gray-800 mb-4">Privacy Policy</h2>
+              <h2 className="text-2xl font-bold text-gray-800 mb-4">Privacy</h2>
               <p className="text-gray-600 leading-relaxed mb-4">
-                Your privacy is important to us. It is SD Auto Parts' policy to respect your privacy regarding any information we may collect from you across our website, and other sites we own and operate.
+                At SD Auto, we highly value your privacy. We are committed to respecting your privacy in relation to any information we may gather from you.
               </p>
               <p className="text-gray-600 leading-relaxed mb-4">
-                We only ask for personal information when we truly need it to provide a service to you. We collect it by fair and lawful means, with your knowledge and consent. We also let you know why we’re collecting it and how it will be used.
-              </p>
-              <p className="text-gray-600 leading-relaxed">
-                We only retain collected information for as long as necessary to provide you with your requested service. What data we store, we’ll protect within commercially acceptable means to prevent loss and theft, as well as unauthorized access, disclosure, copying, use or modification.
+                We only request personal information when it is necessary to provide a service to you. We collect this information through fair and lawful means, with your awareness and consent. We will always inform you of the purpose for collecting the information and how it will be used. Rest assured, we will never disclose your information to third parties.
               </p>
             </div>
           </AnimatedSection>
 
           <AnimatedSection delay={200}>
-            <div className="bg-gray-50 rounded-lg p-8 mb-12 shadow-sm">
-              <h2 className="text-2xl font-bold text-gray-800 mb-4">Terms of Service</h2>
-              <p className="text-gray-600 leading-relaxed mb-4">
-                By accessing the website at [Your Website URL], you are agreeing to be bound by these terms of service, all applicable laws and regulations, and agree that you are responsible for compliance with any applicable local laws. If you do not agree with any of these terms, you are prohibited from using or accessing this site.
-              </p>
-              <p className="text-gray-600 leading-relaxed">
-                The materials contained in this website are protected by applicable copyright and trademark law.
-              </p>
-            </div>
-          </AnimatedSection>
-
-          <AnimatedSection delay={300}>
             <div className="bg-gray-50 rounded-lg p-8 shadow-sm">
-              <h2 className="text-2xl font-bold text-gray-800 mb-4">Return Policy</h2>
+              <h2 className="text-2xl font-bold text-gray-800 mb-4">Warranty, Return, and Refund</h2>
               <p className="text-gray-600 leading-relaxed mb-4">
-                We have a 30-day return policy, which means you have 30 days after receiving your item to request a return.
+                We offer a 30-day warranty with a return and refund policy for our customers. Within 30 days of receiving your order, you can initiate a return by contacting us and providing your order number. Customers are responsible for covering the shipping costs to return the item to our address. Upon receiving the return, we will inspect the part to ensure it is unused and in its original packaging and condition. Subsequently, we will process a refund to your account.
               </p>
               <p className="text-gray-600 leading-relaxed mb-4">
-                To be eligible for a return, your item must be in the same condition that you received it, unworn or unused, with tags, and in its original packaging. You’ll also need the receipt or proof of purchase.
+                For returns from addresses within Australia, the refund will be issued in full. However, for returns from overseas addresses, the refund will not include the shipping fee that was originally paid to ship the order to you.
               </p>
               <p className="text-gray-600 leading-relaxed">
-                To start a return, you can contact us at [Your Contact Email]. If your return is accepted, we’ll send you a return shipping label, as well as instructions on how and where to send your package.
+                For special parts that we do not stock and have ordered for you from dealers, SD Auto reserves the right to deny return requests if customers have ordered by mistake or changed your mind. We only accept returns for special parts in cases where the mistake in the order was made by us.
               </p>
             </div>
           </AnimatedSection>

@@ -140,17 +140,12 @@ export default function AboutPage() {
                 </AnimatedText>
                 <AnimatedText delay={200}>
                   <p className="text-gray-600 text-lg leading-relaxed mb-8">
-                    SD Auto is an Australian family-owned and operated business, officially registered with the Australian Taxation Office (ATO) in 2023, and based in Werribee, Melbourne. We specialize in selling 100% genuine parts for popular Thailand-made brands such as Ford, Isuzu, Toyota, Mazda, Mitsubishi, Nissan, Honda, and Suzuki at affordable prices. We offer worldwide shipping with the best rates to your address. With 15 years of experience in the auto parts industry, we guarantee to provide you with the correct part for your vehicle at the best price and service. Contact us today!
+                    SD Auto is an Australian family-owned and operated business, officially registered with the Australian Taxation Office (ATO) in 2023, and based in Werribee, Melbourne. We specialize in selling 100% genuine parts for popular Thailand-made brands such as Ford, Isuzu, Toyota, Mazda, Mitsubishi, Nissan, Honda, and Suzuki at affordable prices. We offer worldwide shipping with the best rates to your address. With 15 years of expertise in genuine auto parts for Thailand-made brands, we guarantee to provide you with the correct part for your vehicle at the best price and service. Contact us today!
                   </p>
                 </AnimatedText>
                 <AnimatedSection delay={300}>
                   <div className="flex flex-col sm:flex-row gap-4">
                     <Button size="lg" asChild className="hover:scale-105 transition-transform duration-200">
-                      <Link href="/about">
-                        Read More <ArrowRight className="ml-2 h-5 w-5" />
-                      </Link>
-                    </Button>
-                    <Button size="lg" variant="outline" asChild className="hover:scale-105 transition-transform duration-200">
                       <Link href="/contact">
                         Get Quote
                       </Link>
@@ -193,16 +188,6 @@ export default function AboutPage() {
                   </p>
                   <div className="flex flex-col items-start space-y-2">
                     <span className="text-sm text-gray-500">December 15, 2024</span>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      asChild
-                      className="text-white bg-blue-600 hover:bg-blue-700 hover:scale-105 transition-all duration-200 rounded-md px-4 py-2"
-                    >
-                      <Link href="/blog/transportation-quality">
-                        Read More <ArrowRight className="ml-1 h-4 w-4" />
-                      </Link>
-                    </Button>
                   </div>
                 </div>
               </div>
@@ -228,16 +213,6 @@ export default function AboutPage() {
                   </p>
                   <div className="flex flex-col items-start space-y-2">
                     <span className="text-sm text-gray-500">December 10, 2024</span>
-                   <Button
-                      variant="ghost"
-                      size="sm"
-                      asChild
-                      className="text-white bg-blue-600 hover:bg-blue-700 hover:scale-105 transition-all duration-200 rounded-md px-4 py-2"
-                    >
-                      <Link href="/blog/transportation-quality">
-                        Read More <ArrowRight className="ml-1 h-4 w-4" />
-                      </Link>
-                    </Button>
                   </div>
                 </div>
               </div>
@@ -263,16 +238,6 @@ export default function AboutPage() {
                   </p>
                   <div className="flex flex-col items-start space-y-2">
                     <span className="text-sm text-gray-500">December 5, 2024</span>
-                    <Button
-                        variant="ghost"
-                        size="sm"
-                        asChild
-                        className="text-white bg-blue-600 hover:bg-blue-700 hover:scale-105 transition-all duration-200 rounded-md px-4 py-2"
-                      >
-                        <Link href="/blog/transportation-quality">
-                          Read More <ArrowRight className="ml-1 h-4 w-4" />
-                        </Link>
-                      </Button>
                   </div>
                 </div>
               </div>

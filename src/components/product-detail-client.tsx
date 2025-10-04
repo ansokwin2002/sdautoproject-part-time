@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import ProductCard, { ProductCardSkeleton } from "@/components/product-card";
 import ProductList from "@/components/product-list";
-import { ArrowLeft, Package, Hash, Award, Archive, Eye, Star, Shield, Truck, Heart, Share2, ShoppingCart } from "lucide-react";
+import { ArrowLeft, Package, Hash, Award, Archive, Eye, Star, Shield, Truck, Heart, Share2, ShoppingCart, Expand, ZoomIn } from "lucide-react";
 import Link from "next/link";
 import { useState, useEffect, useRef } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -138,6 +138,17 @@ export default function ProductDetailClient({ productId }: ProductDetailClientPr
                     </div>
                   )}
 
+                  {/* Gallery Button */}
+                  <div className="absolute bottom-4 right-4">
+                    <button
+                      onClick={() => setIsModalOpen(true)}
+                      className="bg-white/90 backdrop-blur-sm text-gray-900 p-3 rounded-full shadow-lg hover:bg-white hover:scale-110 transition-all duration-200 group/btn"
+                      aria-label="Open gallery"
+                    >
+                      <Expand size={20} className="group-hover/btn:scale-110 transition-transform duration-200" />
+                    </button>
+                  </div>
+
                   {/* Quick View Overlay */}
                   <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300">
                     <div className="bg-white/90 backdrop-blur-sm text-gray-900 px-6 py-2.5 rounded-full font-semibold text-sm shadow-lg">
@@ -151,7 +162,7 @@ export default function ProductDetailClient({ productId }: ProductDetailClientPr
               {/* Mobile: Horizontal Scrolling Thumbnails */}
               <div className="block md:hidden">
                 <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-hide">
-                  {allMedia.slice(0, 6).map((item, index) => (
+                  {allMedia.map((item, index) => (
                     <div
                       key={index}
                       className={cn(
@@ -174,83 +185,36 @@ export default function ProductDetailClient({ productId }: ProductDetailClientPr
                       )}
                     </div>
                   ))}
-                  {allMedia.length > 6 && (
-                    <div
-                      className="relative w-16 h-16 flex-shrink-0 cursor-pointer rounded-lg overflow-hidden border-2 border-gray-300 flex items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200 hover:from-blue-50 hover:to-blue-100 hover:border-blue-300 transition-all duration-200"
-                      onClick={() => setIsModalOpen(true)}
-                    >
-                      <span className="text-xs font-medium text-gray-600 text-center leading-tight">
-                        +{allMedia.length - 6}<br/>more
-                      </span>
-                    </div>
-                  )}
                 </div>
               </div>
 
               {/* Desktop: Side-by-side layout */}
               <div className="hidden md:flex gap-4 h-[400px]">
                 {/* Thumbnails */}
-                <div className="flex flex-col w-20 h-full">
-                  {allMedia.length > 5 ? (
-                    <>
-                      {allMedia.slice(0, 4).map((item, index) => (
-                        <div
-                          key={index}
-                          className={cn(
-                            "relative w-20 h-[75px] cursor-pointer rounded-lg overflow-hidden border-2 mb-2 transition-all duration-200 hover:scale-105 group",
-                            selectedMedia.url === item.url ? 'border-blue-500 shadow-md' : 'border-transparent hover:border-gray-300'
-                          )}
-                          onClick={() => setSelectedMedia(item)}
-                        >
-                          {item.type === 'image' ? (
-                            <Image
-                              src={item.url}
-                              alt={`Product thumbnail ${index + 1}`}
-                              fill
-                              className="object-cover group-hover:scale-110 transition-transform duration-300"
-                            />
-                          ) : (
-                            <div className="w-full h-full flex items-center justify-center bg-gray-800 text-white text-xs">
-                              Video
-                            </div>
-                          )}
+                <div className="flex flex-col w-20 h-full overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100 pr-1">
+                  {allMedia.map((item, index) => (
+                    <div
+                      key={index}
+                      className={cn(
+                        "relative w-20 h-[75px] cursor-pointer rounded-lg overflow-hidden border-2 mb-2 transition-all duration-200 hover:scale-105 group flex-shrink-0",
+                        selectedMedia.url === item.url ? 'border-blue-500 shadow-md' : 'border-transparent hover:border-gray-300'
+                      )}
+                      onClick={() => setSelectedMedia(item)}
+                    >
+                      {item.type === 'image' ? (
+                        <Image
+                          src={item.url}
+                          alt={`Product thumbnail ${index + 1}`}
+                          fill
+                          className="object-cover group-hover:scale-110 transition-transform duration-300"
+                        />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center bg-gray-800 text-white text-xs">
+                          Video
                         </div>
-                      ))}
-                      <div
-                        className="relative w-20 h-[75px] cursor-pointer rounded-lg overflow-hidden border-2 border-gray-300 flex items-center justify-center group bg-gradient-to-br from-gray-100 to-gray-200 hover:from-blue-50 hover:to-blue-100 hover:border-blue-300 transition-all duration-200 hover:scale-105"
-                        onClick={() => setIsModalOpen(true)}
-                      >
-                        <span className="text-xs font-medium text-gray-600 text-center group-hover:text-blue-600 transition-colors duration-200">
-                          +{allMedia.length - 4}
-                        </span>
-                      </div>
-                    </>
-                  ) : (
-                    allMedia.map((item, index) => (
-                      <div
-                        key={index}
-                        className={cn(
-                          "relative w-20 flex-1 cursor-pointer rounded-lg overflow-hidden border-2 transition-all duration-200 hover:scale-105 group",
-                          selectedMedia.url === item.url ? 'border-blue-500 shadow-md' : 'border-transparent hover:border-gray-300',
-                          index < allMedia.length - 1 ? 'mb-2' : ''
-                        )}
-                        onClick={() => setSelectedMedia(item)}
-                      >
-                        {item.type === 'image' ? (
-                          <Image
-                            src={item.url}
-                            alt={`Product thumbnail ${index + 1}`}
-                            fill
-                            className="object-cover group-hover:scale-110 transition-transform duration-300"
-                          />
-                        ) : (
-                          <div className="w-full h-full flex items-center justify-center bg-gray-800 text-white text-xs">
-                            Video
-                          </div>
-                        )}
-                      </div>
-                    ))
-                  )}
+                      )}
+                    </div>
+                  ))}
                 </div>
 
                 {/* Main Media */}
@@ -298,6 +262,17 @@ export default function ProductDetailClient({ productId }: ProductDetailClientPr
                         </span>
                       </div>
                     )}
+
+                    {/* Gallery Button */}
+                    <div className="absolute bottom-4 right-4">
+                      <button
+                        onClick={() => setIsModalOpen(true)}
+                        className="bg-white/90 backdrop-blur-sm text-gray-900 p-3 rounded-full shadow-lg hover:bg-white hover:scale-110 transition-all duration-200 group/btn"
+                        aria-label="Open gallery"
+                      >
+                        <Expand size={20} className="group-hover/btn:scale-110 transition-transform duration-200" />
+                      </button>
+                    </div>
 
                     {/* Magnifier indicator */}
                     {showMagnifier && selectedMedia.type === 'image' && ( // Only show magnifier for images

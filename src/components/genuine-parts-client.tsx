@@ -132,11 +132,11 @@ export default function GenuinePartsClient() {
       <h1 className="text-4xl font-bold text-center mb-8 mt-16 md:mt-0">{viewParam === 'aftermarket' ? "Aftermarket Accessories" : "Genuine Parts and Accessories"}</h1>
 
       {/* Brand Selection Grid */}
-      <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-4 mb-8 py-4">
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 mb-8 py-4">
         {loading ? (
           Array.from({ length: 10 }).map((_, index) => (
             <div key={index} className="flex flex-col items-center">
-              <Skeleton className="w-24 h-24 sm:w-28 sm:h-28 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-lg p-2 mb-2" />
+              <Skeleton className="w-40 h-40 sm:w-48 sm:h-48 md:w-56 md:h-56 lg:w-64 lg:h-64 rounded-lg p-2 mb-2" />
               <Skeleton className="w-16 sm:w-20 md:w-24 h-4" />
             </div>
           ))
@@ -147,9 +147,9 @@ export default function GenuinePartsClient() {
               <Button
                 variant={selectedBrand === null ? 'default' : 'outline'}
                 onClick={() => handleBrandClick(null)}
-                className="w-24 h-24 sm:w-28 sm:h-28 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-lg p-2 mb-2"
+                className="w-40 h-40 sm:w-48 sm:h-48 md:w-56 md:h-56 lg:w-64 lg:h-64 rounded-lg p-2 mb-2"
               >
-                <span className="text-sm font-medium">All</span>
+                <span className="text-2xl md:text-3xl lg:text-4xl font-bold">All</span>
               </Button>
               <span className="text-sm text-center font-medium">All Brands</span>
             </div>
@@ -160,15 +160,15 @@ export default function GenuinePartsClient() {
                 <Button
                   variant={selectedBrand === brand ? 'default' : 'outline'}
                   onClick={() => handleBrandClick(brand)}
-                  className="w-24 h-24 sm:w-28 sm:h-28 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-lg p-2 mb-2 hover:scale-105 transition-transform"
+                  className="w-40 h-40 sm:w-48 sm:h-48 md:w-56 md:h-56 lg:w-64 lg:h-64 rounded-lg p-2 mb-2 hover:scale-105 transition-transform"
                 >
                   {brandLogos[brand] ? (
                     <Image
                       src={brandLogos[brand]}
                       alt={`${brand} Logo`}
-                      width={152}
-                      height={152}
-                      className="object-contain max-w-full max-h-full"
+                      width={200}
+                      height={200}
+                      className="object-contain w-full h-full p-1"
                     />
                   ) : (
                     <span className="text-xs font-bold text-center">

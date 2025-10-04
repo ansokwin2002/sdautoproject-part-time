@@ -140,23 +140,26 @@ export default function ShippingPage() {
                 </AnimatedSection>
                 <AnimatedSection delay={200}>
                   <p className="text-gray-600 text-lg leading-relaxed mb-8">
-                    Our company offers a wide range of delivery options to meet urgent needs while ensuring competitive pricing.
+                    SD Auto offers fast shipping to meet urgent needs while ensuring competitive pricing. Orders are shipped the same day or the following day if received after 1:00 PM Australia Time, excluding weekends (Saturday and Sunday) and public holidays.
                     <br /><br />
-                    <strong>For customers within Australia:</strong> Upon receiving an order, we promptly begin the packaging process to ensure the safety of the goods during transit. We dispatch all shipments from our store in Melbourne via Australia Post to the address provided in the order. Orders received before 1 PM will be processed and shipped on the same day. For orders placed after 1 PM, shipments will be dispatched the following business day, excluding weekends (Saturday and Sunday).
+                    <strong>For customers within Australia:</strong>
+                    <br />
+                    Upon receiving an order, we promptly begin the packaging process to ensure the safety of the parts during transit. We dispatch all shipments from our Melbourne store via Australia Post or other couriers for heavy or large parts to the address provided in the order.
                     <br /><br />
-                    <strong>For international customers:</strong> For those residing in certain Asian countries near Cambodia, we dispatch goods from our store in Phnom Penh via EMS service or, in cases of urgency, via DHL. For customers in more distant regions, shipments will be sent from our Melbourne store via Australia Post, or, for urgent deliveries, via DHL.
+                    <strong>For customers outside Australia:</strong>
+                    <br />
+                    We have two stores to dispatch international orders. Our main store is located in Melbourne, Australia, and our second branch is in Bangkok, Thailand. Most parts are shipped from our Melbourne store. For special part orders, parts may be shipped from our branch in Thailand.
                     <br /><br />
-                    <strong>Stock Availability:</strong> 95% of the products we offer are readily available in our store. For a small number of specialized items, we require 3 to 5 days to prepare the order before dispatch. In such cases, customers will be notified immediately after order receipt. Customers may cancel their orders at any time and receive a full refund if they are unable to wait.
+                    We dispatch orders from our Australian store using Australia Post and from our Thai store using EMS/Thai Post. If customers require urgent delivery, we offer DHL Express shipping to ensure their orders arrive by the deadline. We provide quotes to customers so they can choose between DHL Express, Australia Post, or EMS.
+                    <br /><br />
+                    <strong>Stock Availability and Dispatch Time:</strong>
+                    <br />
+                    We have over 99% of the parts listed on our website in stock in either Australia or Thailand. Parts located in our Australian store will be shipped the same day, while parts in our Thai store require 1-3 days for processing, packing, and shipping. In rare cases where a part becomes unavailable or is on back-order, we will promptly notify customers so they can choose to wait or cancel their orders.
                   </p>
                 </AnimatedSection>
                 <AnimatedSection delay={300}>
                   <div className="flex flex-col sm:flex-row gap-4">
                     <Button size="lg" asChild className="hover:scale-105 transition-transform duration-200">
-                      <Link href="/shipping">
-                        Read More <ArrowRight className="ml-2 h-5 w-5" />
-                      </Link>
-                    </Button>
-                    <Button size="lg" variant="outline" asChild className="hover:scale-105 transition-transform duration-200">
                       <Link href="/contact">
                         Get Quote
                       </Link>
@@ -178,7 +181,7 @@ export default function ShippingPage() {
             
           </AnimatedSection>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 max-w-6xl mx-auto items-stretch">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 max-w-7xl mx-auto items-stretch">
             {/* By Ship - Australia Post */}
             <AnimatedSection delay={100}>
               <div className="bg-white rounded-lg p-4 md:p-6 lg:p-8 shadow-lg hover:shadow-xl transition-all duration-300 group text-center flex flex-col h-full">
@@ -194,13 +197,33 @@ export default function ShippingPage() {
                 </div>
                 <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-2 md:mb-3">By Australia Post Express</h3>
                 <p className="text-sm md:text-base text-gray-600 leading-relaxed flex-grow">
-                  Reliable shipping through Australia Post network. Perfect for standard delivery across Australia with tracking included.
+                  Reliable shipping through Australia Post network. Perfect for standard delivery across Australia and worldwide, with tracking included.
+                </p>
+              </div>
+            </AnimatedSection>
+
+            {/* By EMS */}
+            <AnimatedSection delay={200}>
+              <div className="bg-white rounded-lg p-4 md:p-6 lg:p-8 shadow-lg hover:shadow-xl transition-all duration-300 group text-center flex flex-col h-full">
+                <div className="mb-4 md:mb-6">
+                  <div className="relative w-32 h-32 md:w-40 md:h-40 lg:w-48 lg:h-48 mx-auto mb-3 md:mb-4 flex items-center justify-center">
+                    <Image
+                      src="/assets/EMS.png"
+                      alt="EMS Express Mail Service"
+                      fill
+                      className="object-contain"
+                    />
+                  </div>
+                </div>
+                <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-2 md:mb-3">By EMS (Express Mail Service)</h3>
+                <p className="text-sm md:text-base text-gray-600 leading-relaxed flex-grow">
+                  Fast international delivery with tracking included. Reliable shipping worldwide for your important packages.
                 </p>
               </div>
             </AnimatedSection>
 
             {/* By Air */}
-            <AnimatedSection delay={200}>
+            <AnimatedSection delay={300}>
               <div className="bg-white rounded-lg p-4 md:p-6 lg:p-8 shadow-lg hover:shadow-xl transition-all duration-300 group text-center flex flex-col h-full">
                 <div className="mb-4 md:mb-6">
                   <div className="relative w-32 h-32 md:w-40 md:h-40 lg:w-48 lg:h-48 mx-auto mb-3 md:mb-4 flex items-center justify-center">
@@ -220,7 +243,7 @@ export default function ShippingPage() {
             </AnimatedSection>
 
             {/* By Land */}
-            <AnimatedSection delay={300}>
+            <AnimatedSection delay={400}>
               <div className="bg-white rounded-lg p-4 md:p-6 lg:p-8 shadow-lg hover:shadow-xl transition-all duration-300 group text-center flex flex-col h-full">
                 <div className="mb-4 md:mb-6">
                   <div className="relative w-32 h-32 md:w-40 md:h-40 lg:w-48 lg:h-48 mx-auto mb-3 md:mb-4 flex items-center justify-center">

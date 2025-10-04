@@ -38,7 +38,7 @@ export default function Footer() {
               <span className="font-bold text-lg">SD Auto</span>
             </Link>
             <p className="text-muted-foreground text-sm">
-              15 years of expertise in quality auto parts sourcing from Thailand, UK, and America.
+              15 years of expertise in genuine auto parts for Thailand-made brands • Worldwide shipping • Family-owned Australian business
             </p>
              <div className="flex space-x-4 mt-4">
               <Link href="/contact" aria-label="Facebook" className="text-muted-foreground hover:text-primary"><Facebook className="h-5 w-5" /></Link>

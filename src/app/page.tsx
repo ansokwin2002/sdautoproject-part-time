@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, Car, Wrench, Sparkles, ChevronLeft, ChevronRight, Play, Pause } from "lucide-react";
+import { ArrowRight, Car, Wrench, Sparkles, ChevronLeft, ChevronRight, Play, Pause, MapPin, Clock, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { products } from "@/lib/products";
@@ -507,11 +507,6 @@ export default function Home() {
                 <AnimatedSection delay={300}>
                   <div className="flex flex-col sm:flex-row gap-4">
                     <Button size="lg" asChild className="hover:scale-105 transition-transform duration-200">
-                      <Link href="/about">
-                        Read More <ArrowRight className="ml-2 h-5 w-5" />
-                      </Link>
-                    </Button>
-                    <Button size="lg" variant="outline" asChild className="hover:scale-105 transition-transform duration-200">
                       <Link href="/contact">
                         Get Quote
                       </Link>
@@ -533,7 +528,7 @@ export default function Home() {
             
           </AnimatedSection>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 max-w-6xl mx-auto items-stretch">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 max-w-7xl mx-auto items-stretch">
             {/* By Ship - Australia Post */}
             <AnimatedSection delay={100}>
               <div className="bg-white rounded-lg p-4 md:p-6 lg:p-8 shadow-lg hover:shadow-xl transition-all duration-300 group text-center flex flex-col h-full">
@@ -549,13 +544,33 @@ export default function Home() {
                 </div>
                 <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-2 md:mb-3">By Australia Post Express</h3>
                 <p className="text-sm md:text-base text-gray-600 leading-relaxed flex-grow">
-                  Reliable shipping through Australia Post network. Perfect for standard delivery across Australia with tracking included.
+                  Reliable shipping through Australia Post network. Perfect for standard delivery across Australia and worldwide, with tracking included.
+                </p>
+              </div>
+            </AnimatedSection>
+
+            {/* By EMS */}
+            <AnimatedSection delay={200}>
+              <div className="bg-white rounded-lg p-4 md:p-6 lg:p-8 shadow-lg hover:shadow-xl transition-all duration-300 group text-center flex flex-col h-full">
+                <div className="mb-4 md:mb-6">
+                  <div className="relative w-32 h-32 md:w-40 md:h-40 lg:w-48 lg:h-48 mx-auto mb-3 md:mb-4 flex items-center justify-center">
+                    <Image
+                      src="/assets/EMS.png"
+                      alt="EMS Express Mail Service"
+                      fill
+                      className="object-contain"
+                    />
+                  </div>
+                </div>
+                <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-2 md:mb-3">By EMS (Express Mail Service)</h3>
+                <p className="text-sm md:text-base text-gray-600 leading-relaxed flex-grow">
+                  Fast international delivery with tracking included. Reliable shipping worldwide for your important packages.
                 </p>
               </div>
             </AnimatedSection>
 
             {/* By Air */}
-            <AnimatedSection delay={200}>
+            <AnimatedSection delay={300}>
               <div className="bg-white rounded-lg p-4 md:p-6 lg:p-8 shadow-lg hover:shadow-xl transition-all duration-300 group text-center flex flex-col h-full">
                 <div className="mb-4 md:mb-6">
                   <div className="relative w-32 h-32 md:w-40 md:h-40 lg:w-48 lg:h-48 mx-auto mb-3 md:mb-4 flex items-center justify-center">
@@ -575,7 +590,7 @@ export default function Home() {
             </AnimatedSection>
 
             {/* By Land */}
-            <AnimatedSection delay={300}>
+            <AnimatedSection delay={400}>
               <div className="bg-white rounded-lg p-4 md:p-6 lg:p-8 shadow-lg hover:shadow-xl transition-all duration-300 group text-center flex flex-col h-full">
                 <div className="mb-4 md:mb-6">
                   <div className="relative w-32 h-32 md:w-40 md:h-40 lg:w-48 lg:h-48 mx-auto mb-3 md:mb-4 flex items-center justify-center">
@@ -637,7 +652,7 @@ export default function Home() {
             </AnimatedSection>
             <AnimatedSection delay={100}>
               <p className="text-muted-foreground mt-4 mb-6 text-lg">
-                With 15 years of proven experience in the automotive parts industry, SD Auto specializes in sourcing quality components from Thailand, UK, and America. We understand the challenges of high dealer prices and offer reliable alternatives without compromising on quality.
+                With 15 years of expertise in genuine auto parts for Thailand-made brands • Worldwide shipping • Family-owned Australian business. We understand the challenges of high dealer prices and offer reliable alternatives without compromising on quality.
               </p>
             </AnimatedSection>
             <ul className="space-y-4">
@@ -648,7 +663,7 @@ export default function Home() {
                   </div>
                   <div>
                     <h4 className="font-semibold">15 Years Experience</h4>
-                    <p className="text-muted-foreground">Established expertise in automotive parts sourcing from Thailand, UK, and America with proven track record.</p>
+                    <p className="text-muted-foreground">Established expertise in genuine auto parts for Thailand-made brands with proven track record.</p>
                   </div>
                 </li>
               </AnimatedSection>
@@ -676,6 +691,68 @@ export default function Home() {
               </AnimatedSection>
             </ul>
           </div>
+        </div>
+      </section>
+
+      {/* Location Map Section */}
+      <section className="py-16 md:py-20 bg-gray-50 relative z-20">
+        <div className="container mx-auto">
+          <AnimatedSection className="text-center mb-12">
+            <div className="w-16 h-1 bg-orange-400 mx-auto mb-4"></div>
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Visit Our Melbourne Store</h2>
+            <p className="text-gray-600 text-lg max-w-3xl mx-auto">
+              Located in Werribee, Melbourne, our main store offers in-person assistance, parts pickup, and expert advice. Come visit us for all your automotive parts needs.
+            </p>
+          </AnimatedSection>
+          
+          <AnimatedSection delay={200}>
+            <div className="max-w-5xl mx-auto">
+              <div className="bg-white rounded-lg shadow-lg overflow-hidden">
+                <div className="relative w-full h-[400px] md:h-[500px]">
+                  <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d3024156.3!2d144.9631!3d-37.8136!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sau!4v1678886400000!5m2!1sen!2sau"
+                    width="100%"
+                    height="100%"
+                    style={{ border: 0 }}
+                    allowFullScreen={true}
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                    className="rounded-t-lg"
+                    title="SD Auto Location Map"
+                  ></iframe>
+                </div>
+                <div className="p-6 bg-white border-t">
+                  <div className="grid md:grid-cols-3 gap-6 text-center">
+                    <div className="flex flex-col items-center">
+                      <div className="bg-primary/10 p-3 rounded-full mb-3">
+                        <MapPin className="h-6 w-6 text-primary" />
+                      </div>
+                      <h3 className="font-semibold text-gray-900 mb-1">Address</h3>
+                      <p className="text-gray-600 text-sm">Werribee, Victoria 3030, Australia</p>
+                    </div>
+                    <div className="flex flex-col items-center">
+                      <div className="bg-primary/10 p-3 rounded-full mb-3">
+                        <Clock className="h-6 w-6 text-primary" />
+                      </div>
+                      <h3 className="font-semibold text-gray-900 mb-1">Business Hours</h3>
+                      <p className="text-gray-600 text-sm">Monday - Saturday<br />9am - 6pm</p>
+                    </div>
+                    <div className="flex flex-col items-center">
+                      <div className="bg-primary/10 p-3 rounded-full mb-3">
+                        <Phone className="h-6 w-6 text-primary" />
+                      </div>
+                      <h3 className="font-semibold text-gray-900 mb-1">Contact</h3>
+                      <p className="text-gray-600 text-sm">
+                        <a href="tel:+61460786533" className="hover:text-primary transition-colors">
+                          +61 460 786 533
+                        </a>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </AnimatedSection>
         </div>
       </section>
 

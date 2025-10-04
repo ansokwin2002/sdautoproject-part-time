@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { Phone, Mail, Clock, Shield, Wrench, Package } from "lucide-react";
+import { Phone, Mail, Clock, Shield, Wrench, Package, MapPin, Truck, CreditCard, FileText, Search, AlertCircle, DollarSign, Globe, Hash, HelpCircle } from "lucide-react";
 
 // Custom hook for intersection observer
 const useIntersectionObserver = (options = {}) => {
@@ -87,44 +87,124 @@ type FaqEntry = {
 export default function FaqClient() {
   const [faqList] = useState<FaqEntry[]>([
     { 
-      question: "What types of automotive parts do you sell?", 
-      answer: "We offer a comprehensive range of automotive parts including engine components, brake systems, suspension parts, electrical components, filters, belts, hoses, and performance upgrades. All parts are sourced from trusted manufacturers and come with quality guarantees.",
+      question: "Where are you located?", 
+      answer: "We have three branches. Our main branch is in Melbourne, Australia, the second branch is in Bangkok, Thailand, and the third branch is in Phnom Penh, Cambodia.",
+      icon: <MapPin className="w-5 h-5" />
+    },
+    { 
+      question: "Can we order and pick up the part from you?", 
+      answer: "Yes, you can order and pick up the part from any of our stores in the three countries. Alternatively, you can pay when you pick up the part. We will provide you with our address upon request.",
       icon: <Package className="w-5 h-5" />
     },
     { 
-      question: "Do you offer genuine OEM parts or aftermarket alternatives?", 
-      answer: "We stock both genuine OEM parts and high-quality aftermarket alternatives. OEM parts ensure perfect fit and original specifications, while aftermarket options provide cost-effective solutions without compromising quality. Our team can help you choose the best option for your needs and budget.",
-      icon: <Wrench className="w-5 h-5" />
-    },
-    { 
-      question: "How can I find the right part for my vehicle?", 
-      answer: "Simply provide us with your vehicle's make, model, year, and VIN number. Our experienced team will cross-reference this information to ensure you get the exact part you need. We also offer online compatibility checking tools for your convenience.",
+      question: "How can I contact you?", 
+      answer: "You can contact us via email, phone, or WhatsApp using the contact details available on our website.",
       icon: <Phone className="w-5 h-5" />
     },
     { 
-      question: "What is your return and warranty policy?", 
-      answer: "All parts come with manufacturer warranty ranging from 12 months to lifetime coverage depending on the component. We offer 30-day returns on unused parts in original packaging. Defective parts are replaced or refunded according to warranty terms.",
+      question: "What parts do you sell?", 
+      answer: "We sell parts for popular Thailand-made brands, including Ford Ranger, Ford Everest, Isuzu Dmax, Isuzu Mux, Toyota Hilux, Toyota Fortuner, Mazda BT50, Mitsubishi Triton, Mitsubishi Pajero, Nissan Navara, and select models of Honda and Suzuki.",
+      icon: <Wrench className="w-5 h-5" />
+    },
+    { 
+      question: "Do you sell every part for Thailand-made vehicles?", 
+      answer: "No, we do not sell every part due to our limited resources.",
+      icon: <AlertCircle className="w-5 h-5" />
+    },
+    { 
+      question: "Are your parts genuine?", 
+      answer: "Yes, our parts are 100% genuine, except for some accessories that are sold as aftermarket. Customers are informed whether an accessory is genuine or aftermarket in the listing.",
       icon: <Shield className="w-5 h-5" />
     },
     { 
-      question: "Do you provide installation services?", 
-      answer: "Yes, we have certified technicians who can install most automotive parts. Installation services are available by appointment, and we use professional-grade tools and equipment. Labor comes with our workmanship guarantee.",
+      question: "Can you source parts that are not listed on your website?", 
+      answer: "Yes, we welcome inquiries for any part, whether listed on our website or not. We can provide quotes for parts that we can deliver. Some large parts like doors, engines, and bumpers are sold locally and not for overseas customers.",
+      icon: <Search className="w-5 h-5" />
+    },
+    { 
+      question: "How do I know which part to order for my car?", 
+      answer: "For every order, we require the VIN (Vehicle Identification Number) to ensure the correct part. If you do not provide the VIN, you have to decide which part that fits your vehicle.",
+      icon: <FileText className="w-5 h-5" />
+    },
+    { 
+      question: "Do you diagnose vehicle issues and recommend parts to order?", 
+      answer: "No, we do not provide diagnosis services. Please consult your mechanic to determine the parts needed for your vehicle.",
+      icon: <AlertCircle className="w-5 h-5" />
+    },
+    { 
+      question: "Do you offer part installation services at your store?", 
+      answer: "No, we do not offer part installation services as we do not work as mechanics.",
       icon: <Wrench className="w-5 h-5" />
     },
     { 
-      question: "How quickly can I get my parts?", 
-      answer: "In-stock parts are available for immediate pickup or same-day local delivery. Special order items typically arrive within 2-5 business days. We'll provide accurate timing estimates when you place your order and keep you updated on delivery status.",
+      question: "How quickly can you ship the part after an order?", 
+      answer: "99% of the parts listed on our website are in stock for same-day delivery if ordered before 1:00 PM Australia Time. Orders received after the cut-off time will be dispatched the next business day excluding weekend and public holidays. Some special parts that are ordered and not in stock may take 2-5 business days before we can dispatch them. In such cases, we will promptly notify customers, who can then choose to either wait or cancel the order.",
       icon: <Clock className="w-5 h-5" />
     },
     { 
-      question: "Do you offer bulk pricing for businesses?", 
-      answer: "Yes, we offer competitive wholesale pricing for automotive businesses, repair shops, and fleet operators. Contact us to discuss volume discounts, credit terms, and dedicated account management services.",
+      question: "What couriers do you use for part delivery?", 
+      answer: "We partner with Australia Post, EMS, DHL Express, and Interparcel Australia for shipping. For customers in Australia, we use Australia Post. For international orders, we ship parts using Australia Post from Australia and EMS from Thailand. If urgent delivery is required, we can also ship with DHL Express.",
+      icon: <Truck className="w-5 h-5" />
+    },
+    { 
+      question: "What happens if my order goes missing and we never receive it?", 
+      answer: "We have not encountered any missing packages as we work with Australia Post, EMS, and DHL. However, if this situation occurs, we will either send you a replacement or offer you a full refund, depending on your preference.",
       icon: <Package className="w-5 h-5" />
     },
     { 
-      question: "Can you help with performance upgrades?", 
-      answer: "Absolutely! We specialize in performance parts including cold air intakes, exhaust systems, suspension upgrades, turbo components, and engine tuning parts. Our team can recommend compatible upgrades to enhance your vehicle's performance safely.",
-      icon: <Wrench className="w-5 h-5" />
+      question: "Can I return a part if I don't need it?", 
+      answer: "Yes, we have a 30-day return policy. Contact us for returns, and we will issue a full refund, excluding shipping costs for overseas customers.",
+      icon: <Shield className="w-5 h-5" />
+    },
+    { 
+      question: "Can I return a part after installation?", 
+      answer: "No, we do not accept returns for parts that have been installed or tested. The part must be returned in its original packaging and condition.",
+      icon: <AlertCircle className="w-5 h-5" />
+    },
+    { 
+      question: "What payment methods do you accept?", 
+      answer: "We accept all Visa and Mastercards worldwide, as well as PayPal payments.",
+      icon: <CreditCard className="w-5 h-5" />
+    },
+    { 
+      question: "Do you accept bank transfers?", 
+      answer: "Yes, we accept bank transfers for larger orders.",
+      icon: <DollarSign className="w-5 h-5" />
+    },
+    { 
+      question: "Do you offer special pricing for regular customers?", 
+      answer: "Yes, we provide special pricing for regular customers based on negotiation.",
+      icon: <DollarSign className="w-5 h-5" />
+    },
+    { 
+      question: "Do I need to pay taxes or VAT for importing parts to my country?", 
+      answer: "Customers are responsible for taxes, VAT, and importation costs, except for customers in Australia, Thailand, and Cambodia where we ship from local stores.",
+      icon: <Globe className="w-5 h-5" />
+    },
+    { 
+      question: "What is the VIN?", 
+      answer: "The VIN (Vehicle Identification Number) is a unique 17-digit code that identifies a vehicle.",
+      icon: <Hash className="w-5 h-5" />
+    },
+    { 
+      question: "What is a part number?", 
+      answer: "A part number is a code assigned by the factory to identify specific vehicle parts.",
+      icon: <Hash className="w-5 h-5" />
+    },
+    { 
+      question: "Where can I find the VIN of my car?", 
+      answer: "The VIN is typically located inside the front doors, under the windshield, or in front of the engine under the bonnet.",
+      icon: <Search className="w-5 h-5" />
+    },
+    { 
+      question: "Where can I find the part number for a specific part?", 
+      answer: "Some parts may not have a visible part number on them. In such cases, the number or letters present may be a manufacturer or engineer number, rather than a specific part number. To obtain the correct part number for any component, you can contact your dealer or local parts specialist.",
+      icon: <Search className="w-5 h-5" />
+    },
+    { 
+      question: "Can you provide the part number for us?", 
+      answer: "Yes, we can definitely help with that. We are experts in parts for the vehicles we sell and use the latest catalog to identify the part number once we have the VIN from you.",
+      icon: <HelpCircle className="w-5 h-5" />
     }
   ]);
 
