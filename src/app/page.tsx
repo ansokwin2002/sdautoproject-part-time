@@ -50,7 +50,7 @@ const heroSlides = [
   // Ford Genuine Parts - 1st in dropdown
   {
     id: 1,
-    image: "/assets/slide/ford.jpg",
+    image: "/assets/slide/ford_new.webp",
     title: "Ford Genuine Parts",
     subtitle: "Built Ford Tough - Experience legendary durability and performance with Ford's complete range of genuine parts and accessories.",
     primaryButton: {
@@ -66,7 +66,7 @@ const heroSlides = [
 
    {
     id: 2,
-    image: "/assets/slide/ford2.jpg",
+    image: "/assets/slide/ford_new_2.webp",
     title: "Ford Genuine Parts",
     subtitle: "Built Ford Tough - Experience legendary durability and performance with Ford's complete range of genuine parts and accessories.",
     primaryButton: {
@@ -84,7 +84,7 @@ const heroSlides = [
   // Isuzu Genuine Parts - 2nd in dropdown
   {
     id: 3,
-    image: "/assets/slide/isuzu.jpg",
+    image: "/assets/slide/isuzu_new.jpg",
     title: "Isuzu Genuine Parts",
     subtitle: "Go the Distance - Commercial grade durability and strength with Isuzu's reliable genuine parts for every journey.",
     primaryButton: {
@@ -101,7 +101,7 @@ const heroSlides = [
   // Toyota Genuine Parts - 3rd in dropdown
   {
     id: 4,
-    image: "/assets/slide/toyota.jpg",
+    image: "/assets/slide/toyota_new.jpg",
     title: "Toyota Genuine Parts",
     subtitle: "Let's Go Places - Reliability and innovation in every part. Discover Toyota's world-class genuine automotive components.",
     primaryButton: {
@@ -118,7 +118,7 @@ const heroSlides = [
   // Mazda Genuine Parts - 4th in dropdown
   {
     id: 5,
-    image: "/assets/slide/mazda.jpg",
+    image: "/assets/slide/mazada_new.jpg",
     title: "Mazda Genuine Parts",
     subtitle: "Driving Matters - Precision engineering and stylish design combined with quality genuine parts for the ultimate driving experience.",
     primaryButton: {
@@ -131,26 +131,26 @@ const heroSlides = [
     },
     aiHint: "Mazda CX-5 SUV"
   },
-  {
-    id: 6,
-    image: "/assets/slide/mazada2.jpg",
-    title: "Mazda Genuine Parts",
-    subtitle: "Driving Matters - Precision engineering and stylish design combined with quality genuine parts for the ultimate driving experience.",
-    primaryButton: {
-      text: "View Mazda Parts",
-      href: "/genuine-parts?brand=Mazda%20Parts"
-    },
-    secondaryButton: {
-      text: "Contact Us",
-      href: "/contact"
-    },
-    aiHint: "Mazda CX-5 SUV"
-  },
+  // {
+  //   id: 6,
+  //   image: "/assets/slide/mazada2.jpg",
+  //   title: "Mazda Genuine Parts",
+  //   subtitle: "Driving Matters - Precision engineering and stylish design combined with quality genuine parts for the ultimate driving experience.",
+  //   primaryButton: {
+  //     text: "View Mazda Parts",
+  //     href: "/genuine-parts?brand=Mazda%20Parts"
+  //   },
+  //   secondaryButton: {
+  //     text: "Contact Us",
+  //     href: "/contact"
+  //   },
+  //   aiHint: "Mazda CX-5 SUV"
+  // },
   
   // Mitsubishi Genuine Parts - 5th in dropdown
   {
-    id: 7,
-    image: "/assets/slide/mitsubishi.jpg",
+    id: 6,
+    image: "/assets/slide/mitsubishi_new.jpg",
     title: "Mitsubishi Genuine Parts",
     subtitle: "Drive your Ambition - Proven performance and reliability with Mitsubishi's innovative genuine parts and authentic replacements.",
     primaryButton: {
@@ -163,7 +163,21 @@ const heroSlides = [
     },
     aiHint: "Mitsubishi Lancer Evolution"
   },
-
+  {
+    id: 7,
+    image: "/assets/slide/nissan_new.jpg",
+    title: "Mitsubishi Genuine Parts",
+    subtitle: "Drive your Ambition - Proven performance and reliability with Mitsubishi's innovative genuine parts and authentic replacements.",
+    primaryButton: {
+      text: "View Mitsubishi Parts",
+      href: "/genuine-parts?brand=Mitsubishi%20Parts"
+    },
+    secondaryButton: {
+      text: "Service Center",
+      href: "/contact"
+    },
+    aiHint: "Mitsubishi Lancer Evolution"
+  },
 ];
 
 const featuredCars = [
