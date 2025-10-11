@@ -50,23 +50,7 @@ const heroSlides = [
   // Ford Genuine Parts - 1st in dropdown
   {
     id: 1,
-    image: "/assets/slide/ford_new.webp",
-    title: "Ford Genuine Parts",
-    subtitle: "Built Ford Tough - Experience legendary durability and performance with Ford's complete range of genuine parts and accessories.",
-    primaryButton: {
-      text: "View Ford Parts",
-      href: "/genuine-parts?brand=Ford%20Parts"
-    },
-    secondaryButton: {
-      text: "Contact Us",
-      href: "/contact"
-    },
-    aiHint: "Ford Mustang sports car"
-  },
-
-   {
-    id: 2,
-    image: "/assets/slide/ford_new_2.webp",
+    image: "/assets/slide/new_ford_3.jpg",
     title: "Ford Genuine Parts",
     subtitle: "Built Ford Tough - Experience legendary durability and performance with Ford's complete range of genuine parts and accessories.",
     primaryButton: {
@@ -83,8 +67,8 @@ const heroSlides = [
   
   // Isuzu Genuine Parts - 2nd in dropdown
   {
-    id: 3,
-    image: "/assets/slide/isuzu_new.jpg",
+    id: 2,
+    image: "/assets/slide/new_isuzu.jpg",
     title: "Isuzu Genuine Parts",
     subtitle: "Go the Distance - Commercial grade durability and strength with Isuzu's reliable genuine parts for every journey.",
     primaryButton: {
@@ -100,7 +84,7 @@ const heroSlides = [
   
   // Toyota Genuine Parts - 3rd in dropdown
   {
-    id: 4,
+    id: 3,
     image: "/assets/slide/toyota_new.jpg",
     title: "Toyota Genuine Parts",
     subtitle: "Let's Go Places - Reliability and innovation in every part. Discover Toyota's world-class genuine automotive components.",
@@ -117,7 +101,7 @@ const heroSlides = [
   
   // Mazda Genuine Parts - 4th in dropdown
   {
-    id: 5,
+    id: 4,
     image: "/assets/slide/mazada_new.jpg",
     title: "Mazda Genuine Parts",
     subtitle: "Driving Matters - Precision engineering and stylish design combined with quality genuine parts for the ultimate driving experience.",
@@ -131,26 +115,11 @@ const heroSlides = [
     },
     aiHint: "Mazda CX-5 SUV"
   },
-  // {
-  //   id: 6,
-  //   image: "/assets/slide/mazada2.jpg",
-  //   title: "Mazda Genuine Parts",
-  //   subtitle: "Driving Matters - Precision engineering and stylish design combined with quality genuine parts for the ultimate driving experience.",
-  //   primaryButton: {
-  //     text: "View Mazda Parts",
-  //     href: "/genuine-parts?brand=Mazda%20Parts"
-  //   },
-  //   secondaryButton: {
-  //     text: "Contact Us",
-  //     href: "/contact"
-  //   },
-  //   aiHint: "Mazda CX-5 SUV"
-  // },
   
   // Mitsubishi Genuine Parts - 5th in dropdown
   {
-    id: 6,
-    image: "/assets/slide/mitsubishi_new.jpg",
+    id: 5,
+    image: "/assets/slide/new_mitsubishi.jpeg",
     title: "Mitsubishi Genuine Parts",
     subtitle: "Drive your Ambition - Proven performance and reliability with Mitsubishi's innovative genuine parts and authentic replacements.",
     primaryButton: {
@@ -164,8 +133,8 @@ const heroSlides = [
     aiHint: "Mitsubishi Lancer Evolution"
   },
   {
-    id: 7,
-    image: "/assets/slide/nissan_new.jpg",
+    id: 6,
+    image: "/assets/slide/new_nissan.jpg",
     title: "Mitsubishi Genuine Parts",
     subtitle: "Drive your Ambition - Proven performance and reliability with Mitsubishi's innovative genuine parts and authentic replacements.",
     primaryButton: {
@@ -569,7 +538,7 @@ export default function Home() {
                 <div className="mb-4 md:mb-6">
                   <div className="relative w-32 h-32 md:w-40 md:h-40 lg:w-48 lg:h-48 mx-auto mb-3 md:mb-4 flex items-center justify-center">
                     <Image
-                      src="/assets/EMS.png"
+                      src="/assets/ems_3.png"
                       alt="EMS Express Mail Service"
                       fill
                       className="object-contain"
