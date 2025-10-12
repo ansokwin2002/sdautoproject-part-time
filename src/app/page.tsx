@@ -50,6 +50,22 @@ const heroSlides = [
   // Ford Genuine Parts - 1st in dropdown
   {
     id: 1,
+    image: "/assets/slide/new_ford.jpg",
+    title: "Ford Genuine Parts",
+    subtitle: "Built Ford Tough - Experience legendary durability and performance with Ford's complete range of genuine parts and accessories.",
+    primaryButton: {
+      text: "View Ford Parts",
+      href: "/genuine-parts?brand=Ford%20Parts"
+    },
+    secondaryButton: {
+      text: "Contact Us",
+      href: "/contact"
+    },
+    aiHint: "Ford Mustang sports car"
+  },
+  
+  {
+    id: 2,
     image: "/assets/slide/new_ford_3.jpg",
     title: "Ford Genuine Parts",
     subtitle: "Built Ford Tough - Experience legendary durability and performance with Ford's complete range of genuine parts and accessories.",
@@ -67,7 +83,7 @@ const heroSlides = [
   
   // Isuzu Genuine Parts - 2nd in dropdown
   {
-    id: 2,
+    id: 3,
     image: "/assets/slide/new_isuzu_2.jpg",
     title: "Isuzu Genuine Parts",
     subtitle: "Go the Distance - Commercial grade durability and strength with Isuzu's reliable genuine parts for every journey.",
@@ -84,8 +100,8 @@ const heroSlides = [
   
   // Toyota Genuine Parts - 3rd in dropdown
   {
-    id: 3,
-    image: "/assets/slide/toyota_new.jpg",
+    id: 4,
+    image: "/assets/slide/2024-Toyota-HiLux-GR-Sport-4x4-1.jpg",
     title: "Toyota Genuine Parts",
     subtitle: "Let's Go Places - Reliability and innovation in every part. Discover Toyota's world-class genuine automotive components.",
     primaryButton: {
@@ -101,7 +117,7 @@ const heroSlides = [
   
   // Mazda Genuine Parts - 4th in dropdown
   {
-    id: 4,
+    id: 5,
     image: "/assets/slide/mazada_new.jpg",
     title: "Mazda Genuine Parts",
     subtitle: "Driving Matters - Precision engineering and stylish design combined with quality genuine parts for the ultimate driving experience.",
@@ -118,7 +134,7 @@ const heroSlides = [
   
   // Mitsubishi Genuine Parts - 5th in dropdown
   {
-    id: 5,
+    id: 6,
     image: "/assets/slide/new_mitsubishi.jpeg",
     title: "Mitsubishi Genuine Parts",
     subtitle: "Drive your Ambition - Proven performance and reliability with Mitsubishi's innovative genuine parts and authentic replacements.",
@@ -133,7 +149,7 @@ const heroSlides = [
     aiHint: "Mitsubishi Lancer Evolution"
   },
   {
-    id: 6,
+    id: 7,
     image: "/assets/slide/557eae88d56d3.jpg",
     title: "Mitsubishi Genuine Parts",
     subtitle: "Drive your Ambition - Proven performance and reliability with Mitsubishi's innovative genuine parts and authentic replacements.",
@@ -331,11 +347,12 @@ function HeroCarousel() {
               data-ai-hint={slide.aiHint}
               fill
               className={`object-cover scale-110 ${
-                index === 0 ? 'object-[center_75%]' : // Ford - current good position
-                index === 1 ? 'object-[center_75%]' : // Isuzu - show more top
-                index === 2 ? 'object-[center_60%]' :
-                index === 3 ? 'object-[center_75%]' :
-                index === 4 ? 'object-[center_60%]' :
+                index === 0 ? 'object-[center_55%]' : 
+                index === 1 ? 'object-[center_75%]' : // Ford - current good position
+                index === 2 ? 'object-[center_75%]' : // Isuzu - show more top
+                index === 3 ? 'object-[center_60%]' :
+                index === 4 ? 'object-[center_75%]' :
+                index === 5 ? 'object-[center_60%]' :
                 'object-[center_55%]' // Default for other slides
               }`}
               priority={index === 0}
