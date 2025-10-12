@@ -101,7 +101,7 @@ const heroSlides = [
   // Toyota Genuine Parts - 3rd in dropdown
   {
     id: 4,
-    image: "/assets/slide/2024-Toyota-HiLux-GR-Sport-4x4-1.jpg",
+    image: "/assets/slide/06.-2023-Toyota-HiLux-GR-Sport_1504-e1694843548162.jpg",
     title: "Toyota Genuine Parts",
     subtitle: "Let's Go Places - Reliability and innovation in every part. Discover Toyota's world-class genuine automotive components.",
     primaryButton: {
@@ -118,7 +118,7 @@ const heroSlides = [
   // Mazda Genuine Parts - 4th in dropdown
   {
     id: 5,
-    image: "/assets/slide/mazada_new.jpg",
+    image: "/assets/slide/mazda-bt50-camioneta-roja-selva-rio-v5.jpg",
     title: "Mazda Genuine Parts",
     subtitle: "Driving Matters - Precision engineering and stylish design combined with quality genuine parts for the ultimate driving experience.",
     primaryButton: {
@@ -150,7 +150,7 @@ const heroSlides = [
   },
   {
     id: 7,
-    image: "/assets/slide/557eae88d56d3.jpg",
+    image: "/assets/slide/16iXf37CbehGot7USBTZzCNh.png",
     title: "Mitsubishi Genuine Parts",
     subtitle: "Drive your Ambition - Proven performance and reliability with Mitsubishi's innovative genuine parts and authentic replacements.",
     primaryButton: {
@@ -350,8 +350,8 @@ function HeroCarousel() {
                 index === 0 ? 'object-[center_55%]' : 
                 index === 1 ? 'object-[center_75%]' : // Ford - current good position
                 index === 2 ? 'object-[center_75%]' : // Isuzu - show more top
-                index === 3 ? 'object-[center_60%]' :
-                index === 4 ? 'object-[center_75%]' :
+                index === 3 ? 'object-[center_22%]' :
+                index === 4 ? 'object-[center_35%]' :
                 index === 5 ? 'object-[center_60%]' :
                 'object-[center_55%]' // Default for other slides
               }`}
