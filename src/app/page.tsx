@@ -68,7 +68,7 @@ const heroSlides = [
   // Isuzu Genuine Parts - 2nd in dropdown
   {
     id: 2,
-    image: "/assets/slide/new_isuzu.jpg",
+    image: "/assets/slide/new_isuzu_2.jpg",
     title: "Isuzu Genuine Parts",
     subtitle: "Go the Distance - Commercial grade durability and strength with Isuzu's reliable genuine parts for every journey.",
     primaryButton: {
@@ -134,7 +134,7 @@ const heroSlides = [
   },
   {
     id: 6,
-    image: "/assets/slide/new_nissan.jpg",
+    image: "/assets/slide/557eae88d56d3.jpg",
     title: "Mitsubishi Genuine Parts",
     subtitle: "Drive your Ambition - Proven performance and reliability with Mitsubishi's innovative genuine parts and authentic replacements.",
     primaryButton: {
@@ -330,7 +330,14 @@ function HeroCarousel() {
               alt={slide.title}
               data-ai-hint={slide.aiHint}
               fill
-              className="object-cover object-center"
+              className={`object-cover scale-110 ${
+                index === 0 ? 'object-[center_75%]' : // Ford - current good position
+                index === 1 ? 'object-[center_75%]' : // Isuzu - show more top
+                index === 2 ? 'object-[center_60%]' :
+                index === 3 ? 'object-[center_75%]' :
+                index === 4 ? 'object-[center_60%]' :
+                'object-[center_55%]' // Default for other slides
+              }`}
               priority={index === 0}
             />
           </div>
