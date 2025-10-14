@@ -549,7 +549,9 @@ export default function Home() {
                     />
                   </div>
                 </div>
-                <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-2 md:mb-3">By Australia Post Express</h3>
+                <Link href="https://auspost.com.au/" target="_blank" rel="noopener noreferrer">
+                  <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-2 md:mb-3 hover:underline">By Australia Post Express</h3>
+                </Link>
                 <p className="text-sm md:text-base text-gray-600 leading-relaxed flex-grow">
                   Reliable shipping through Australia Post network. Perfect for standard delivery across Australia and worldwide, with tracking included.
                 </p>
@@ -569,7 +571,9 @@ export default function Home() {
                     />
                   </div>
                 </div>
-                <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-2 md:mb-3">By EMS (Express Mail Service)</h3>
+                <Link href="https://www.ems.post/en/global-network/tracking" target="_blank" rel="noopener noreferrer">
+                  <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-2 md:mb-3 hover:underline">By EMS (Express Mail Service)</h3>
+                </Link>
                 <p className="text-sm md:text-base text-gray-600 leading-relaxed flex-grow">
                   Fast international delivery with tracking included. Reliable shipping worldwide for your important packages.
                 </p>
@@ -589,7 +593,9 @@ export default function Home() {
                     />
                   </div>
                 </div>
-                <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-2 md:mb-3">By DHL Express</h3>
+                <Link href="https://www.dhl.com/au-en/home.html" target="_blank" rel="noopener noreferrer">
+                  <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-2 md:mb-3 hover:underline">By DHL Express</h3>
+                </Link>
                 <p className="text-sm md:text-base text-gray-600 leading-relaxed flex-grow">
                   Trusted worldwide shipping with fast delivery times and full tracking.
                 </p>
@@ -609,7 +615,9 @@ export default function Home() {
                     />
                   </div>
                 </div>
-                <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-2 md:mb-3">By Interparcel</h3>
+                <Link href="https://au.interparcel.com/tracking/" target="_blank" rel="noopener noreferrer">
+                  <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-2 md:mb-3 hover:underline">By Interparcel</h3>
+                </Link>
                 <p className="text-sm md:text-base text-gray-600 leading-relaxed flex-grow">
                   Flexible and affordable courier services with multiple delivery options and tracking included.
                 </p>
@@ -646,7 +654,7 @@ export default function Home() {
         <div className="container mx-auto grid md:grid-cols-2 gap-12 items-center">
           <AnimatedSection className="relative h-full" delay={200}>
             <Image
-              src="assets/home/p1.webp"
+              src="assets/home/p2.webp"
               alt="High-quality car products"
               data-ai-hint="car parts automotive products"
               fill
@@ -655,12 +663,7 @@ export default function Home() {
           </AnimatedSection>
           <div>
             <AnimatedSection>
-              <h2 className="text-3xl md:text-4xl font-bold font-headline">Why Choose SD Auto?</h2>
-            </AnimatedSection>
-            <AnimatedSection delay={100}>
-              <p className="text-muted-foreground mt-4 mb-6 text-lg">
-                With 15 years of expertise in genuine auto parts for Thailand-made brands • Worldwide shipping • Family-owned Australian business. We understand the challenges of high dealer prices and offer reliable alternatives without compromising on quality.
-              </p>
+              <h2 className="text-3xl md:text-4xl font-bold font-headline mb-6">Why Choose SD Auto?</h2>
             </AnimatedSection>
             <ul className="space-y-4">
               <AnimatedSection delay={200}>
@@ -669,8 +672,8 @@ export default function Home() {
                     <Wrench className="h-5 w-5" />
                   </div>
                   <div>
-                    <h4 className="font-semibold">15 Years Experience</h4>
-                    <p className="text-muted-foreground">Established expertise in genuine auto parts for Thailand-made brands with proven track record.</p>
+                    <h4 className="font-semibold">With 15 years of experience</h4>
+                    <p className="text-muted-foreground">SD Auto has established expertise in providing genuine auto parts for Thailand-made brands, backed by a proven track record.</p>
                   </div>
                 </li>
               </AnimatedSection>
@@ -680,8 +683,8 @@ export default function Home() {
                     <Sparkles className="h-5 w-5" />
                   </div>
                   <div>
-                    <h4 className="font-semibold">Competitive Pricing</h4>
-                    <p className="text-muted-foreground">We offer cost-effective alternatives to high dealer prices while maintaining quality standards for all vehicle types.</p>
+                    <h4 className="font-semibold">Family-owned Australian business</h4>
+                    <p className="text-muted-foreground">Based in Melbourne, Australia, shipping locally and internationally.</p>
                   </div>
                 </li>
               </AnimatedSection>
@@ -691,8 +694,19 @@ export default function Home() {
                     <Car className="h-5 w-5" />
                   </div>
                   <div>
-                    <h4 className="font-semibold">Global Sourcing Network</h4>
-                    <p className="text-muted-foreground">Specialized access to parts for any vehicle through our established supply chains across multiple countries.</p>
+                    <h4 className="font-semibold">Fair pricing without compromise</h4>
+                    <p className="text-muted-foreground">We understand the challenges of high dealer prices and offer reliable alternatives without compromising on quality.</p>
+                  </div>
+                </li>
+              </AnimatedSection>
+              <AnimatedSection delay={500}>
+                <li className="flex items-start">
+                  <div className="bg-primary/10 text-primary rounded-full p-2 mr-4 mt-1">
+                    <Sparkles className="h-5 w-5" />
+                  </div>
+                  <div>
+                    <h4 className="font-semibold">Top-rated eBay seller since 2011</h4>
+                    <p className="text-muted-foreground">One of eBay's most reputable sellers since 2011, consistently providing outstanding customer service.</p>
                   </div>
                 </li>
               </AnimatedSection>
