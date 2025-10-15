@@ -540,7 +540,7 @@ export default function ContactPage() {
             <Card className="shadow-lg overflow-hidden">
               <div className="relative w-full h-[500px]">
                 <iframe
-                  src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d3024156.3!2d144.9631!3d-37.8136!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sau!4v1678886400000!5m2!1sen!2sau"
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d201446.2672915146!2d144.65309295!3d-37.90205595!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6ad6879a3a3d3d3d%3A0x5045675218ce7e0!2sWerribee%20VIC%203030!5e0!3m2!1sen!2sau!4v1678886400000!5m2!1sen!2sau"
                   width="100%"
                   height="100%"
                   style={{ border: 0 }}
