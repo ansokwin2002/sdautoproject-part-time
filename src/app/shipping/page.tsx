@@ -137,7 +137,7 @@ export default function ShippingPage() {
           </div>
 
           <div className="max-w-7xl mx-auto">
-            <AnimatedSection className="text-center mb-16">
+            <AnimatedSection className="text-center mb-0">
               <div className="w-16 h-1 bg-orange-400 mx-auto mb-4"></div>
               <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Our Delivery Partners</h2>
             </AnimatedSection>
