@@ -119,7 +119,7 @@ export default function ShippingPage() {
   return (
     <div className="flex flex-col">
       {/* Content Section */}
-      <section className="py-16 md:py-20 bg-gradient-to-b from-gray-50 to-white">
+      <section className="pt-8 md:pt-12 pb-16 md:pb-20 bg-gradient-to-b from-gray-50 to-white">
         <div className="container mx-auto">
           <div>
             <AnimatedSection delay={100}>
@@ -200,7 +200,6 @@ export default function ShippingPage() {
                 </div>
               </AnimatedSection>
 
-              {/* By Land */}
               <AnimatedSection delay={400}>
                 <div className="bg-white rounded-lg p-4 shadow-lg hover:shadow-xl transition-all duration-300 group text-center flex flex-col h-full">
                   <div className="mb-4">
@@ -226,7 +225,7 @@ export default function ShippingPage() {
       </section>
 
       {/* Map and Text Section */}
-      <section className="pt-8 md:pt-12 pb-16 md:pb-20 bg-gray-50">
+      <section className="pt-8 -mt-8 pb-16 md:pb-20 bg-gray-50">
         <div className="container mx-auto">
           <div className="flex flex-col md:flex-row gap-8 items-start">
             <div className="w-full md:w-1/2">
@@ -274,7 +273,7 @@ export default function ShippingPage() {
       </section>
 
       {/* Our Delivery Section */}
-      <section className="py-16 md:py-20 bg-gray-50">
+      <section className="pt-4 md:pt-6 pb-16 md:pb-20 bg-gray-50">
         <div className="container mx-auto">
           <AnimatedSection className="text-center mb-16">
             <div className="w-16 h-1 bg-orange-400 mx-auto mb-4"></div>
@@ -287,7 +286,7 @@ export default function ShippingPage() {
             <AnimatedSection delay={100}>
               <div className="bg-white rounded-lg p-4 md:p-6 lg:p-8 shadow-lg hover:shadow-xl transition-all duration-300 group text-center flex flex-col h-full">
                 <div className="mb-4 md:mb-6">
-                  <div className="relative w-32 h-32 md:w-40 md:h-40 lg:w-48 lg:h-48 mx-auto mb-3 md:mb-4 flex items-center justify-center">
+                  <div className="relative w-40 h-40 md:w-44 md:h-44 lg:w-48 lg:h-48 mx-auto mb-3 md:mb-4 flex items-center justify-center">
                     <Image
                       src="/assets/post.jpg"
                       alt="Australia Post"
@@ -352,7 +351,7 @@ export default function ShippingPage() {
             <AnimatedSection delay={400}>
               <div className="bg-white rounded-lg p-4 md:p-6 lg:p-8 shadow-lg hover:shadow-xl transition-all duration-300 group text-center flex flex-col h-full">
                 <div className="mb-4 md:mb-6">
-                  <div className="relative w-32 h-32 md:w-40 md:h-40 lg:w-48 lg:h-48 mx-auto mb-3 md:mb-4 flex items-center justify-center">
+                  <div className="relative w-40 h-40 md:w-44 md:h-44 lg:w-48 lg:h-48 mx-auto mb-3 md:mb-4 flex items-center justify-center">
                     <Image
                       src="/assets/interparcel.png"
                       alt="Interparcel Delivery"
@@ -372,6 +371,8 @@ export default function ShippingPage() {
           </div>
         </div>
       </section>
+
+
     </div>
   );
 }

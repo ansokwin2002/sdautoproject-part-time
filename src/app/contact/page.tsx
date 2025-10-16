@@ -252,7 +252,7 @@ export default function ContactPage() {
         />
       )}
 
-      <div className="container mx-auto py-16 md:py-24 space-y-16">
+      <div className="container mx-auto pt-8 md:pt-12 pb-16 md:pb-20 space-y-16">
         {/* Header Section */}
         <div className="text-center">
           <AnimatedText delay={100}>

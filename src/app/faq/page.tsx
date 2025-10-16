@@ -78,7 +78,7 @@ const AnimatedText = ({ children, className = "", delay = 0 }) => {
 export default function FaqPage() {
     return (
     <div className="bg-white min-h-[calc(100vh-14rem)]">
-      <div className="container mx-auto px-4 py-16 md:py-24">
+      <div className="container mx-auto px-4 pt-8 md:pt-12 pb-16 md:pb-20">
         <AnimatedSection>
           <div className="text-center mb-12">
             <AnimatedText>

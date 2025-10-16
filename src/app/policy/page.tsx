@@ -59,7 +59,7 @@ const AnimatedSection = ({ children, className = "", delay = 0 }) => {
 export default function PolicyPage() {
   return (
     <div className="bg-white">
-      <div className="container mx-auto py-16 md:py-20">
+      <div className="container mx-auto pt-8 md:pt-12 pb-16 md:pb-20">
         <AnimatedSection>
           <h1 className="text-4xl md:text-5xl font-bold text-center text-gray-900 mb-12">Our Policies</h1>
         </AnimatedSection>
