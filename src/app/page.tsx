@@ -552,10 +552,9 @@ export default function Home() {
                 <Link href="https://auspost.com.au/" target="_blank" rel="noopener noreferrer">
                   <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-2 md:mb-3 hover:underline">By Australia Post Express</h3>
                 </Link>
-                <p className="text-sm md:text-base text-gray-600 leading-relaxed flex-grow">
-                  Reliable shipping through Australia Post network. Perfect for standard delivery across Australia and worldwide, with tracking included.
-                </p>
-              </div>
+                                  <p className="text-sm md:text-base text-gray-600 leading-relaxed flex-grow">
+                                    Reliable shipping through Australia Post network. Perfect for standard and express delivery across Australia and worldwide, with tracking included.
+                                  </p>              </div>
             </AnimatedSection>
 
             {/* By EMS */}
