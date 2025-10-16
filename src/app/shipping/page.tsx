@@ -119,7 +119,7 @@ export default function ShippingPage() {
   return (
     <div className="flex flex-col">
       {/* Content Section */}
-      <section className="pt-8 md:pt-12 pb-16 md:pb-20 bg-gradient-to-b from-gray-50 to-white">
+      <section className="pt-16 md:pt-12 pb-16 md:pb-20 bg-gradient-to-b from-gray-50 to-white">
         <div className="container mx-auto">
           <div>
             <AnimatedSection delay={100}>
