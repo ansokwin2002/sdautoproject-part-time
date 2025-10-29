@@ -2,6 +2,7 @@ import { HomeSettings, HomeSettingsResponse, SingleHomeSettingResponse } from '@
 import { Slider, SliderResponse, SingleSliderResponse } from '@/types/slider';
 import { Shipping, ShippingResponse, SingleShippingResponse } from '@/types/shipping';
 import { Policy, PolicyResponse, SinglePolicyResponse } from '@/types/policy';
+import { Faq, FaqResponse, SingleFaqResponse } from '@/types/faq';
 
 // Get API base URL from environment variable or use default
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8000/api';
@@ -218,6 +219,31 @@ class ApiService {
 
     if (!response.success) {
       throw new ApiError(response.message || 'Failed to fetch policy data');
+    }
+
+    if (!response.data) {
+      throw new ApiError('No data received');
+    }
+
+    return response.data;
+  }
+
+  // FAQ API methods
+  async getFaqs(): Promise<Faq[]> {
+    const response = await this.request<FaqResponse>('/public/faqs');
+
+    if (!response.success) {
+      throw new ApiError(response.message || 'Failed to fetch FAQ data');
+    }
+
+    return response.data || [];
+  }
+
+  async getFaqById(id: number): Promise<Faq> {
+    const response = await this.request<SingleFaqResponse>(`/public/faqs/${id}`);
+
+    if (!response.success) {
+      throw new ApiError(response.message || 'Failed to fetch FAQ data');
     }
 
     if (!response.data) {

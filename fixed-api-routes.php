@@ -46,6 +46,12 @@ Route::prefix('public/policies')->group(function () {
     Route::get('/{id}', [\App\Http\Controllers\Api\PolicyController::class, 'show']); // ✅ Public - for frontend
 });
 
+// 🔥 PUBLIC FAQ routes (for frontend FAQ page)
+Route::prefix('public/faqs')->group(function () {
+    Route::get('/', [\App\Http\Controllers\Api\FaqController::class, 'index']); // ✅ Public - for frontend
+    Route::get('/{id}', [\App\Http\Controllers\Api\FaqController::class, 'show']); // ✅ Public - for frontend
+});
+
 // Protected routes with Sanctum
 Route::middleware('auth:sanctum')->group(function () {
     // Auth

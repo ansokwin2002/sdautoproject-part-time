@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Phone, Mail, Clock, Shield, Wrench, Package, MapPin, Truck, CreditCard, FileText, Search, AlertCircle, DollarSign, Globe, Hash, HelpCircle } from "lucide-react";
+import { useFaqs } from "@/hooks/useFaqs";
 
 // Custom hook for intersection observer
 const useIntersectionObserver = (options = {}) => {
@@ -85,6 +86,27 @@ type FaqEntry = {
 };
 
 export default function FaqClient() {
+  const { faqs, loading, error } = useFaqs();
+
+  // Helper function to get icon for FAQ based on keywords in question
+  const getIconForFaq = (question: string): JSX.Element => {
+    const q = question.toLowerCase();
+    if (q.includes('location') || q.includes('located') || q.includes('address')) return <MapPin className="w-5 h-5" />;
+    if (q.includes('contact') || q.includes('phone') || q.includes('email')) return <Phone className="w-5 h-5" />;
+    if (q.includes('parts') || q.includes('sell')) return <Wrench className="w-5 h-5" />;
+    if (q.includes('genuine') || q.includes('authentic')) return <Shield className="w-5 h-5" />;
+    if (q.includes('shipping') || q.includes('delivery') || q.includes('courier')) return <Truck className="w-5 h-5" />;
+    if (q.includes('payment') || q.includes('pay') || q.includes('card')) return <CreditCard className="w-5 h-5" />;
+    if (q.includes('return') || q.includes('refund')) return <Package className="w-5 h-5" />;
+    if (q.includes('vin') || q.includes('part number')) return <Hash className="w-5 h-5" />;
+    if (q.includes('time') || q.includes('quickly') || q.includes('ship')) return <Clock className="w-5 h-5" />;
+    if (q.includes('tax') || q.includes('vat') || q.includes('import')) return <Globe className="w-5 h-5" />;
+    if (q.includes('price') || q.includes('pricing') || q.includes('cost')) return <DollarSign className="w-5 h-5" />;
+    if (q.includes('find') || q.includes('source') || q.includes('search')) return <Search className="w-5 h-5" />;
+    if (q.includes('installation') || q.includes('install')) return <Wrench className="w-5 h-5" />;
+    return <HelpCircle className="w-5 h-5" />; // Default icon
+  };
+
   const [faqList] = useState<FaqEntry[]>([
     { 
       question: "Where are you located?", 
@@ -208,29 +230,41 @@ export default function FaqClient() {
     }
   ]);
 
+  // Use API data if available, otherwise use fallback data
+  const displayFaqs = faqs.length > 0 ? faqs : faqList;
+
   return (
     <div className="max-w-4xl mx-auto">
       <AnimatedCard delay={100}>
         <div>
           <h2 className="text-2xl font-bold text-center mb-6">Common Questions</h2>
           <Accordion type="single" collapsible className="w-full bg-background rounded-lg shadow-md">
-            {faqList.map((faq, i) => (
-              <AccordionItem value={`item-${i}`} key={i}>
-                <AccordionTrigger className="text-left hover:no-underline px-6">
-                  <div className="flex items-center gap-3">
-                    <div className="bg-blue-100 p-2 rounded-lg">
-                      {faq.icon}
+            {displayFaqs.map((faq, i) => {
+              // For API data, we need to get icon and format properly
+              const isApiFaq = 'id' in faq;
+              const faqIcon = isApiFaq ? getIconForFaq(faq.question) : (faq as FaqEntry).icon;
+
+              return (
+                <AccordionItem value={`item-${i}`} key={isApiFaq ? faq.id : i}>
+                  <AccordionTrigger className="text-left hover:no-underline px-6">
+                    <div className="flex items-center gap-3">
+                      <div className="bg-blue-100 p-2 rounded-lg">
+                        {faqIcon}
+                      </div>
+                      <span className="font-medium">{faq.question}</span>
                     </div>
-                    <span className="font-medium">{faq.question}</span>
-                  </div>
-                </AccordionTrigger>
-                <AccordionContent className="px-6 pb-4">
-                  <div className="pl-11">
-                    <p className="text-muted-foreground pt-2">{faq.answer}</p>
-                  </div>
-                </AccordionContent>
-              </AccordionItem>
-            ))}
+                  </AccordionTrigger>
+                  <AccordionContent className="px-6 pb-4">
+                    <div className="pl-11">
+                      <div
+                        className="text-muted-foreground pt-2"
+                        dangerouslySetInnerHTML={{ __html: faq.answer }}
+                      />
+                    </div>
+                  </AccordionContent>
+                </AccordionItem>
+              );
+            })}
           </Accordion>
         </div>
       </AnimatedCard>
