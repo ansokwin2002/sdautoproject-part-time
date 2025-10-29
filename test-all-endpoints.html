@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test All API Endpoints</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .endpoint-test {
+            background: white;
+            margin: 20px 0;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .success { border-left: 5px solid #28a745; }
+        .error { border-left: 5px solid #dc3545; }
+        .testing { border-left: 5px solid #ffc107; }
+        pre {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 4px;
+            overflow-x: auto;
+            font-size: 12px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        .status {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔍 API Endpoints Test</h1>
+    <p>Testing all public API endpoints to find the correct ones...</p>
+    
+    <button onclick="testAllEndpoints()">🚀 Test All Endpoints</button>
+    <button onclick="clearResults()">🗑️ Clear Results</button>
+    
+    <div id="results"></div>
+
+    <script>
+        const API_BASE_URL = 'http://192.168.0.120:8000/api';
+        
+        const endpoints = [
+            // Settings endpoints
+            { name: 'Settings (public/settings)', url: '/public/settings' },
+            { name: 'Settings (public/home-settings)', url: '/public/home-settings' },
+            { name: 'Settings (home-settings)', url: '/home-settings' },
+            { name: 'Settings (settings)', url: '/settings' },
+            
+            // Slider endpoints
+            { name: 'Sliders (public/sliders)', url: '/public/sliders' },
+            { name: 'Sliders (sliders)', url: '/sliders' },
+            
+            // Shipping endpoints
+            { name: 'Shipping (public/shipping)', url: '/public/shipping' },
+            { name: 'Shipping (shipping)', url: '/shipping' },
+        ];
+
+        function clearResults() {
+            document.getElementById('results').innerHTML = '';
+        }
+
+        async function testEndpoint(endpoint) {
+            const resultDiv = document.createElement('div');
+            resultDiv.className = 'endpoint-test testing';
+            resultDiv.innerHTML = `
+                <div class="status">🔄 Testing: ${endpoint.name}</div>
+                <p><strong>URL:</strong> ${API_BASE_URL}${endpoint.url}</p>
+                <div id="result-${endpoint.name.replace(/[^a-zA-Z0-9]/g, '')}" class="result">Testing...</div>
+            `;
+            document.getElementById('results').appendChild(resultDiv);
+
+            try {
+                const response = await fetch(`${API_BASE_URL}${endpoint.url}`);
+                const resultElement = document.getElementById(`result-${endpoint.name.replace(/[^a-zA-Z0-9]/g, '')}`);
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    resultDiv.className = 'endpoint-test success';
+                    resultDiv.querySelector('.status').innerHTML = `✅ SUCCESS: ${endpoint.name}`;
+                    resultElement.innerHTML = `
+                        <p><strong>Status:</strong> ${response.status} ${response.statusText}</p>
+                        <p><strong>Response:</strong></p>
+                        <pre>${JSON.stringify(data, null, 2)}</pre>
+                    `;
+                } else {
+                    resultDiv.className = 'endpoint-test error';
+                    resultDiv.querySelector('.status').innerHTML = `❌ FAILED: ${endpoint.name}`;
+                    resultElement.innerHTML = `
+                        <p><strong>Status:</strong> ${response.status} ${response.statusText}</p>
+                        <p><strong>Error:</strong> ${await response.text()}</p>
+                    `;
+                }
+            } catch (error) {
+                resultDiv.className = 'endpoint-test error';
+                resultDiv.querySelector('.status').innerHTML = `❌ ERROR: ${endpoint.name}`;
+                document.getElementById(`result-${endpoint.name.replace(/[^a-zA-Z0-9]/g, '')}`).innerHTML = `
+                    <p><strong>Network Error:</strong> ${error.message}</p>
+                `;
+            }
+        }
+
+        async function testAllEndpoints() {
+            clearResults();
+            
+            for (const endpoint of endpoints) {
+                await testEndpoint(endpoint);
+                // Small delay between requests
+                await new Promise(resolve => setTimeout(resolve, 500));
+            }
+        }
+
+        // Auto-test on page load
+        window.addEventListener('load', () => {
+            setTimeout(testAllEndpoints, 1000);
+        });
+    </script>
+</body>
+</html>

@@ -5,6 +5,7 @@ import Link from "next/link";
 import { ArrowRight, Car, Wrench, Sparkles, ChevronLeft, ChevronRight, Play, Pause } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState, useEffect, useCallback, useRef } from "react";
+import { useHomeSettings } from "@/hooks/useHomeSettings";
 
 // Custom hook for intersection observer
 const useIntersectionObserver = (options = {}) => {
@@ -116,6 +117,8 @@ const AnimatedImage = ({ children, className = "", delay = 0 }) => {
 };
 
 export default function AboutPage() {
+  const { settings } = useHomeSettings();
+
   return (
     <div className="flex flex-col">
       {/* Welcome Section */}
@@ -123,11 +126,11 @@ export default function AboutPage() {
         <div className="container mx-auto">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <AnimatedImage className="relative h-full order-2 md:order-1" delay={200}>
-              <Image 
-                src="https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80" 
-                alt="Modern Ford truck on desert road" 
+              <Image
+                src={settings?.welcome_logo || "https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80"}
+                alt="Modern Ford truck on desert road"
                 data-ai-hint="Ford truck automotive desert road"
-                fill 
+                fill
                 className="object-cover rounded-lg shadow-xl"
               />
             </AnimatedImage>
@@ -135,12 +138,12 @@ export default function AboutPage() {
               <div className="max-w-xl">
                 <AnimatedText delay={100}>
                   <h2 className="text-3xl md:text-5xl font-bold font-headline text-gray-900 mb-6">
-                    Welcome to SD Auto Parts
+                    {settings?.title_welcome || "Welcome to SD Auto Parts"}
                   </h2>
                 </AnimatedText>
                 <AnimatedText delay={200}>
                   <p className="text-gray-600 text-lg leading-relaxed mb-8">
-                    SD Auto is an Australian family-owned and operated business, officially registered with the Australian Taxation Office (ATO) in 2023, and based in Werribee, Melbourne. We specialize in selling 100% genuine parts for popular Thailand-made brands such as Ford, Isuzu, Toyota, Mazda, Mitsubishi, Nissan, Honda, and Suzuki at affordable prices. We offer worldwide shipping with the best rates to your address. With 15 years of expertise in genuine auto parts for Thailand-made brands, we guarantee to provide you with the correct part for your vehicle at the best price and service. Contact us today!
+                    {settings?.description_welcome || "SD Auto is an Australian family-owned and operated business, officially registered with the Australian Taxation Office (ATO) in 2023, and based in Werribee, Melbourne. We specialize in selling 100% genuine parts for popular Thailand-made brands such as Ford, Isuzu, Toyota, Mazda, Mitsubishi, Nissan, Honda, and Suzuki at affordable prices. We offer worldwide shipping with the best rates to your address. With 15 years of expertise in genuine auto parts for Thailand-made brands, we guarantee to provide you with the correct part for your vehicle at the best price and service. Contact us today!"}
                   </p>
                 </AnimatedText>
                 <AnimatedSection delay={300}>

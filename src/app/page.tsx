@@ -9,6 +9,8 @@ import { products } from "@/lib/products";
 import ProductCard from "@/components/product-card";
 import ProductList from "@/components/product-list";
 import { useState, useEffect, useCallback, useRef, Suspense } from "react";
+import { useHomeSettings } from "@/hooks/useHomeSettings";
+import { useSliders } from "@/hooks/useSliders";
 
 // Custom hook for intersection observer
 const useIntersectionObserver = (options = {}) => {
@@ -63,7 +65,7 @@ const heroSlides = [
     },
     aiHint: "Ford Mustang sports car"
   },
-  
+
   {
     id: 2,
     image: "/assets/slide/new_ford_3.jpg",
@@ -79,8 +81,7 @@ const heroSlides = [
     },
     aiHint: "Ford Mustang sports car"
   },
-  
-  
+
   // Isuzu Genuine Parts - 2nd in dropdown
   {
     id: 3,
@@ -97,7 +98,7 @@ const heroSlides = [
     },
     aiHint: "Isuzu D-Max pickup truck"
   },
-  
+
   // Toyota Genuine Parts - 3rd in dropdown
   {
     id: 4,
@@ -114,7 +115,7 @@ const heroSlides = [
     },
     aiHint: "Toyota Camry sedan"
   },
-  
+
   // Mazda Genuine Parts - 4th in dropdown
   {
     id: 5,
@@ -131,7 +132,7 @@ const heroSlides = [
     },
     aiHint: "Mazda CX-5 SUV"
   },
-  
+
   // Mitsubishi Genuine Parts - 5th in dropdown
   {
     id: 6,
@@ -148,6 +149,7 @@ const heroSlides = [
     },
     aiHint: "Mitsubishi Lancer Evolution"
   },
+
   {
     id: 7,
     image: "/assets/slide/16iXf37CbehGot7USBTZzCNh.png",
@@ -164,6 +166,7 @@ const heroSlides = [
     aiHint: "Mitsubishi Lancer Evolution"
   },
 ];
+
 
 const featuredCars = [
   {
@@ -278,23 +281,58 @@ const AnimatedImage = ({ children, className = "", delay = 0 }) => {
 };
 
 function HeroCarousel() {
+  const { sliders, loading: slidersLoading, error: slidersError } = useSliders();
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
   const [isTransitioning, setIsTransitioning] = useState(false);
 
+  // Use dynamic sliders from API, fallback to hardcoded slides if no API data
+  const slides = sliders.length > 0 ? sliders : heroSlides;
+
+
+
+  // Helper function to get slide properties
+  const getSlideProps = (slide: any, index: number) => {
+    // If it's an API slider (has ordering field), use image directly
+    if ('ordering' in slide) {
+      // Convert relative image path to full URL
+      const imageUrl = slide.image.startsWith('http')
+        ? slide.image
+        : `http://192.168.0.120:8000${slide.image}`;
+
+      return {
+        id: slide.id,
+        image: imageUrl,
+        title: 'SD Auto Parts', // Default title for API sliders
+        subtitle: 'Quality Genuine Parts for Your Vehicle', // Default subtitle
+        aiHint: 'auto parts slider',
+        primaryButton: {
+          text: "View Parts",
+          href: "/genuine-parts"
+        },
+        secondaryButton: {
+          text: "Contact Us",
+          href: "/contact"
+        }
+      };
+    }
+    // Otherwise it's a hardcoded slide
+    return slide;
+  };
+
   const nextSlide = useCallback(() => {
-    if (isTransitioning) return;
+    if (isTransitioning || slides.length === 0) return;
     setIsTransitioning(true);
-    setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
+    setCurrentSlide((prev) => (prev + 1) % slides.length);
     setTimeout(() => setIsTransitioning(false), 500);
-  }, [isTransitioning]);
+  }, [isTransitioning, slides.length]);
 
   const prevSlide = useCallback(() => {
-    if (isTransitioning) return;
+    if (isTransitioning || slides.length === 0) return;
     setIsTransitioning(true);
-    setCurrentSlide((prev) => (prev - 1 + heroSlides.length) % heroSlides.length);
+    setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
     setTimeout(() => setIsTransitioning(false), 500);
-  }, [isTransitioning]);
+  }, [isTransitioning, slides.length]);
 
   const goToSlide = useCallback((index) => {
     if (isTransitioning || index === currentSlide) return;
@@ -326,39 +364,49 @@ function HeroCarousel() {
     return () => window.removeEventListener('keydown', handleKeyPress);
   }, [nextSlide, prevSlide, isAutoPlaying]);
 
-  const currentSlideData = heroSlides[currentSlide];
+  // Ensure currentSlide is within bounds
+  const safeCurrentSlide = slides.length > 0 ? Math.min(currentSlide, slides.length - 1) : 0;
+  const currentSlideData = slides.length > 0 ? getSlideProps(slides[safeCurrentSlide], safeCurrentSlide) : null;
+
+  // Don't render if no slides available
+  if (slides.length === 0 || !currentSlideData) {
+    return null;
+  }
 
   return (
-    <section className="relative h-[70vh] md:h-[80vh] w-full overflow-hidden group">
+    <section className="relative h-[70vh] md:h-[80vh] w-full overflow-hidden group bg-gray-900">
       {/* Background Images with Smooth Transition */}
       <div className="relative w-full h-full">
-        {heroSlides.map((slide, index) => (
-          <div
-            key={slide.id}
-            className={`absolute inset-0 transition-all duration-700 ease-in-out ${
-              index === currentSlide
-                ? 'opacity-100 scale-100'
-                : 'opacity-0 scale-105'
-            }`}
-          >
-            <Image
-              src={slide.image}
-              alt={slide.title}
-              data-ai-hint={slide.aiHint}
-              fill
-              className={`object-cover scale-110 ${
-                index === 0 ? 'object-[center_55%]' : 
-                index === 1 ? 'object-[center_75%]' : // Ford - current good position
-                index === 2 ? 'object-[center_75%]' : // Isuzu - show more top
-                index === 3 ? 'object-[center_22%]' :
-                index === 4 ? 'object-[center_35%]' :
-                index === 5 ? 'object-[center_60%]' :
-                'object-[center_55%]' // Default for other slides
+        {slides.map((slide, index) => {
+          const slideProps = getSlideProps(slide, index);
+          return (
+            <div
+              key={slideProps.id}
+              className={`absolute inset-0 transition-all duration-700 ease-in-out bg-gray-800 ${
+                index === safeCurrentSlide
+                  ? 'opacity-100 scale-100'
+                  : 'opacity-0 scale-105'
               }`}
-              priority={index === 0}
-            />
-          </div>
-        ))}
+            >
+              <Image
+                src={slideProps.image}
+                alt={slideProps.title}
+                data-ai-hint={slideProps.aiHint}
+                fill
+                className={`object-cover scale-110 ${
+                  index === 0 ? 'object-[center_55%]' :
+                  index === 1 ? 'object-[center_75%]' : // Ford - current good position
+                  index === 2 ? 'object-[center_75%]' : // Isuzu - show more top
+                  index === 3 ? 'object-[center_22%]' :
+                  index === 4 ? 'object-[center_35%]' :
+                  index === 5 ? 'object-[center_60%]' :
+                  'object-[center_55%]' // Default for other slides
+                }`}
+                priority={index === 0}
+              />
+            </div>
+          );
+        })}
       </div>
 
       {/* Gradient Overlay */}
@@ -421,12 +469,12 @@ function HeroCarousel() {
       <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 flex items-center space-x-6 z-20">
         {/* Slide Indicators */}
         <div className="flex space-x-2">
-          {heroSlides.map((_, index) => (
+          {slides.map((_, index) => (
             <button
               key={index}
               onClick={() => goToSlide(index)}
               className={`transition-all duration-300 rounded-full ${
-                index === currentSlide
+                index === safeCurrentSlide
                   ? 'w-8 h-2 bg-white'
                   : 'w-2 h-2 bg-white/50 hover:bg-white/70 hover:scale-125'
               }`}
@@ -473,6 +521,7 @@ function HeroCarousel() {
 
 export default function Home() {
   const [loading, setLoading] = useState(true);
+  const { settings } = useHomeSettings();
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -491,11 +540,11 @@ export default function Home() {
         <div className="container mx-auto">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <AnimatedSection className="relative h-full order-2 md:order-1" delay={200}>
-              <Image 
-                src="assets/home/p1.webp" 
-                alt="Auto parts and automotive service" 
+              <Image
+                src={settings?.welcome_logo || "assets/home/p1.webp"}
+                alt="Auto parts and automotive service"
                 data-ai-hint="auto parts automotive service garage"
-                fill 
+                fill
                 className="object-cover rounded-lg shadow-xl"
               />
             </AnimatedSection>
@@ -503,12 +552,12 @@ export default function Home() {
               <div className="max-w-xl">
                 <AnimatedSection delay={100}>
                   <h2 className="text-3xl md:text-5xl font-bold font-headline text-gray-900 mb-6">
-                    Welcome to SD Auto Parts
+                    {settings?.title_welcome || "Welcome to SD Auto Parts"}
                   </h2>
                 </AnimatedSection>
                 <AnimatedSection delay={200}>
                   <p className="text-gray-600 text-lg leading-relaxed mb-8">
-                    SD Auto is an Australian family-owned and operated business, officially registered with the Australian Taxation Office (ATO) in 2023, and based in Werribee, Melbourne. We specialize in selling 100% genuine parts for popular Thailand-made brands such as Ford, Isuzu, Toyota, Mazda, Mitsubishi, Nissan, Honda, and Suzuki at affordable prices. We offer worldwide shipping with the best rates to your address. With 15 years of experience in the auto parts industry, we guarantee to provide you with the correct part for your vehicle at the best price and service. Contact us today!
+                    {settings?.description_welcome || "SD Auto is an Australian family-owned and operated business, officially registered with the Australian Taxation Office (ATO) in 2023, and based in Werribee, Melbourne. We specialize in selling 100% genuine parts for popular Thailand-made brands such as Ford, Isuzu, Toyota, Mazda, Mitsubishi, Nissan, Honda, and Suzuki at affordable prices. We offer worldwide shipping with the best rates to your address. With 15 years of experience in the auto parts industry, we guarantee to provide you with the correct part for your vehicle at the best price and service. Contact us today!"}
                   </p>
                 </AnimatedSection>
                 <AnimatedSection delay={300}>
@@ -653,7 +702,7 @@ export default function Home() {
         <div className="container mx-auto grid md:grid-cols-2 gap-12 items-center">
           <AnimatedSection className="relative h-full" delay={200}>
             <Image
-              src="assets/home/p2.webp"
+              src={settings?.why_choose_logo || "assets/home/p2.webp"}
               alt="High-quality car products"
               data-ai-hint="car parts automotive products"
               fill
@@ -662,53 +711,113 @@ export default function Home() {
           </AnimatedSection>
           <div>
             <AnimatedSection>
-              <h2 className="text-3xl md:text-4xl font-bold font-headline mb-6">Why Choose SD Auto?</h2>
+              <h2 className="text-3xl md:text-4xl font-bold font-headline mb-6">{settings?.why_choose_title || "Why Choose SD Auto?"}</h2>
             </AnimatedSection>
             <ul className="space-y-4">
-              <AnimatedSection delay={200}>
-                <li className="flex items-start">
-                  <div className="bg-primary/10 text-primary rounded-full p-2 mr-4 mt-1">
-                    <Wrench className="h-5 w-5" />
-                  </div>
-                  <div>
-                    <h4 className="font-semibold">With 15 years of experience</h4>
-                    <p className="text-muted-foreground">SD Auto has established expertise in providing genuine auto parts for Thailand-made brands, backed by a proven track record.</p>
-                  </div>
-                </li>
-              </AnimatedSection>
-              <AnimatedSection delay={300}>
-                <li className="flex items-start">
-                  <div className="bg-primary/10 text-primary rounded-full p-2 mr-4 mt-1">
-                    <Sparkles className="h-5 w-5" />
-                  </div>
-                  <div>
-                    <h4 className="font-semibold">Family-owned Australian business</h4>
-                    <p className="text-muted-foreground">Based in Melbourne, Australia, shipping locally and internationally.</p>
-                  </div>
-                </li>
-              </AnimatedSection>
-              <AnimatedSection delay={400}>
-                <li className="flex items-start">
-                  <div className="bg-primary/10 text-primary rounded-full p-2 mr-4 mt-1">
-                    <Car className="h-5 w-5" />
-                  </div>
-                  <div>
-                    <h4 className="font-semibold">Fair pricing without compromise</h4>
-                    <p className="text-muted-foreground">We understand the challenges of high dealer prices and offer reliable alternatives without compromising on quality.</p>
-                  </div>
-                </li>
-              </AnimatedSection>
-              <AnimatedSection delay={500}>
-                <li className="flex items-start">
-                  <div className="bg-primary/10 text-primary rounded-full p-2 mr-4 mt-1">
-                    <Sparkles className="h-5 w-5" />
-                  </div>
-                  <div>
-                    <h4 className="font-semibold">Top-rated eBay seller since 2011</h4>
-                    <p className="text-muted-foreground">One of eBay's most reputable sellers since 2011, consistently providing outstanding customer service.</p>
-                  </div>
-                </li>
-              </AnimatedSection>
+              {settings?.why_choose_title1 && (
+                <AnimatedSection delay={200}>
+                  <li className="flex items-start">
+                    <div className="bg-primary/10 text-primary rounded-full p-2 mr-4 mt-1">
+                      <Wrench className="h-5 w-5" />
+                    </div>
+                    <div>
+                      <h4 className="font-semibold">{settings.why_choose_title1}</h4>
+                      <p className="text-muted-foreground">{settings.why_choose_description1}</p>
+                    </div>
+                  </li>
+                </AnimatedSection>
+              )}
+              {!settings?.why_choose_title1 && (
+                <AnimatedSection delay={200}>
+                  <li className="flex items-start">
+                    <div className="bg-primary/10 text-primary rounded-full p-2 mr-4 mt-1">
+                      <Wrench className="h-5 w-5" />
+                    </div>
+                    <div>
+                      <h4 className="font-semibold">With 15 years of experience</h4>
+                      <p className="text-muted-foreground">SD Auto has established expertise in providing genuine auto parts for Thailand-made brands, backed by a proven track record.</p>
+                    </div>
+                  </li>
+                </AnimatedSection>
+              )}
+              {settings?.why_choose_title2 && (
+                <AnimatedSection delay={300}>
+                  <li className="flex items-start">
+                    <div className="bg-primary/10 text-primary rounded-full p-2 mr-4 mt-1">
+                      <Sparkles className="h-5 w-5" />
+                    </div>
+                    <div>
+                      <h4 className="font-semibold">{settings.why_choose_title2}</h4>
+                      <p className="text-muted-foreground">{settings.why_choose_description2}</p>
+                    </div>
+                  </li>
+                </AnimatedSection>
+              )}
+              {!settings?.why_choose_title2 && (
+                <AnimatedSection delay={300}>
+                  <li className="flex items-start">
+                    <div className="bg-primary/10 text-primary rounded-full p-2 mr-4 mt-1">
+                      <Sparkles className="h-5 w-5" />
+                    </div>
+                    <div>
+                      <h4 className="font-semibold">Family-owned Australian business</h4>
+                      <p className="text-muted-foreground">Based in Melbourne, Australia, shipping locally and internationally.</p>
+                    </div>
+                  </li>
+                </AnimatedSection>
+              )}
+              {settings?.why_choose_title3 && (
+                <AnimatedSection delay={400}>
+                  <li className="flex items-start">
+                    <div className="bg-primary/10 text-primary rounded-full p-2 mr-4 mt-1">
+                      <Car className="h-5 w-5" />
+                    </div>
+                    <div>
+                      <h4 className="font-semibold">{settings.why_choose_title3}</h4>
+                      <p className="text-muted-foreground">{settings.why_choose_description3}</p>
+                    </div>
+                  </li>
+                </AnimatedSection>
+              )}
+              {!settings?.why_choose_title3 && (
+                <AnimatedSection delay={400}>
+                  <li className="flex items-start">
+                    <div className="bg-primary/10 text-primary rounded-full p-2 mr-4 mt-1">
+                      <Car className="h-5 w-5" />
+                    </div>
+                    <div>
+                      <h4 className="font-semibold">Fair pricing without compromise</h4>
+                      <p className="text-muted-foreground">We understand the challenges of high dealer prices and offer reliable alternatives without compromising on quality.</p>
+                    </div>
+                  </li>
+                </AnimatedSection>
+              )}
+              {settings?.why_choose_title4 && (
+                <AnimatedSection delay={500}>
+                  <li className="flex items-start">
+                    <div className="bg-primary/10 text-primary rounded-full p-2 mr-4 mt-1">
+                      <Sparkles className="h-5 w-5" />
+                    </div>
+                    <div>
+                      <h4 className="font-semibold">{settings.why_choose_title4}</h4>
+                      <p className="text-muted-foreground">{settings.why_choose_description4}</p>
+                    </div>
+                  </li>
+                </AnimatedSection>
+              )}
+              {!settings?.why_choose_title4 && (
+                <AnimatedSection delay={500}>
+                  <li className="flex items-start">
+                    <div className="bg-primary/10 text-primary rounded-full p-2 mr-4 mt-1">
+                      <Sparkles className="h-5 w-5" />
+                    </div>
+                    <div>
+                      <h4 className="font-semibold">Top-rated eBay seller since 2011</h4>
+                      <p className="text-muted-foreground">One of eBay's most reputable sellers since 2011, consistently providing outstanding customer service.</p>
+                    </div>
+                  </li>
+                </AnimatedSection>
+              )}
             </ul>
           </div>
         </div>

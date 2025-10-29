@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 
 import { getNavLinks } from "@/lib/nav-links";
+import { useHomeSettings } from "@/hooks/useHomeSettings";
 
 const products = []; // This is a placeholder, as the product data is now fetched in nav-links.ts
 
@@ -25,6 +26,33 @@ export default function Header() {
   const scrollTimer = useRef<NodeJS.Timeout | null>(null);
   const dropdownRef = useRef(null);
   const leaveTimeout = useRef<NodeJS.Timeout | null>(null);
+
+  // Fetch home settings data
+  const { settings, loading, error } = useHomeSettings({
+    autoFetch: true,
+    retryAttempts: 2,
+    retryDelay: 2000
+  });
+
+  // Fallback data when API is not available
+  const fallbackData = {
+    address: "SD AUTO Werribee, Victoria 3030 Australia",
+    email: "sdautoaustralia@gmail.com",
+    phone: "+61 460 786 533",
+    logo: "/assets/logo.png",
+    title: "SD AUTO",
+    description: "Parts and Accessories"
+  };
+
+  // Use settings data or fallback
+  const displayData = {
+    address: settings?.address || fallbackData.address,
+    email: settings?.email || fallbackData.email,
+    phone: settings?.phone || fallbackData.phone,
+    logo: settings?.logo || fallbackData.logo,
+    title: settings?.title || fallbackData.title,
+    description: settings?.description || fallbackData.description
+  };
 
   const handleMouseEnter = () => {
     if (leaveTimeout.current) {
@@ -214,16 +242,18 @@ export default function Header() {
             <div className="flex flex-col lg:flex-row justify-between items-center py-3 text-sm text-gray-600">
               <div className="flex items-center space-x-2 mb-1 lg:mb-0">
                 <MapPin className="h-4 w-4 text-blue-600 flex-shrink-0" />
-                <span className="min-w-0 text-xs sm:text-sm break-words">SD AUTO Werribee, Victoria 3030 Australia</span>
+                <span className="min-w-0 text-xs sm:text-sm break-words">
+                  {loading ? "Loading..." : displayData.address}
+                </span>
               </div>
               <div className="flex flex-col sm:flex-row items-center space-x-0 sm:space-x-2 md:space-x-4 lg:space-x-6">
                 <div className="flex items-center space-x-1">
                   <Mail className="h-4 w-4 text-blue-600" />
-                  <span>sdautoaustralia@gmail.com</span>
+                  <span>{loading ? "Loading..." : displayData.email}</span>
                 </div>
                 <div className="flex items-center space-x-1">
                   <Phone className="h-4 w-4 text-blue-600" />
-                  <span>+61 460 786 533</span>
+                  <span>{loading ? "Loading..." : displayData.phone}</span>
                 </div>
               </div>
             </div>
@@ -238,14 +268,14 @@ export default function Header() {
               <Link href="/" className="flex items-center space-x-2 md:space-x-3 lg:space-x-4">
                 <div className="relative w-12 md:w-14 lg:w-16 h-12 md:h-14 lg:h-16">
                   <Image
-                    src="/assets/logo.png"
-                    alt="SD Auto Logo"
+                    src={displayData.logo}
+                    alt={`${displayData.title} Logo`}
                     width={64}
                     height={64}
                     className="w-12 md:w-14 lg:w-16 h-12 md:h-14 lg:h-16 object-contain"
                     priority
                     onError={(e) => {
-                      console.log('Image failed to load from /assets/logo.png');
+                      console.log(`Image failed to load from ${displayData.logo}`);
                       const target = e.target as HTMLImageElement;
                       target.style.display = 'none';
                       const fallback = target.parentElement?.querySelector('.fallback-logo') as HTMLElement;
@@ -253,12 +283,18 @@ export default function Header() {
                     }}
                   />
                   <div className="fallback-logo w-12 md:w-14 lg:w-16 h-12 md:h-14 lg:h-16 bg-gradient-to-br from-blue-600 to-blue-800 rounded-lg items-center justify-center shadow-lg absolute top-0 left-0 hidden">
-                    <span className="text-white font-bold text-lg md:text-xl italic">SD</span>
+                    <span className="text-white font-bold text-lg md:text-xl italic">
+                      {displayData.title.substring(0, 2).toUpperCase()}
+                    </span>
                   </div>
                 </div>
                 <div className="hidden lg:block">
-                  <div className="text-2xl font-bold text-gray-800">SD AUTO</div>
-                  <div className="text-sm text-gray-500 -mt-1">Parts and Accessories</div>
+                  <div className="text-2xl font-bold text-gray-800">
+                    {loading ? "Loading..." : displayData.title}
+                  </div>
+                  <div className="text-sm text-gray-500 -mt-1">
+                    {loading ? "Loading..." : displayData.description}
+                  </div>
                 </div>
               </Link>
             </div>
@@ -284,8 +320,8 @@ export default function Header() {
                     <div className="flex items-center space-x-3 mb-8 pb-4 border-b">
                       <div className="relative w-14 h-14">
                         <Image
-                          src="/assets/logo.png"
-                          alt="SD Auto Logo"
+                          src={displayData.logo}
+                          alt={`${displayData.title} Logo`}
                           width={56}
                           height={56}
                           className="w-14 h-14 object-contain"
@@ -297,12 +333,18 @@ export default function Header() {
                           }}
                         />
                         <div className="fallback-logo-mobile w-14 h-14 bg-gradient-to-br from-blue-600 to-blue-800 rounded-lg items-center justify-center shadow-lg absolute top-0 left-0 hidden">
-                          <span className="text-white font-bold text-xl italic">SD</span>
+                          <span className="text-white font-bold text-xl italic">
+                            {displayData.title.substring(0, 2).toUpperCase()}
+                          </span>
                         </div>
                       </div>
                       <div>
-                        <div className="text-xl font-bold text-gray-800">SD AUTO</div>
-                        <div className="text-xs text-gray-500 -mt-1">Parts and Accessories</div>
+                        <div className="text-xl font-bold text-gray-800">
+                          {loading ? "Loading..." : displayData.title}
+                        </div>
+                        <div className="text-xs text-gray-500 -mt-1">
+                          {loading ? "Loading..." : displayData.description}
+                        </div>
                       </div>
                     </div>
                     
@@ -368,15 +410,17 @@ export default function Header() {
                       <div className="space-y-3 text-sm text-gray-600">
                         <div className="flex items-center space-x-2">
                           <MapPin className="h-4 w-4 text-blue-600 flex-shrink-0" />
-                          <span className="min-w-0 text-xs">SD AUTO Werribee, Victoria 3030 Australia</span>
+                          <span className="min-w-0 text-xs">
+                            {loading ? "Loading..." : displayData.address}
+                          </span>
                         </div>
                         <div className="flex items-center space-x-2">
                           <Mail className="h-4 w-4 text-blue-600 flex-shrink-0" />
-                          <span>sdautaustralia@gmail.com</span>
+                          <span>{loading ? "Loading..." : displayData.email}</span>
                         </div>
                         <div className="flex items-center space-x-2">
                           <Phone className="h-4 w-4 text-blue-600 flex-shrink-0" />
-                          <span>+61 460 786 533</span>
+                          <span>{loading ? "Loading..." : displayData.phone}</span>
                         </div>
                       </div>
                     </div>

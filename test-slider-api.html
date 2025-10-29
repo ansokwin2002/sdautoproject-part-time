@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slider API Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .status {
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+        .success { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .error { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        .slider-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .slider-item {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            overflow: hidden;
+            background: white;
+        }
+        .slider-item img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+        .slider-info {
+            padding: 15px;
+        }
+        .slider-info h3 {
+            margin: 0 0 10px 0;
+            color: #333;
+        }
+        .slider-info p {
+            margin: 5px 0;
+            color: #666;
+        }
+        pre {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 4px;
+            overflow-x: auto;
+            font-size: 12px;
+        }
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎠 Slider API Integration Test</h1>
+        <p>This page tests the slider API endpoint and displays the results.</p>
+        
+        <button onclick="testSliderAPI()">🔄 Test Slider API</button>
+        <button onclick="clearResults()">🗑️ Clear Results</button>
+        
+        <div id="status"></div>
+        <div id="results"></div>
+        
+        <h3>📋 Raw API Response:</h3>
+        <pre id="apiResponse">Click "Test Slider API" to see the response...</pre>
+    </div>
+
+    <script>
+        const API_BASE_URL = 'http://192.168.1.8:8000/api';
+
+        function setStatus(message, type) {
+            const statusDiv = document.getElementById('status');
+            statusDiv.innerHTML = `<div class="${type}">${message}</div>`;
+        }
+
+        function clearResults() {
+            document.getElementById('results').innerHTML = '';
+            document.getElementById('apiResponse').textContent = 'Click "Test Slider API" to see the response...';
+            document.getElementById('status').innerHTML = '';
+        }
+
+        function displaySliders(sliders) {
+            const resultsDiv = document.getElementById('results');
+            
+            if (!sliders || sliders.length === 0) {
+                resultsDiv.innerHTML = '<p>No sliders found.</p>';
+                return;
+            }
+
+            let html = `
+                <h3>📸 Found ${sliders.length} Slider(s) (ordered by 'ordering' field):</h3>
+                <div class="slider-grid">
+            `;
+
+            sliders.forEach((slider, index) => {
+                html += `
+                    <div class="slider-item">
+                        <img src="${API_BASE_URL.replace('/api', '')}${slider.image}" 
+                             alt="Slider ${slider.id}" 
+                             onerror="this.src='https://via.placeholder.com/300x200?text=Image+Not+Found'">
+                        <div class="slider-info">
+                            <h3>Slider #${slider.id}</h3>
+                            <p><strong>Order:</strong> ${slider.ordering}</p>
+                            <p><strong>Image:</strong> ${slider.image}</p>
+                            <p><strong>Created:</strong> ${slider.created_at || 'N/A'}</p>
+                        </div>
+                    </div>
+                `;
+            });
+
+            html += '</div>';
+            resultsDiv.innerHTML = html;
+        }
+
+        async function testSliderAPI() {
+            setStatus('🔄 Testing slider API...', 'success');
+            
+            try {
+                const response = await fetch(`${API_BASE_URL}/public/sliders`);
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    document.getElementById('apiResponse').textContent = JSON.stringify(data, null, 2);
+                    
+                    if (data.success && data.data) {
+                        displaySliders(data.data);
+                        setStatus(`✅ Slider API working! Found ${data.data.length} slider(s).`, 'success');
+                    } else {
+                        setStatus('⚠️ API responded but no slider data found.', 'error');
+                    }
+                } else {
+                    setStatus(`❌ API error: ${response.status} ${response.statusText}`, 'error');
+                    document.getElementById('apiResponse').textContent = `Error: ${response.status} ${response.statusText}`;
+                }
+            } catch (error) {
+                setStatus(`❌ Network error: ${error.message}`, 'error');
+                document.getElementById('apiResponse').textContent = `Network Error: ${error.message}`;
+                console.error('Slider API test error:', error);
+            }
+        }
+
+        // Auto-test on page load
+        window.addEventListener('load', () => {
+            setTimeout(testSliderAPI, 1000);
+        });
+    </script>
+</body>
+</html>

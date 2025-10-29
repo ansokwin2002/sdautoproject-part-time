@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Image Access</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .test-section {
+            margin: 20px 0;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+        .success { background-color: #d4edda; border-color: #c3e6cb; }
+        .error { background-color: #f8d7da; border-color: #f5c6cb; }
+        img {
+            max-width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <h1>🖼️ Image Access Test</h1>
+    
+    <div class="test-section">
+        <h3>Test 1: Direct Image URL</h3>
+        <p>Testing: <code>http://192.168.0.120:8000/storage/sliders/Bi7DXJGhPk0IiBmu8090ifo26Sps14SLqFjCJeHV.jpg</code></p>
+        <img
+            src="http://192.168.0.120:8000/storage/sliders/Bi7DXJGhPk0IiBmu8090ifo26Sps14SLqFjCJeHV.jpg"
+            alt="Test Image"
+            onload="document.getElementById('result1').innerHTML = '✅ Image loaded successfully!'; document.getElementById('result1').className = 'test-section success';"
+            onerror="document.getElementById('result1').innerHTML = '❌ Image failed to load - check if Laravel storage link exists'; document.getElementById('result1').className = 'test-section error';"
+        />
+        <div id="result1" class="test-section">Loading...</div>
+    </div>
+
+    <div class="test-section">
+        <h3>Test 2: API Response</h3>
+        <button onclick="testAPI()">Test Slider API</button>
+        <div id="api-result">Click button to test API</div>
+    </div>
+
+    <div class="test-section">
+        <h3>Test 3: Laravel Storage Check</h3>
+        <p>Common issues:</p>
+        <ul>
+            <li><strong>Storage link missing:</strong> Run <code>php artisan storage:link</code> in your Laravel project</li>
+            <li><strong>File permissions:</strong> Check if <code>storage/app/public/sliders/</code> directory exists and is readable</li>
+            <li><strong>Laravel server not running:</strong> Make sure Laravel is running on <code>192.168.0.120:8000</code></li>
+        </ul>
+    </div>
+
+    <script>
+        async function testAPI() {
+            const resultDiv = document.getElementById('api-result');
+            resultDiv.innerHTML = 'Testing API...';
+            
+            try {
+                const response = await fetch('http://192.168.0.120:8000/api/public/sliders');
+                const data = await response.json();
+
+                if (data.success && data.data && data.data.length > 0) {
+                    const slider = data.data[0];
+                    const imageUrl = `http://192.168.0.120:8000${slider.image}`;
+                    
+                    resultDiv.innerHTML = `
+                        <p>✅ API Response: ${data.data.length} slider(s) found</p>
+                        <p><strong>First slider:</strong></p>
+                        <p>ID: ${slider.id}</p>
+                        <p>Order: ${slider.ordering}</p>
+                        <p>Image Path: ${slider.image}</p>
+                        <p>Full URL: ${imageUrl}</p>
+                        <img src="${imageUrl}" alt="API Image" style="max-width: 200px; height: 100px;">
+                    `;
+                } else {
+                    resultDiv.innerHTML = '❌ API returned no slider data';
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `❌ API Error: ${error.message}`;
+            }
+        }
+    </script>
+</body>
+</html>
