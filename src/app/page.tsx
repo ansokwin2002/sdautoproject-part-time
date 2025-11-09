@@ -296,10 +296,9 @@ function HeroCarousel() {
     // If it's an API slider (has ordering field), use image directly
     if ('ordering' in slide) {
       // Convert relative image path to full URL
-      const imageUrl = slide.image.startsWith('http')
-        ? slide.image
-        : `http://192.168.0.120:8000${slide.image}`;
-
+              const imageUrl = slide.image.startsWith('http')
+                ? slide.image
+                : `http://192.168.1.5:8000${slide.image}`;
       return {
         id: slide.id,
         image: imageUrl,
