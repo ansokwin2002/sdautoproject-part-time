@@ -12,6 +12,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { useEffect, useState } from 'react';
 import { useContacts } from '@/hooks/useContacts';
+import { useHomeSettings } from '@/hooks/useHomeSettings';
 
 export default function Footer() {
   const [currentYear, setCurrentYear] = useState(2024);
@@ -21,6 +22,7 @@ export default function Footer() {
   }, []);
   const { contacts } = useContacts();
   const contact = contacts.length > 0 ? contacts[0] : null;
+  const { settings } = useHomeSettings();
 
   const navLinks = [
     { href: "/genuine-parts", label: "Genuines Parts and Accessories" },
@@ -38,10 +40,10 @@ export default function Footer() {
           <div className="flex flex-col">
             <Link href="/" className="flex items-center space-x-2 mb-4">
               <Logo className="h-8 w-8 text-primary" />
-              <span className="font-bold text-lg">SD Auto</span>
+              <span className="font-bold text-lg">{settings?.title || 'SD Auto'}</span>
             </Link>
             <p className="text-muted-foreground text-sm">
-              15 years of expertise in genuine auto parts for Thailand-made brands • Worldwide shipping • Family-owned Australian business
+              {settings?.footer_home || '15 years of expertise in genuine auto parts for Thailand-made brands • Worldwide shipping • Family-owned Australian business'}
             </p>
              <div className="flex space-x-4 mt-4">
               <Link href="/contact" aria-label="Facebook" className="text-muted-foreground hover:text-primary"><Facebook className="h-5 w-5" /></Link>
