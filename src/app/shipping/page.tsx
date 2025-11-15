@@ -6,6 +6,7 @@ import { ArrowRight, Car, Wrench, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState, useEffect, useCallback, useRef } from "react";
 import { useShipping } from "@/hooks/useShipping";
+import { useDeliveryPartners } from "@/hooks/useDeliveryPartners";
 
 // Custom hook for intersection observer
 const useIntersectionObserver = (options = {}) => {
@@ -116,6 +117,90 @@ const AnimatedImage = ({ children, className = "", delay = 0 }) => {
   );
 };
 
+function SimplePartnersGrid() {
+  const { partners, loading, error } = useDeliveryPartners();
+  if (loading) {
+    return (
+      <>
+        {Array.from({ length: 4 }).map((_, i) => (
+          <div key={i} className="bg-white rounded-lg p-6 shadow animate-pulse h-64" />
+        ))}
+      </>
+    );
+  }
+  const items = partners?.length ? partners : [
+    { title: 'Australia Post Express', image: '/assets/post.jpg', url_link: 'https://auspost.com.au/' },
+    { title: 'EMS (Express Mail Service)', image: '/assets/ems_3.png', url_link: 'https://www.ems.post/en/global-network/tracking' },
+    { title: 'DHL Express', image: '/assets/dhl.svg', url_link: 'https://www.dhl.com/au-en/home.html' },
+    { title: 'Interparcel', image: '/assets/interparcel.png', url_link: 'https://au.interparcel.com/tracking/' },
+  ];
+  return (
+    <>
+      {items.map((p, idx) => (
+        <AnimatedSection key={(p as any).id ?? idx} delay={100 * (idx + 1)}>
+          <div className="bg-white rounded-lg p-4 shadow-lg hover:shadow-xl transition-all duration-300 group text-center flex flex-col h-full">
+            <div className="mb-4">
+              <div className="relative w-32 h-32 md:w-36 md:h-36 mx-auto mb-3 flex items-center justify-center">
+                <Image src={p.image} alt={p.title} fill className="object-contain" />
+              </div>
+            </div>
+            <Link href={p.url_link || '#'} target="_blank" rel="noopener noreferrer">
+              <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-2 md:mb-3 hover:underline">{p.title}</h3>
+            </Link>
+          </div>
+        </AnimatedSection>
+      ))}
+    </>
+  );
+}
+
+function DynamicDeliveryPartners() {
+  const { partners, loading, error } = useDeliveryPartners();
+  const toAbsolute = (img: string) => img;
+
+  if (loading) {
+    return (
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 max-w-7xl mx-auto items-stretch">
+        {Array.from({ length: 4 }).map((_, i) => (
+          <div key={i} className="bg-white rounded-lg p-6 shadow animate-pulse h-64" />
+        ))}
+      </div>
+    );
+  }
+
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 max-w-7xl mx-auto items-stretch">
+      {(partners?.length ? partners : [
+        { title: 'Australia Post Express', description: 'Reliable shipping through Australia Post network. Perfect for standard and express delivery across Australia and worldwide, with tracking included.', image: '/assets/post.jpg', url_link: 'https://auspost.com.au/' },
+        { title: 'EMS (Express Mail Service)', description: 'Fast international delivery with tracking included. Reliable shipping worldwide for your important packages.', image: '/assets/ems_3.png', url_link: 'https://www.ems.post/en/global-network/tracking' },
+        { title: 'DHL Express', description: 'Trusted worldwide shipping with fast delivery times and full tracking.', image: '/assets/dhl.svg', url_link: 'https://www.dhl.com/au-en/home.html' },
+        { title: 'Interparcel', description: 'Flexible and affordable courier services with multiple delivery options and tracking included.', image: '/assets/interparcel.png', url_link: 'https://au.interparcel.com/tracking/' },
+      ]).map((p, idx) => (
+        <AnimatedSection key={(p as any).id ?? idx} delay={100 * (idx + 1)}>
+          <div className="bg-white rounded-lg p-4 md:p-6 lg:p-8 shadow-lg hover:shadow-xl transition-all duration-300 group text-center flex flex-col h-full">
+            <div className="mb-4 md:mb-6">
+              <div className="relative w-40 h-40 md:w-44 md:h-44 lg:w-48 lg:h-48 mx-auto mb-3 md:mb-4 flex items-center justify-center">
+                <Image
+                  src={toAbsolute(p.image)}
+                  alt={p.title}
+                  fill
+                  className="object-contain"
+                />
+              </div>
+            </div>
+            <Link href={p.url_link || '#'} target="_blank" rel="noopener noreferrer">
+              <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-2 md:mb-3 hover:underline">{p.title}</h3>
+            </Link>
+            {p.description && (
+              <p className="text-sm md:text-base text-gray-600 leading-relaxed flex-grow">{p.description}</p>
+            )}
+          </div>
+        </AnimatedSection>
+      ))}
+    </div>
+  );
+}
+
 export default function ShippingPage() {
   const { shipping, loading, error } = useShipping();
 
@@ -149,80 +234,8 @@ export default function ShippingPage() {
             </AnimatedSection>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 items-stretch mt-8">
-              {/* By Ship - Australia Post */}
-              <AnimatedSection delay={100}>
-                <div className="bg-white rounded-lg p-4 shadow-lg hover:shadow-xl transition-all duration-300 group text-center flex flex-col h-full">
-                  <div className="mb-4">
-                    <div className="relative w-32 h-32 md:w-36 md:h-36 mx-auto mb-3 flex items-center justify-center">
-                      <Image
-                        src="/assets/post.jpg"
-                        alt="Australia Post"
-                        fill
-                        className="object-contain"
-                      />
-                    </div>
-                  </div>
-                  <Link href="https://auspost.com.au/" target="_blank" rel="noopener noreferrer">
-                    <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-2 md:mb-3 hover:underline">By Australia Post Express</h3>
-                  </Link>
-                </div>
-              </AnimatedSection>
-
-              {/* By EMS */}
-              <AnimatedSection delay={100}>
-                <div className="bg-white rounded-lg p-4 shadow-lg hover:shadow-xl transition-all duration-300 group text-center flex flex-col h-full">
-                  <div className="mb-4">
-                    <div className="relative w-32 h-32 md:w-36 md:h-36 mx-auto mb-3 flex items-center justify-center">
-                      <Image
-                        src="/assets/ems_3.png"
-                        alt="EMS"
-                        fill
-                        className="object-contain"
-                      />
-                    </div>
-                  </div>
-                  <Link href="https://www.ems.post/en/global-network/tracking" target="_blank" rel="noopener noreferrer">
-                    <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-2 md:mb-3 hover:underline"> By EMS (Express Mail Service)</h3>
-                  </Link>
-                </div>
-              </AnimatedSection>
-
-              {/* By Air */}
-              <AnimatedSection delay={300}>
-                <div className="bg-white rounded-lg p-4 shadow-lg hover:shadow-xl transition-all duration-300 group text-center flex flex-col h-full">
-                  <div className="mb-4">
-                    <div className="relative w-32 h-32 md:w-36 md:h-36 mx-auto mb-3 flex items-center justify-center">
-                      <Image
-                        src="/assets/dhl.svg"
-                        alt="DHL Logo"
-                        fill
-                        className="object-contain"
-                      />
-                    </div>
-                  </div>
-                  <Link href="https://www.dhl.com/au-en/home.html" target="_blank" rel="noopener noreferrer">
-                    <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-2 md:mb-3 hover:underline">By DHL Express</h3>
-                  </Link>
-                </div>
-              </AnimatedSection>
-
-              <AnimatedSection delay={400}>
-                <div className="bg-white rounded-lg p-4 shadow-lg hover:shadow-xl transition-all duration-300 group text-center flex flex-col h-full">
-                  <div className="mb-4">
-                    <div className="relative w-32 h-32 md:w-36 md:h-36 mx-auto mb-3 flex items-center justify-center">
-                      <Image
-                        src="/assets/interparcel.png"
-                        alt="Interparcel Delivery"
-                        fill
-                        className="object-contain"
-                      />
-                    </div>
-                  </div>
-                  <Link href="https://au.interparcel.com/tracking/" target="_blank" rel="noopener noreferrer">
-                    <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-2 md:mb-3 hover:underline">By Interparcel</h3>
-                  </Link>
-                </div>
-              </AnimatedSection>
+              {/* Minimal partners display: image + title from API */}
+              <SimplePartnersGrid />
             </div>
           </div>
 
@@ -238,7 +251,10 @@ export default function ShippingPage() {
               <AnimatedImage>
                 <div className="relative h-[500px] rounded-lg overflow-hidden">
                   <Image
-                    src={shippingData?.map_image ? `http://192.168.0.120:8000${shippingData.map_image}` : "/assets/shipping.jpg"}
+                    src={(() => {
+                      const base = (process.env.NEXT_PUBLIC_API_BASE_URL || '').replace(/\/$/, '').replace(/\/api$/, '');
+                      return shippingData?.map_image ? `${base}${shippingData.map_image}` : "/assets/shipping.jpg";
+                    })()}
                     alt="Shipping Map"
                     fill
                     className="object-cover"
@@ -286,97 +302,8 @@ export default function ShippingPage() {
           <AnimatedSection className="text-center mb-16">
             <div className="w-16 h-1 bg-orange-400 mx-auto mb-4"></div>
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">{shippingData?.label_partner || "Our Delivery Partners"}</h2>
-            
           </AnimatedSection>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 max-w-7xl mx-auto items-stretch">
-            {/* By Ship - Australia Post */}
-            <AnimatedSection delay={100}>
-              <div className="bg-white rounded-lg p-4 md:p-6 lg:p-8 shadow-lg hover:shadow-xl transition-all duration-300 group text-center flex flex-col h-full">
-                <div className="mb-4 md:mb-6">
-                  <div className="relative w-40 h-40 md:w-44 md:h-44 lg:w-48 lg:h-48 mx-auto mb-3 md:mb-4 flex items-center justify-center">
-                    <Image
-                      src="/assets/post.jpg"
-                      alt="Australia Post"
-                      fill
-                      className="object-contain"
-                    />
-                  </div>
-                </div>
-                <Link href="https://auspost.com.au/" target="_blank" rel="noopener noreferrer">
-                  <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-2 md:mb-3 hover:underline">By Australia Post Express</h3>
-                </Link>
-                                  <p className="text-sm md:text-base text-gray-600 leading-relaxed flex-grow">
-                                    Reliable shipping through Australia Post network. Perfect for standard and express delivery across Australia and worldwide, with tracking included.
-                                  </p>              </div>
-            </AnimatedSection>
-
-            {/* By EMS */}
-            <AnimatedSection delay={200}>
-              <div className="bg-white rounded-lg p-4 md:p-6 lg:p-8 shadow-lg hover:shadow-xl transition-all duration-300 group text-center flex flex-col h-full">
-                <div className="mb-4 md:mb-6">
-                  <div className="relative w-32 h-32 md:w-40 md:h-40 lg:w-48 lg:h-48 mx-auto mb-3 md:mb-4 flex items-center justify-center">
-                    <Image
-                      src="/assets/ems_3.png"
-                      alt="EMS Express Mail Service"
-                      fill
-                      className="object-contain"
-                    />
-                  </div>
-                </div>
-                <Link href="https://www.ems.post/en/global-network/tracking" target="_blank" rel="noopener noreferrer">
-                  <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-2 md:mb-3 hover:underline">By EMS (Express Mail Service)</h3>
-                </Link>
-                <p className="text-sm md:text-base text-gray-600 leading-relaxed flex-grow">
-                  Fast international delivery with tracking included. Reliable shipping worldwide for your important packages.
-                </p>
-              </div>
-            </AnimatedSection>
-
-            {/* By Air */}
-            <AnimatedSection delay={300}>
-              <div className="bg-white rounded-lg p-4 md:p-6 lg:p-8 shadow-lg hover:shadow-xl transition-all duration-300 group text-center flex flex-col h-full">
-                <div className="mb-4 md:mb-6">
-                  <div className="relative w-32 h-32 md:w-40 md:h-40 lg:w-48 lg:h-48 mx-auto mb-3 md:mb-4 flex items-center justify-center">
-                    <Image
-                      src="/assets/dhl.svg"
-                      alt="DHL Logo"
-                      fill
-                      className="object-contain"
-                    />
-                  </div>
-                </div>
-                <Link href="https://www.dhl.com/au-en/home.html" target="_blank" rel="noopener noreferrer">
-                  <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-2 md:mb-3 hover:underline">By DHL Express</h3>
-                </Link>
-                <p className="text-sm md:text-base text-gray-600 leading-relaxed flex-grow">
-                  Trusted worldwide shipping with fast delivery times and full tracking.
-                </p>
-              </div>
-            </AnimatedSection>
-
-            {/* By Land */}
-            <AnimatedSection delay={400}>
-              <div className="bg-white rounded-lg p-4 md:p-6 lg:p-8 shadow-lg hover:shadow-xl transition-all duration-300 group text-center flex flex-col h-full">
-                <div className="mb-4 md:mb-6">
-                  <div className="relative w-40 h-40 md:w-44 md:h-44 lg:w-48 lg:h-48 mx-auto mb-3 md:mb-4 flex items-center justify-center">
-                    <Image
-                      src="/assets/interparcel.png"
-                      alt="Interparcel Delivery"
-                      fill
-                      className="object-contain"
-                    />
-                  </div>
-                </div>
-                <Link href="https://au.interparcel.com/tracking/" target="_blank" rel="noopener noreferrer">
-                  <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-2 md:mb-3 hover:underline">By Interparcel</h3>
-                </Link>
-                <p className="text-sm md:text-base text-gray-600 leading-relaxed flex-grow">
-                  Flexible and affordable courier services with multiple delivery options and tracking included.
-                </p>
-              </div>
-            </AnimatedSection>
-          </div>
+          <DynamicDeliveryPartners />
         </div>
       </section>
 

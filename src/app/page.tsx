@@ -11,6 +11,8 @@ import ProductList from "@/components/product-list";
 import { useState, useEffect, useCallback, useRef, Suspense } from "react";
 import { useHomeSettings } from "@/hooks/useHomeSettings";
 import { useSliders } from "@/hooks/useSliders";
+import { useDeliveryPartners } from "@/hooks/useDeliveryPartners";
+import { useShipping } from "@/hooks/useShipping";
 
 // Custom hook for intersection observer
 const useIntersectionObserver = (options = {}) => {
@@ -279,6 +281,67 @@ const AnimatedImage = ({ children, className = "", delay = 0 }) => {
     </div>
   );
 };
+
+function DeliveryPartnersSection() {
+  const { partners, loading, error } = useDeliveryPartners();
+  const { shipping } = useShipping({ autoFetch: true });
+  const shippingData = shipping.length > 0 ? shipping[0] : null;
+  const toAbsolute = (img: string) => img;
+
+  return (
+    <section className="py-16 md:py-20 bg-gray-50">
+      <div className="container mx-auto">
+        <AnimatedSection className="text-center mb-16">
+          <div className="w-16 h-1 bg-orange-400 mx-auto mb-4"></div>
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">{shippingData?.label_partner || "Our Delivery Partners"}</h2>
+          {error && (
+            <p className="text-sm text-red-600">{error}</p>
+          )}
+        </AnimatedSection>
+
+        {loading && (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 max-w-7xl mx-auto items-stretch">
+            {Array.from({ length: 4 }).map((_, i) => (
+              <div key={i} className="bg-white rounded-lg p-6 shadow animate-pulse h-64" />
+            ))}
+          </div>
+        )}
+
+        {!loading && (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 max-w-7xl mx-auto items-stretch">
+            {(partners?.length ? partners : [
+              { title: 'Australia Post Express', description: 'Reliable shipping through Australia Post network. Perfect for standard and express delivery across Australia and worldwide, with tracking included.', image: '/assets/post.jpg', url_link: 'https://auspost.com.au/' },
+              { title: 'EMS (Express Mail Service)', description: 'Fast international delivery with tracking included. Reliable shipping worldwide for your important packages.', image: '/assets/ems_3.png', url_link: 'https://www.ems.post/en/global-network/tracking' },
+              { title: 'DHL Express', description: 'Trusted worldwide shipping with fast delivery times and full tracking.', image: '/assets/dhl.svg', url_link: 'https://www.dhl.com/au-en/home.html' },
+              { title: 'Interparcel', description: 'Flexible and affordable courier services with multiple delivery options and tracking included.', image: '/assets/interparcel.png', url_link: 'https://au.interparcel.com/tracking/' },
+            ]).map((p, idx) => (
+              <AnimatedSection key={(p as any).id ?? idx} delay={100 * (idx + 1)}>
+                <div className="bg-white rounded-lg p-4 md:p-6 lg:p-8 shadow-lg hover:shadow-xl transition-all duration-300 group text-center flex flex-col h-full">
+                  <div className="mb-4 md:mb-6">
+                    <div className="relative w-32 h-32 md:w-40 md:h-40 lg:w-48 lg:h-48 mx-auto mb-3 md:mb-4 flex items-center justify-center">
+                      <Image
+                        src={toAbsolute(p.image)}
+                        alt={p.title}
+                        fill
+                        className="object-contain"
+                      />
+                    </div>
+                  </div>
+                  <Link href={p.url_link || '#'} target="_blank" rel="noopener noreferrer">
+                    <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-2 md:mb-3 hover:underline">{p.title}</h3>
+                  </Link>
+                  {p.description && (
+                    <p className="text-sm md:text-base text-gray-600 leading-relaxed flex-grow">{p.description}</p>
+                  )}
+                </div>
+              </AnimatedSection>
+            ))}
+          </div>
+        )}
+      </div>
+    </section>
+  );
+}
 
 function HeroCarousel() {
   const { sliders, loading: slidersLoading, error: slidersError } = useSliders();
@@ -575,104 +638,7 @@ export default function Home() {
       </section>
 
       {/* Our Delivery Section */}
-      <section className="py-16 md:py-20 bg-gray-50">
-        <div className="container mx-auto">
-          <AnimatedSection className="text-center mb-16">
-            <div className="w-16 h-1 bg-orange-400 mx-auto mb-4"></div>
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Our Delivery Partners</h2>
-            
-          </AnimatedSection>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 max-w-7xl mx-auto items-stretch">
-            {/* By Ship - Australia Post */}
-            <AnimatedSection delay={100}>
-              <div className="bg-white rounded-lg p-4 md:p-6 lg:p-8 shadow-lg hover:shadow-xl transition-all duration-300 group text-center flex flex-col h-full">
-                <div className="mb-4 md:mb-6">
-                  <div className="relative w-32 h-32 md:w-40 md:h-40 lg:w-48 lg:h-48 mx-auto mb-3 md:mb-4 flex items-center justify-center">
-                    <Image
-                      src="/assets/post.jpg"
-                      alt="Australia Post"
-                      fill
-                      className="object-contain"
-                    />
-                  </div>
-                </div>
-                <Link href="https://auspost.com.au/" target="_blank" rel="noopener noreferrer">
-                  <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-2 md:mb-3 hover:underline">By Australia Post Express</h3>
-                </Link>
-                                  <p className="text-sm md:text-base text-gray-600 leading-relaxed flex-grow">
-                                    Reliable shipping through Australia Post network. Perfect for standard and express delivery across Australia and worldwide, with tracking included.
-                                  </p>              </div>
-            </AnimatedSection>
-
-            {/* By EMS */}
-            <AnimatedSection delay={200}>
-              <div className="bg-white rounded-lg p-4 md:p-6 lg:p-8 shadow-lg hover:shadow-xl transition-all duration-300 group text-center flex flex-col h-full">
-                <div className="mb-4 md:mb-6">
-                  <div className="relative w-32 h-32 md:w-40 md:h-40 lg:w-48 lg:h-48 mx-auto mb-3 md:mb-4 flex items-center justify-center">
-                    <Image
-                      src="/assets/ems_3.png"
-                      alt="EMS Express Mail Service"
-                      fill
-                      className="object-contain"
-                    />
-                  </div>
-                </div>
-                <Link href="https://www.ems.post/en/global-network/tracking" target="_blank" rel="noopener noreferrer">
-                  <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-2 md:mb-3 hover:underline">By EMS (Express Mail Service)</h3>
-                </Link>
-                <p className="text-sm md:text-base text-gray-600 leading-relaxed flex-grow">
-                  Fast international delivery with tracking included. Reliable shipping worldwide for your important packages.
-                </p>
-              </div>
-            </AnimatedSection>
-
-            {/* By Air */}
-            <AnimatedSection delay={300}>
-              <div className="bg-white rounded-lg p-4 md:p-6 lg:p-8 shadow-lg hover:shadow-xl transition-all duration-300 group text-center flex flex-col h-full">
-                <div className="mb-4 md:mb-6">
-                  <div className="relative w-32 h-32 md:w-40 md:h-40 lg:w-48 lg:h-48 mx-auto mb-3 md:mb-4 flex items-center justify-center">
-                    <Image
-                      src="/assets/dhl.svg"
-                      alt="DHL Logo"
-                      fill
-                      className="object-contain"
-                    />
-                  </div>
-                </div>
-                <Link href="https://www.dhl.com/au-en/home.html" target="_blank" rel="noopener noreferrer">
-                  <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-2 md:mb-3 hover:underline">By DHL Express</h3>
-                </Link>
-                <p className="text-sm md:text-base text-gray-600 leading-relaxed flex-grow">
-                  Trusted worldwide shipping with fast delivery times and full tracking.
-                </p>
-              </div>
-            </AnimatedSection>
-
-            {/* By Land */}
-            <AnimatedSection delay={400}>
-              <div className="bg-white rounded-lg p-4 md:p-6 lg:p-8 shadow-lg hover:shadow-xl transition-all duration-300 group text-center flex flex-col h-full">
-                <div className="mb-4 md:mb-6">
-                  <div className="relative w-32 h-32 md:w-40 md:h-40 lg:w-48 lg:h-48 mx-auto mb-3 md:mb-4 flex items-center justify-center">
-                    <Image
-                      src="/assets/interparcel.png"
-                      alt="Interparcel Delivery"
-                      fill
-                      className="object-contain"
-                    />
-                  </div>
-                </div>
-                <Link href="https://au.interparcel.com/tracking/" target="_blank" rel="noopener noreferrer">
-                  <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-2 md:mb-3 hover:underline">By Interparcel</h3>
-                </Link>
-                <p className="text-sm md:text-base text-gray-600 leading-relaxed flex-grow">
-                  Flexible and affordable courier services with multiple delivery options and tracking included.
-                </p>
-              </div>
-            </AnimatedSection>
-          </div>
-        </div>
-      </section>
+      <DeliveryPartnersSection />
 
       <Suspense fallback={
         <section className="py-16 md:py-20 bg-gray-50">
