@@ -11,6 +11,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { useEffect, useState } from 'react';
+import { useContacts } from '@/hooks/useContacts';
 
 export default function Footer() {
   const [currentYear, setCurrentYear] = useState(2024);
@@ -18,7 +19,9 @@ export default function Footer() {
   useEffect(() => {
     setCurrentYear(new Date().getFullYear());
   }, []);
-  
+  const { contacts } = useContacts();
+  const contact = contacts.length > 0 ? contacts[0] : null;
+
   const navLinks = [
     { href: "/genuine-parts", label: "Genuines Parts and Accessories" },
     { href: "/", label: "Home" },
@@ -58,17 +61,18 @@ export default function Footer() {
           <div>
             <h3 className="font-semibold mb-4">Contact Us</h3>
             <ul className="space-y-2 text-sm text-muted-foreground">
-              <li>SD AUTO Werribee, Victoria 3030 Australia</li>
-              <li><a href="tel:+61460786533" className="hover:text-primary transition-colors">+61 460 786 533</a></li>
-              <li><a href="https://wa.me/61460786533" target="_blank" rel="noopener noreferrer" className="hover:text-green-600 transition-colors">WhatsApp: +61 460 786 533</a></li>
-              <li><a href="mailto:sdautoaustralia@gmail.com" className="hover:text-primary transition-colors">sdautoaustralia@gmail.com</a></li>
+              <li>{contact?.address || 'SD AUTO Werribee, Victoria 3030 Australia'}</li>
+              <li><a href={contact?.phone ? `tel:${contact.phone}` : `tel:+61460786533`} className="hover:text-primary transition-colors">{contact?.phone || '+61 460 786 533'}</a></li>
+              <li><a href={contact?.whatsApp ? `https://wa.me/${contact.whatsApp.replace(/[^\d]/g, '')}` : `https://wa.me/61460786533`} target="_blank" rel="noopener noreferrer" className="hover:text-green-600 transition-colors">WhatsApp: {contact?.whatsApp || '+61 460 786 533'}</a></li>
+              <li><a href={contact?.email ? `mailto:${contact.email}` : `mailto:sdautoaustralia@gmail.com`} className="hover:text-primary transition-colors">{contact?.email || 'sdautoaustralia@gmail.com'}</a></li>
             </ul>
           </div>
            <div>
             <h3 className="font-semibold mb-4">Business Hours</h3>
             <ul className="space-y-2 text-sm text-muted-foreground">
-              <li>Monday - Saturday: 9am-6pm</li>
-              <li>Sunday: Closed</li>
+              {(contact?.business_hour ? contact.business_hour.split('\n') : ['Monday - Saturday: 9am-6pm', 'Sunday: Closed']).map((line, i) => (
+                <li key={i}>{line}</li>
+              ))}
             </ul>
           </div>
         </div>

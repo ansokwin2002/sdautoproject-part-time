@@ -11,6 +11,7 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 
 import { getNavLinks } from "@/lib/nav-links";
 import { useHomeSettings } from "@/hooks/useHomeSettings";
+import { useContacts } from "@/hooks/useContacts";
 
 const products = []; // This is a placeholder, as the product data is now fetched in nav-links.ts
 
@@ -27,12 +28,16 @@ export default function Header() {
   const dropdownRef = useRef(null);
   const leaveTimeout = useRef<NodeJS.Timeout | null>(null);
 
-  // Fetch home settings data
+  // Fetch home settings data (logo/title/description)
   const { settings, loading, error } = useHomeSettings({
     autoFetch: true,
     retryAttempts: 2,
     retryDelay: 2000
   });
+
+  // Fetch contact info (address/email/phone)
+  const { contacts, loading: contactsLoading } = useContacts();
+  const contact = contacts.length > 0 ? contacts[0] : null;
 
   // Fallback data when API is not available
   const fallbackData = {
@@ -44,11 +49,11 @@ export default function Header() {
     description: "Parts and Accessories"
   };
 
-  // Use settings data or fallback
+  // Use settings for branding and contacts for contact bar
   const displayData = {
-    address: settings?.address || fallbackData.address,
-    email: settings?.email || fallbackData.email,
-    phone: settings?.phone || fallbackData.phone,
+    address: contact?.address || fallbackData.address,
+    email: contact?.email || fallbackData.email,
+    phone: contact?.phone || fallbackData.phone,
     logo: settings?.logo || fallbackData.logo,
     title: settings?.title || fallbackData.title,
     description: settings?.description || fallbackData.description

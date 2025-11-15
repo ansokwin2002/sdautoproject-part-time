@@ -3,6 +3,7 @@ import { Slider, SliderResponse, SingleSliderResponse } from '@/types/slider';
 import { Shipping, ShippingResponse, SingleShippingResponse } from '@/types/shipping';
 import { Policy, PolicyResponse, SinglePolicyResponse } from '@/types/policy';
 import { Faq, FaqResponse, SingleFaqResponse } from '@/types/faq';
+import { Contact, ContactResponse } from '@/types/contact';
 
 // Get API base URL from environment variable or use default
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8000/api';
@@ -251,6 +252,17 @@ class ApiService {
     }
 
     return response.data;
+  }
+
+  // Contacts API methods
+  async getContacts(): Promise<Contact[]> {
+    const response = await this.request<ContactResponse>('/public/contacts');
+
+    if (!response.success) {
+      throw new ApiError(response.message || 'Failed to fetch contacts');
+    }
+
+    return response.data || [];
   }
 }
 

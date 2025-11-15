@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Phone, Mail, MapPin, Clock, CheckCircle, AlertCircle, MessageCircle } from "lucide-react";
+import { useContacts } from "@/hooks/useContacts";
 
 // Custom hook for intersection observer
 const useIntersectionObserver = (options = {}) => {
@@ -242,6 +243,9 @@ export default function ContactPage() {
     }
   };
 
+  const { contacts } = useContacts();
+  const contact = contacts.length > 0 ? contacts[0] : null;
+
   return (
     <div className="bg-background">
       {notification && (
@@ -444,10 +448,10 @@ export default function ContactPage() {
                   </div>
                   <h3 className="font-semibold mb-2 text-sm sm:text-base">Address</h3>
                   <div className="flex-grow flex items-center justify-center">
-                    <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
-                      SD AUTO<br />
-                      Werribee, Victoria 3030<br />
-                      Australia
+                    <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed break-words text-center">
+                      {contact?.address || (
+                        <>SD AUTO<br />Werribee, Victoria 3030<br />Australia</>
+                      )}
                     </p>
                   </div>
                 </CardContent>
@@ -463,8 +467,8 @@ export default function ContactPage() {
                   <h3 className="font-semibold mb-2 text-sm sm:text-base">Phone</h3>
                   <div className="flex-grow flex items-center justify-center">
                     <p className="text-xs sm:text-sm text-muted-foreground">
-                      <a href="tel:+61460786533" className="hover:text-primary transition-colors break-all">
-                        +61 460 786 533
+                      <a href={contact?.phone ? `tel:${contact.phone}` : `tel:+61460786533`} className="hover:text-primary transition-colors break-all">
+                        {contact?.phone || "+61 460 786 533"}
                       </a>
                     </p>
                   </div>
@@ -481,8 +485,8 @@ export default function ContactPage() {
                   <h3 className="font-semibold mb-2 text-sm sm:text-base">WhatsApp</h3>
                   <div className="flex-grow flex items-center justify-center">
                     <p className="text-xs sm:text-sm text-muted-foreground">
-                      <a href="https://wa.me/61460786533" target="_blank" rel="noopener noreferrer" className="hover:text-green-600 transition-colors break-all">
-                        +61 460 786 533
+                      <a href={contact?.whatsApp ? `https://wa.me/${contact.whatsApp.replace(/[^\d]/g, '')}` : `https://wa.me/61460786533`} target="_blank" rel="noopener noreferrer" className="hover:text-green-600 transition-colors break-all">
+                        {contact?.whatsApp || "+61 460 786 533"}
                       </a>
                     </p>
                   </div>
@@ -499,8 +503,8 @@ export default function ContactPage() {
                   <h3 className="font-semibold mb-2 text-sm sm:text-base">Email</h3>
                   <div className="flex-grow flex items-center justify-center">
                     <p className="text-xs sm:text-sm text-muted-foreground">
-                      <a href="mailto:sdautoaustralia@gmail.com" className="hover:text-primary transition-colors break-all">
-                        sdautoaustralia@gmail.com
+                      <a href={contact?.email ? `mailto:${contact.email}` : `mailto:sdautoaustralia@gmail.com`} className="hover:text-primary transition-colors break-all">
+                        {contact?.email || "sdautoaustralia@gmail.com"}
                       </a>
                     </p>
                   </div>
@@ -516,9 +520,10 @@ export default function ContactPage() {
                   </div>
                   <h3 className="font-semibold mb-2 text-sm sm:text-base">Business Hours</h3>
                   <div className="flex-grow flex items-center justify-center">
-                    <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
-                      Monday - Saturday<br />
-                      9am-6pm
+                    <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed break-words text-center">
+                      {contact?.business_hour ? contact.business_hour.split('\n').map((line, i) => (<span key={i}>{line}<br /></span>)) : (
+                        <>Monday - Saturday<br />9am-6pm</>
+                      )}
                     </p>
                   </div>
                 </CardContent>
