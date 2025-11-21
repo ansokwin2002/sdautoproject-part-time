@@ -361,7 +361,7 @@ function HeroCarousel() {
       // Convert relative image path to full URL
               const imageUrl = slide.image.startsWith('http')
                 ? slide.image
-                : `http://192.168.1.5:8000${slide.image}`;
+                : `https://api.sdauto.com.au${slide.image}`;
       return {
         id: slide.id,
         image: imageUrl,
