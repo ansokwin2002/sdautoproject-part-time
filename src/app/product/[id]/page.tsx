@@ -1,14 +1,6 @@
-
-import { products } from "@/lib/products";
 import ProductDetailClient from "@/components/product-detail-client";
 import { Suspense } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
-
-export async function generateStaticParams() {
-  return products.map((product) => ({
-    id: product.id,
-  }));
-}
 
 function ProductDetailSkeleton() {
   return (

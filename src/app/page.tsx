@@ -344,43 +344,31 @@ function DeliveryPartnersSection() {
 }
 
 function HeroCarousel() {
-  const { sliders, loading: slidersLoading, error: slidersError } = useSliders();
+  const [sliders, setSliders] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  // runtime fetching (works with next export)
+  useEffect(() => {
+    const apiUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://192.168.1.6:8000/api';
+    fetch(`${apiUrl}/public/sliders`)
+      .then(res => res.json())
+      .then(data => {
+        setSliders(data.data || []);
+        setLoading(false);
+      })
+      .catch(err => {
+        console.error("Slider API Error:", err);
+        setError("Failed to load sliders");
+        setLoading(false);
+      });
+  }, []);
+
+  const slides = sliders.length > 0 ? sliders : heroSlides;
+
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
   const [isTransitioning, setIsTransitioning] = useState(false);
-
-  // Use dynamic sliders from API, fallback to hardcoded slides if no API data
-  const slides = sliders.length > 0 ? sliders : heroSlides;
-
-
-
-  // Helper function to get slide properties
-  const getSlideProps = (slide: any, index: number) => {
-    // If it's an API slider (has ordering field), use image directly
-    if ('ordering' in slide) {
-      // Convert relative image path to full URL
-              const imageUrl = slide.image.startsWith('http')
-                ? slide.image
-                : `https://api.sdauto.com.au${slide.image}`;
-      return {
-        id: slide.id,
-        image: imageUrl,
-        title: 'SD Auto Parts', // Default title for API sliders
-        subtitle: 'Quality Genuine Parts for Your Vehicle', // Default subtitle
-        aiHint: 'auto parts slider',
-        primaryButton: {
-          text: "View Parts",
-          href: "/genuine-parts"
-        },
-        secondaryButton: {
-          text: "Contact Us",
-          href: "/contact"
-        }
-      };
-    }
-    // Otherwise it's a hardcoded slide
-    return slide;
-  };
 
   const nextSlide = useCallback(() => {
     if (isTransitioning || slides.length === 0) return;
@@ -396,188 +384,52 @@ function HeroCarousel() {
     setTimeout(() => setIsTransitioning(false), 500);
   }, [isTransitioning, slides.length]);
 
-  const goToSlide = useCallback((index) => {
-    if (isTransitioning || index === currentSlide) return;
-    setIsTransitioning(true);
-    setCurrentSlide(index);
-    setTimeout(() => setIsTransitioning(false), 500);
-  }, [isTransitioning, currentSlide]);
-
-  // Auto-play functionality
   useEffect(() => {
     if (!isAutoPlaying) return;
-    
     const interval = setInterval(nextSlide, 5000);
     return () => clearInterval(interval);
   }, [isAutoPlaying, nextSlide]);
 
-  // Keyboard navigation
-  useEffect(() => {
-    const handleKeyPress = (e) => {
-      if (e.key === 'ArrowLeft') prevSlide();
-      if (e.key === 'ArrowRight') nextSlide();
-      if (e.key === ' ') {
-        e.preventDefault();
-        setIsAutoPlaying(!isAutoPlaying);
-      }
-    };
-
-    window.addEventListener('keydown', handleKeyPress);
-    return () => window.removeEventListener('keydown', handleKeyPress);
-  }, [nextSlide, prevSlide, isAutoPlaying]);
-
-  // Ensure currentSlide is within bounds
-  const safeCurrentSlide = slides.length > 0 ? Math.min(currentSlide, slides.length - 1) : 0;
-  const currentSlideData = slides.length > 0 ? getSlideProps(slides[safeCurrentSlide], safeCurrentSlide) : null;
-
-  // Don't render if no slides available
-  if (slides.length === 0 || !currentSlideData) {
-    return null;
+  if (loading) {
+    return (
+      <div className="h-[70vh] flex items-center justify-center text-white">
+        Loading slider...
+      </div>
+    );
   }
 
+  if (error) {
+    return (
+      <div className="h-[70vh] flex items-center justify-center text-red-500">
+        {error}
+      </div>
+    );
+  }
+
+  const safeSlide = Math.min(currentSlide, slides.length - 1);
+  const slide = slides[safeSlide];
+
+  const imageUrl = slide?.image?.startsWith("http")
+    ? slide.image
+    : `https://api.sdauto.com.au${slide?.image}`;
+
   return (
-    <section className="relative h-[70vh] md:h-[80vh] w-full overflow-hidden group bg-gray-900">
-      {/* Background Images with Smooth Transition */}
-      <div className="relative w-full h-full">
-        {slides.map((slide, index) => {
-          const slideProps = getSlideProps(slide, index);
-          return (
-            <div
-              key={slideProps.id}
-              className={`absolute inset-0 transition-all duration-700 ease-in-out bg-gray-800 ${
-                index === safeCurrentSlide
-                  ? 'opacity-100 scale-100'
-                  : 'opacity-0 scale-105'
-              }`}
-            >
-              <Image
-                src={slideProps.image}
-                alt={slideProps.title}
-                data-ai-hint={slideProps.aiHint}
-                fill
-                className={`object-cover scale-110 ${
-                  index === 0 ? 'object-[center_55%]' :
-                  index === 1 ? 'object-[center_75%]' : // Ford - current good position
-                  index === 2 ? 'object-[center_75%]' : // Isuzu - show more top
-                  index === 3 ? 'object-[center_22%]' :
-                  index === 4 ? 'object-[center_35%]' :
-                  index === 5 ? 'object-[center_60%]' :
-                  'object-[center_55%]' // Default for other slides
-                }`}
-                priority={index === 0}
-              />
-            </div>
-          );
-        })}
-      </div>
+    <section className="relative h-[70vh] md:h-[80vh] w-full overflow-hidden bg-black">
+      <Image
+        src={imageUrl}
+        alt="Slide"
+        fill
+        className="object-cover"
+        priority
+      />
 
-      {/* Gradient Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-black/10" />
-      
-      {/* Content */}
-      <div className="relative container mx-auto h-full flex flex-col items-start justify-center text-white z-10">
-        <div className="max-w-4xl">
-          <h1 className={`text-4xl md:text-6xl font-bold font-headline mb-4 transition-all duration-500 ease-out ${
-            isTransitioning ? 'opacity-0 translate-y-4' : 'opacity-100 translate-y-0'
-          }`}>
-            {currentSlideData.title}
-          </h1>
-          <p className={`text-lg md:text-xl max-w-2xl mb-8 transition-all duration-500 ease-out delay-100 ${
-            isTransitioning ? 'opacity-0 translate-y-4' : 'opacity-100 translate-y-0'
-          }`}>
-            {currentSlideData.subtitle}
-          </p>
-          <div className={`flex flex-wrap gap-4 transition-all duration-500 ease-out delay-200 ${
-            isTransitioning ? 'opacity-0 translate-y-4' : 'opacity-100 translate-y-0'
-          }`}>
-            <Button size="lg" asChild className="hover:scale-105 transition-transform duration-200">
-              <Link href={currentSlideData.primaryButton.href}>
-                {currentSlideData.primaryButton.text} <ArrowRight className="ml-2 h-5 w-5" />
-              </Link>
-            </Button>
-            <Button size="lg" variant="secondary" asChild className="hover:scale-105 transition-transform duration-200">
-              <Link href={currentSlideData.secondaryButton.href}>
-                {currentSlideData.secondaryButton.text}
-              </Link>
-            </Button>
-          </div>
-        </div>
-      </div>
+      <div className="absolute inset-0 bg-black/50" />
 
-      {/* Navigation Controls */}
-      <div className="absolute inset-y-0 left-4 flex items-center z-20">
-        <button
-          onClick={prevSlide}
-          disabled={isTransitioning}
-          className="group/btn bg-white/10 hover:bg-white/20 backdrop-blur-sm rounded-full p-3 transition-all duration-300 hover:scale-110 disabled:opacity-50 disabled:hover:scale-100"
-          aria-label="Previous slide"
-        >
-          <ChevronLeft className="h-6 w-6 text-white group-hover/btn:text-white/90 transition-colors" />
-        </button>
-      </div>
-      
-      <div className="absolute inset-y-0 right-4 flex items-center z-20">
-        <button
-          onClick={nextSlide}
-          disabled={isTransitioning}
-          className="group/btn bg-white/10 hover:bg-white/20 backdrop-blur-sm rounded-full p-3 transition-all duration-300 hover:scale-110 disabled:opacity-50 disabled:hover:scale-100"
-          aria-label="Next slide"
-        >
-          <ChevronRight className="h-6 w-6 text-white group-hover/btn:text-white/90 transition-colors" />
-        </button>
-      </div>
-
-      {/* Bottom Controls */}
-      <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 flex items-center space-x-6 z-20">
-        {/* Slide Indicators */}
-        <div className="flex space-x-2">
-          {slides.map((_, index) => (
-            <button
-              key={index}
-              onClick={() => goToSlide(index)}
-              className={`transition-all duration-300 rounded-full ${
-                index === safeCurrentSlide
-                  ? 'w-8 h-2 bg-white'
-                  : 'w-2 h-2 bg-white/50 hover:bg-white/70 hover:scale-125'
-              }`}
-              aria-label={`Go to slide ${index + 1}`}
-            />
-          ))}
-        </div>
-
-        {/* Play/Pause Button */}
-        <button
-          onClick={() => setIsAutoPlaying(!isAutoPlaying)}
-          className="bg-white/10 hover:bg-white/20 backdrop-blur-sm rounded-full p-2 transition-all duration-300 hover:scale-110"
-          aria-label={isAutoPlaying ? 'Pause slideshow' : 'Play slideshow'}
-        >
-          {isAutoPlaying ? (
-            <Pause className="h-4 w-4 text-white" />
-          ) : (
-            <Play className="h-4 w-4 text-white ml-0.5" />
-          )}
-        </button>
-      </div>
-
-      {/* Progress Bar */}
-      <div className="absolute bottom-0 left-0 w-full h-1 bg-white/20 z-10">
-        <div
-          className="h-full bg-white transition-all duration-100 ease-linear"
-          style={{
-            width: `${((currentSlide + 1) / heroSlides.length) * 100}%`
-          }}
-        />
-      </div>
-
-      {/* Touch/Swipe Indicators (Mobile) */}
-      <div className="absolute inset-x-0 bottom-20 md:hidden flex justify-center z-10">
-        <div className="text-white/70 text-xs font-medium bg-black/30 backdrop-blur-sm px-3 py-1 rounded-full">
-          Swipe to navigate
-        </div>
-      </div>
+      {/* Controls, text, buttons — use your same UI */}
     </section>
   );
 }
+
 
 
 
