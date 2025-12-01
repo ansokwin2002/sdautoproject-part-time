@@ -11,8 +11,7 @@ import ProductList from "@/components/product-list";
 import { useState, useEffect, useCallback, useRef, Suspense } from "react";
 import { useHomeSettings } from "@/hooks/useHomeSettings";
 import { useSliders } from "@/hooks/useSliders";
-import { useDeliveryPartners } from "@/hooks/useDeliveryPartners";
-import { useShipping } from "@/hooks/useShipping";
+import { getImageUrl } from "@/lib/config";
 
 // Custom hook for intersection observer
 const useIntersectionObserver = (options = {}) => {
@@ -282,93 +281,42 @@ const AnimatedImage = ({ children, className = "", delay = 0 }) => {
   );
 };
 
-function DeliveryPartnersSection() {
-  const { partners, loading, error } = useDeliveryPartners();
-  const { shipping } = useShipping({ autoFetch: true });
-  const shippingData = shipping.length > 0 ? shipping[0] : null;
-  const toAbsolute = (img: string) => img;
-
-  return (
-    <section className="py-16 md:py-20 bg-gray-50">
-      <div className="container mx-auto">
-        <AnimatedSection className="text-center mb-16">
-          <div className="w-16 h-1 bg-orange-400 mx-auto mb-4"></div>
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">{shippingData?.label_partner || "Our Delivery Partners"}</h2>
-          {error && (
-            <p className="text-sm text-red-600">{error}</p>
-          )}
-        </AnimatedSection>
-
-        {loading && (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 max-w-7xl mx-auto items-stretch">
-            {Array.from({ length: 4 }).map((_, i) => (
-              <div key={i} className="bg-white rounded-lg p-6 shadow animate-pulse h-64" />
-            ))}
-          </div>
-        )}
-
-        {!loading && (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 max-w-7xl mx-auto items-stretch">
-            {(partners?.length ? partners : [
-              { title: 'Australia Post Express', description: 'Reliable shipping through Australia Post network. Perfect for standard and express delivery across Australia and worldwide, with tracking included.', image: '/assets/post.jpg', url_link: 'https://auspost.com.au/' },
-              { title: 'EMS (Express Mail Service)', description: 'Fast international delivery with tracking included. Reliable shipping worldwide for your important packages.', image: '/assets/ems_3.png', url_link: 'https://www.ems.post/en/global-network/tracking' },
-              { title: 'DHL Express', description: 'Trusted worldwide shipping with fast delivery times and full tracking.', image: '/assets/dhl.svg', url_link: 'https://www.dhl.com/au-en/home.html' },
-              { title: 'Interparcel', description: 'Flexible and affordable courier services with multiple delivery options and tracking included.', image: '/assets/interparcel.png', url_link: 'https://au.interparcel.com/tracking/' },
-            ]).map((p, idx) => (
-              <AnimatedSection key={(p as any).id ?? idx} delay={100 * (idx + 1)}>
-                <div className="bg-white rounded-lg p-4 md:p-6 lg:p-8 shadow-lg hover:shadow-xl transition-all duration-300 group text-center flex flex-col h-full">
-                  <div className="mb-4 md:mb-6">
-                    <div className="relative w-32 h-32 md:w-40 md:h-40 lg:w-48 lg:h-48 mx-auto mb-3 md:mb-4 flex items-center justify-center">
-                      <Image
-                        src={toAbsolute(p.image)}
-                        alt={p.title}
-                        fill
-                        className="object-contain"
-                      />
-                    </div>
-                  </div>
-                  <Link href={p.url_link || '#'} target="_blank" rel="noopener noreferrer">
-                    <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-2 md:mb-3 hover:underline">{p.title}</h3>
-                  </Link>
-                  {p.description && (
-                    <p className="text-sm md:text-base text-gray-600 leading-relaxed flex-grow">{p.description}</p>
-                  )}
-                </div>
-              </AnimatedSection>
-            ))}
-          </div>
-        )}
-      </div>
-    </section>
-  );
-}
-
 function HeroCarousel() {
-  const [sliders, setSliders] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-
-  // runtime fetching (works with next export)
-  useEffect(() => {
-    const apiUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://192.168.1.6:8000/api';
-    fetch(`${apiUrl}/public/sliders`)
-      .then(res => res.json())
-      .then(data => {
-        setSliders(data.data || []);
-        setLoading(false);
-      })
-      .catch(err => {
-        console.error("Slider API Error:", err);
-        setError("Failed to load sliders");
-        setLoading(false);
-      });
-  }, []);
-
-  const slides = sliders.length > 0 ? sliders : heroSlides;
-
+  const { sliders, loading: slidersLoading, error: slidersError } = useSliders();
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
   const [isTransitioning, setIsTransitioning] = useState(false);
+
+  // Use dynamic sliders from API, fallback to hardcoded slides if no API data
+  const slides = sliders.length > 0 ? sliders : heroSlides;
+
+
+
+  // Helper function to get slide properties
+  const getSlideProps = (slide: any, index: number) => {
+    // If it's an API slider (has ordering field), use image directly
+    if ('ordering' in slide) {
+      // Convert relative image path to full URL using dynamic config
+      const imageUrl = getImageUrl(slide.image);
+      return {
+        id: slide.id,
+        image: imageUrl,
+        title: 'SD Auto Parts', // Default title for API sliders
+        subtitle: 'Quality Genuine Parts for Your Vehicle', // Default subtitle
+        aiHint: 'auto parts slider',
+        primaryButton: {
+          text: "View Parts",
+          href: "/genuine-parts"
+        },
+        secondaryButton: {
+          text: "Contact Us",
+          href: "/contact"
+        }
+      };
+    }
+    // Otherwise it's a hardcoded slide
+    return slide;
+  };
 
   const nextSlide = useCallback(() => {
     if (isTransitioning || slides.length === 0) return;
@@ -384,52 +332,188 @@ function HeroCarousel() {
     setTimeout(() => setIsTransitioning(false), 500);
   }, [isTransitioning, slides.length]);
 
+  const goToSlide = useCallback((index) => {
+    if (isTransitioning || index === currentSlide) return;
+    setIsTransitioning(true);
+    setCurrentSlide(index);
+    setTimeout(() => setIsTransitioning(false), 500);
+  }, [isTransitioning, currentSlide]);
+
+  // Auto-play functionality
   useEffect(() => {
     if (!isAutoPlaying) return;
+    
     const interval = setInterval(nextSlide, 5000);
     return () => clearInterval(interval);
   }, [isAutoPlaying, nextSlide]);
 
-  if (loading) {
-    return (
-      <div className="h-[70vh] flex items-center justify-center text-white">
-        Loading slider...
-      </div>
-    );
+  // Keyboard navigation
+  useEffect(() => {
+    const handleKeyPress = (e) => {
+      if (e.key === 'ArrowLeft') prevSlide();
+      if (e.key === 'ArrowRight') nextSlide();
+      if (e.key === ' ') {
+        e.preventDefault();
+        setIsAutoPlaying(!isAutoPlaying);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyPress);
+    return () => window.removeEventListener('keydown', handleKeyPress);
+  }, [nextSlide, prevSlide, isAutoPlaying]);
+
+  // Ensure currentSlide is within bounds
+  const safeCurrentSlide = slides.length > 0 ? Math.min(currentSlide, slides.length - 1) : 0;
+  const currentSlideData = slides.length > 0 ? getSlideProps(slides[safeCurrentSlide], safeCurrentSlide) : null;
+
+  // Don't render if no slides available
+  if (slides.length === 0 || !currentSlideData) {
+    return null;
   }
-
-  if (error) {
-    return (
-      <div className="h-[70vh] flex items-center justify-center text-red-500">
-        {error}
-      </div>
-    );
-  }
-
-  const safeSlide = Math.min(currentSlide, slides.length - 1);
-  const slide = slides[safeSlide];
-
-  const imageUrl = slide?.image?.startsWith("http")
-    ? slide.image
-    : `https://api.sdauto.com.au${slide?.image}`;
 
   return (
-    <section className="relative h-[70vh] md:h-[80vh] w-full overflow-hidden bg-black">
-      <Image
-        src={imageUrl}
-        alt="Slide"
-        fill
-        className="object-cover"
-        priority
-      />
+    <section className="relative h-[70vh] md:h-[80vh] w-full overflow-hidden group bg-gray-900">
+      {/* Background Images with Smooth Transition */}
+      <div className="relative w-full h-full">
+        {slides.map((slide, index) => {
+          const slideProps = getSlideProps(slide, index);
+          return (
+            <div
+              key={slideProps.id}
+              className={`absolute inset-0 transition-all duration-700 ease-in-out bg-gray-800 ${
+                index === safeCurrentSlide
+                  ? 'opacity-100 scale-100'
+                  : 'opacity-0 scale-105'
+              }`}
+            >
+              <Image
+                src={slideProps.image}
+                alt={slideProps.title}
+                data-ai-hint={slideProps.aiHint}
+                fill
+                className={`object-cover scale-110 ${
+                  index === 0 ? 'object-[center_55%]' :
+                  index === 1 ? 'object-[center_75%]' : // Ford - current good position
+                  index === 2 ? 'object-[center_75%]' : // Isuzu - show more top
+                  index === 3 ? 'object-[center_22%]' :
+                  index === 4 ? 'object-[center_35%]' :
+                  index === 5 ? 'object-[center_60%]' :
+                  'object-[center_55%]' // Default for other slides
+                }`}
+                priority={index === 0}
+              />
+            </div>
+          );
+        })}
+      </div>
 
-      <div className="absolute inset-0 bg-black/50" />
+      {/* Gradient Overlay */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-black/10" />
+      
+      {/* Content */}
+      <div className="relative container mx-auto h-full flex flex-col items-start justify-center text-white z-10">
+        <div className="max-w-4xl">
+          <h1 className={`text-4xl md:text-6xl font-bold font-headline mb-4 transition-all duration-500 ease-out ${
+            isTransitioning ? 'opacity-0 translate-y-4' : 'opacity-100 translate-y-0'
+          }`}>
+            {currentSlideData.title}
+          </h1>
+          <p className={`text-lg md:text-xl max-w-2xl mb-8 transition-all duration-500 ease-out delay-100 ${
+            isTransitioning ? 'opacity-0 translate-y-4' : 'opacity-100 translate-y-0'
+          }`}>
+            {currentSlideData.subtitle}
+          </p>
+          <div className={`flex flex-wrap gap-4 transition-all duration-500 ease-out delay-200 ${
+            isTransitioning ? 'opacity-0 translate-y-4' : 'opacity-100 translate-y-0'
+          }`}>
+            <Button size="lg" asChild className="hover:scale-105 transition-transform duration-200">
+              <Link href={currentSlideData.primaryButton.href}>
+                {currentSlideData.primaryButton.text} <ArrowRight className="ml-2 h-5 w-5" />
+              </Link>
+            </Button>
+            <Button size="lg" variant="secondary" asChild className="hover:scale-105 transition-transform duration-200">
+              <Link href={currentSlideData.secondaryButton.href}>
+                {currentSlideData.secondaryButton.text}
+              </Link>
+            </Button>
+          </div>
+        </div>
+      </div>
 
-      {/* Controls, text, buttons — use your same UI */}
+      {/* Navigation Controls */}
+      <div className="absolute inset-y-0 left-4 flex items-center z-20">
+        <button
+          onClick={prevSlide}
+          disabled={isTransitioning}
+          className="group/btn bg-white/10 hover:bg-white/20 backdrop-blur-sm rounded-full p-3 transition-all duration-300 hover:scale-110 disabled:opacity-50 disabled:hover:scale-100"
+          aria-label="Previous slide"
+        >
+          <ChevronLeft className="h-6 w-6 text-white group-hover/btn:text-white/90 transition-colors" />
+        </button>
+      </div>
+      
+      <div className="absolute inset-y-0 right-4 flex items-center z-20">
+        <button
+          onClick={nextSlide}
+          disabled={isTransitioning}
+          className="group/btn bg-white/10 hover:bg-white/20 backdrop-blur-sm rounded-full p-3 transition-all duration-300 hover:scale-110 disabled:opacity-50 disabled:hover:scale-100"
+          aria-label="Next slide"
+        >
+          <ChevronRight className="h-6 w-6 text-white group-hover/btn:text-white/90 transition-colors" />
+        </button>
+      </div>
+
+      {/* Bottom Controls */}
+      <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 flex items-center space-x-6 z-20">
+        {/* Slide Indicators */}
+        <div className="flex space-x-2">
+          {slides.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => goToSlide(index)}
+              className={`transition-all duration-300 rounded-full ${
+                index === safeCurrentSlide
+                  ? 'w-8 h-2 bg-white'
+                  : 'w-2 h-2 bg-white/50 hover:bg-white/70 hover:scale-125'
+              }`}
+              aria-label={`Go to slide ${index + 1}`}
+            />
+          ))}
+        </div>
+
+        {/* Play/Pause Button */}
+        <button
+          onClick={() => setIsAutoPlaying(!isAutoPlaying)}
+          className="bg-white/10 hover:bg-white/20 backdrop-blur-sm rounded-full p-2 transition-all duration-300 hover:scale-110"
+          aria-label={isAutoPlaying ? 'Pause slideshow' : 'Play slideshow'}
+        >
+          {isAutoPlaying ? (
+            <Pause className="h-4 w-4 text-white" />
+          ) : (
+            <Play className="h-4 w-4 text-white ml-0.5" />
+          )}
+        </button>
+      </div>
+
+      {/* Progress Bar */}
+      <div className="absolute bottom-0 left-0 w-full h-1 bg-white/20 z-10">
+        <div
+          className="h-full bg-white transition-all duration-100 ease-linear"
+          style={{
+            width: `${((currentSlide + 1) / heroSlides.length) * 100}%`
+          }}
+        />
+      </div>
+
+      {/* Touch/Swipe Indicators (Mobile) */}
+      <div className="absolute inset-x-0 bottom-20 md:hidden flex justify-center z-10">
+        <div className="text-white/70 text-xs font-medium bg-black/30 backdrop-blur-sm px-3 py-1 rounded-full">
+          Swipe to navigate
+        </div>
+      </div>
     </section>
   );
 }
-
 
 
 
@@ -490,7 +574,104 @@ export default function Home() {
       </section>
 
       {/* Our Delivery Section */}
-      <DeliveryPartnersSection />
+      <section className="py-16 md:py-20 bg-gray-50">
+        <div className="container mx-auto">
+          <AnimatedSection className="text-center mb-16">
+            <div className="w-16 h-1 bg-orange-400 mx-auto mb-4"></div>
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Our Delivery Partners</h2>
+            
+          </AnimatedSection>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 max-w-7xl mx-auto items-stretch">
+            {/* By Ship - Australia Post */}
+            <AnimatedSection delay={100}>
+              <div className="bg-white rounded-lg p-4 md:p-6 lg:p-8 shadow-lg hover:shadow-xl transition-all duration-300 group text-center flex flex-col h-full">
+                <div className="mb-4 md:mb-6">
+                  <div className="relative w-32 h-32 md:w-40 md:h-40 lg:w-48 lg:h-48 mx-auto mb-3 md:mb-4 flex items-center justify-center">
+                    <Image
+                      src="/assets/post.jpg"
+                      alt="Australia Post"
+                      fill
+                      className="object-contain"
+                    />
+                  </div>
+                </div>
+                <Link href="https://auspost.com.au/" target="_blank" rel="noopener noreferrer">
+                  <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-2 md:mb-3 hover:underline">By Australia Post Express</h3>
+                </Link>
+                                  <p className="text-sm md:text-base text-gray-600 leading-relaxed flex-grow">
+                                    Reliable shipping through Australia Post network. Perfect for standard and express delivery across Australia and worldwide, with tracking included.
+                                  </p>              </div>
+            </AnimatedSection>
+
+            {/* By EMS */}
+            <AnimatedSection delay={200}>
+              <div className="bg-white rounded-lg p-4 md:p-6 lg:p-8 shadow-lg hover:shadow-xl transition-all duration-300 group text-center flex flex-col h-full">
+                <div className="mb-4 md:mb-6">
+                  <div className="relative w-32 h-32 md:w-40 md:h-40 lg:w-48 lg:h-48 mx-auto mb-3 md:mb-4 flex items-center justify-center">
+                    <Image
+                      src="/assets/ems_3.png"
+                      alt="EMS Express Mail Service"
+                      fill
+                      className="object-contain"
+                    />
+                  </div>
+                </div>
+                <Link href="https://www.ems.post/en/global-network/tracking" target="_blank" rel="noopener noreferrer">
+                  <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-2 md:mb-3 hover:underline">By EMS (Express Mail Service)</h3>
+                </Link>
+                <p className="text-sm md:text-base text-gray-600 leading-relaxed flex-grow">
+                  Fast international delivery with tracking included. Reliable shipping worldwide for your important packages.
+                </p>
+              </div>
+            </AnimatedSection>
+
+            {/* By Air */}
+            <AnimatedSection delay={300}>
+              <div className="bg-white rounded-lg p-4 md:p-6 lg:p-8 shadow-lg hover:shadow-xl transition-all duration-300 group text-center flex flex-col h-full">
+                <div className="mb-4 md:mb-6">
+                  <div className="relative w-32 h-32 md:w-40 md:h-40 lg:w-48 lg:h-48 mx-auto mb-3 md:mb-4 flex items-center justify-center">
+                    <Image
+                      src="/assets/dhl.svg"
+                      alt="DHL Logo"
+                      fill
+                      className="object-contain"
+                    />
+                  </div>
+                </div>
+                <Link href="https://www.dhl.com/au-en/home.html" target="_blank" rel="noopener noreferrer">
+                  <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-2 md:mb-3 hover:underline">By DHL Express</h3>
+                </Link>
+                <p className="text-sm md:text-base text-gray-600 leading-relaxed flex-grow">
+                  Trusted worldwide shipping with fast delivery times and full tracking.
+                </p>
+              </div>
+            </AnimatedSection>
+
+            {/* By Land */}
+            <AnimatedSection delay={400}>
+              <div className="bg-white rounded-lg p-4 md:p-6 lg:p-8 shadow-lg hover:shadow-xl transition-all duration-300 group text-center flex flex-col h-full">
+                <div className="mb-4 md:mb-6">
+                  <div className="relative w-32 h-32 md:w-40 md:h-40 lg:w-48 lg:h-48 mx-auto mb-3 md:mb-4 flex items-center justify-center">
+                    <Image
+                      src="/assets/interparcel.png"
+                      alt="Interparcel Delivery"
+                      fill
+                      className="object-contain"
+                    />
+                  </div>
+                </div>
+                <Link href="https://au.interparcel.com/tracking/" target="_blank" rel="noopener noreferrer">
+                  <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-2 md:mb-3 hover:underline">By Interparcel</h3>
+                </Link>
+                <p className="text-sm md:text-base text-gray-600 leading-relaxed flex-grow">
+                  Flexible and affordable courier services with multiple delivery options and tracking included.
+                </p>
+              </div>
+            </AnimatedSection>
+          </div>
+        </div>
+      </section>
 
       <Suspense fallback={
         <section className="py-16 md:py-20 bg-gray-50">
