@@ -1,7 +1,8 @@
 // Simple Node.js script to test the slider API
 const fetch = require('node-fetch');
 
-const API_BASE_URL = 'http://192.168.1.8:8000/api';
+// Update this to match your NEXT_PUBLIC_API_BASE_URL from .env.local
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://192.168.1.2:8000/api';
 
 async function testSliderAPI() {
     try {

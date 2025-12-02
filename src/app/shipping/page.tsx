@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { useState, useEffect, useCallback, useRef } from "react";
 import { useShipping } from "@/hooks/useShipping";
 import { useDeliveryPartners } from "@/hooks/useDeliveryPartners";
+import { getImageUrl } from "@/lib/config";
 
 // Custom hook for intersection observer
 const useIntersectionObserver = (options = {}) => {
@@ -251,10 +252,7 @@ export default function ShippingPage() {
               <AnimatedImage>
                 <div className="relative h-[500px] rounded-lg overflow-hidden">
                   <Image
-                    src={(() => {
-                      const base = (process.env.NEXT_PUBLIC_API_BASE_URL || '').replace(/\/$/, '').replace(/\/api$/, '');
-                      return shippingData?.map_image ? `${base}${shippingData.map_image}` : "/assets/shipping.jpg";
-                    })()}
+                    src={shippingData?.map_image ? getImageUrl(shippingData.map_image) : "/assets/shipping.jpg"}
                     alt="Shipping Map"
                     fill
                     className="object-cover"

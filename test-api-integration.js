@@ -1,5 +1,6 @@
 // Simple test to verify API integration
-const API_BASE_URL = 'http://192.168.1.8:8000/api';
+// Update this to match your NEXT_PUBLIC_API_BASE_URL from .env.local
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://192.168.1.2:8000/api';
 
 async function testApiIntegration() {
   console.log('Testing API integration...');
