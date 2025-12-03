@@ -6,7 +6,7 @@ import { Faq, FaqResponse, SingleFaqResponse } from '@/types/faq';
 import { Contact, ContactResponse } from '@/types/contact';
 
 // Get API base URL from environment variable or use default
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8000/api';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8000/api/public';
 
 class ApiError extends Error {
   constructor(
@@ -97,7 +97,7 @@ class ApiService {
 
   // Home Settings API methods
   async getHomeSettings(): Promise<HomeSettings[]> {
-    const response = await this.request<HomeSettingsResponse>('/public/settings');
+    const response = await this.request<HomeSettingsResponse>('/settings');
 
     if (!response.success) {
       throw new ApiError(response.message || 'Failed to fetch home settings');
@@ -107,7 +107,7 @@ class ApiService {
   }
 
   async getHomeSettingById(id: number): Promise<HomeSettings> {
-    const response = await this.request<SingleHomeSettingResponse>(`/public/settings/${id}`);
+    const response = await this.request<SingleHomeSettingResponse>(`/settings/${id}`);
 
     if (!response.success) {
       throw new ApiError(response.message || 'Failed to fetch home setting');
@@ -156,7 +156,7 @@ class ApiService {
 
   // Slider API methods
   async getSliders(): Promise<Slider[]> {
-    const response = await this.request<SliderResponse>('/public/sliders');
+    const response = await this.request<SliderResponse>('/sliders');
 
     if (!response.success) {
       throw new ApiError(response.message || 'Failed to fetch sliders');
@@ -166,7 +166,7 @@ class ApiService {
   }
 
   async getSliderById(id: number): Promise<Slider> {
-    const response = await this.request<SingleSliderResponse>(`/public/sliders/${id}`);
+    const response = await this.request<SingleSliderResponse>(`/sliders/${id}`);
 
     if (!response.success) {
       throw new ApiError(response.message || 'Failed to fetch slider');
@@ -181,7 +181,7 @@ class ApiService {
 
   // Shipping API methods
   async getShipping(): Promise<Shipping[]> {
-    const response = await this.request<ShippingResponse>('/public/shipping');
+    const response = await this.request<ShippingResponse>('/shipping');
 
     if (!response.success) {
       throw new ApiError(response.message || 'Failed to fetch shipping data');
@@ -191,7 +191,7 @@ class ApiService {
   }
 
   async getShippingById(id: number): Promise<Shipping> {
-    const response = await this.request<SingleShippingResponse>(`/public/shipping/${id}`);
+    const response = await this.request<SingleShippingResponse>(`/shipping/${id}`);
 
     if (!response.success) {
       throw new ApiError(response.message || 'Failed to fetch shipping data');
@@ -206,7 +206,7 @@ class ApiService {
 
   // Policy API methods
   async getPolicies(): Promise<Policy[]> {
-    const response = await this.request<PolicyResponse>('/public/policies');
+    const response = await this.request<PolicyResponse>('/policies');
 
     if (!response.success) {
       throw new ApiError(response.message || 'Failed to fetch policy data');
@@ -216,7 +216,7 @@ class ApiService {
   }
 
   async getPolicyById(id: number): Promise<Policy> {
-    const response = await this.request<SinglePolicyResponse>(`/public/policies/${id}`);
+    const response = await this.request<SinglePolicyResponse>(`/policies/${id}`);
 
     if (!response.success) {
       throw new ApiError(response.message || 'Failed to fetch policy data');
@@ -231,7 +231,7 @@ class ApiService {
 
   // FAQ API methods
   async getFaqs(): Promise<Faq[]> {
-    const response = await this.request<FaqResponse>('/public/faqs');
+    const response = await this.request<FaqResponse>('/faqs');
 
     if (!response.success) {
       throw new ApiError(response.message || 'Failed to fetch FAQ data');
@@ -241,7 +241,7 @@ class ApiService {
   }
 
   async getFaqById(id: number): Promise<Faq> {
-    const response = await this.request<SingleFaqResponse>(`/public/faqs/${id}`);
+    const response = await this.request<SingleFaqResponse>(`/faqs/${id}`);
 
     if (!response.success) {
       throw new ApiError(response.message || 'Failed to fetch FAQ data');
@@ -256,7 +256,7 @@ class ApiService {
 
   // Contacts API methods
   async getContacts(): Promise<Contact[]> {
-    const response = await this.request<ContactResponse>('/public/contacts');
+    const response = await this.request<ContactResponse>('/contacts');
 
     if (!response.success) {
       throw new ApiError(response.message || 'Failed to fetch contacts');

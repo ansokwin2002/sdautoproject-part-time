@@ -5,21 +5,21 @@
 
 /**
  * Get the API base URL from environment variables
- * @returns The API base URL (e.g., http://192.168.1.2:8000/api)
+ * @returns The API base URL (e.g., http://192.168.1.2:8000/api/public)
  */
 export function getApiBaseUrl(): string {
-  return process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8000/api';
+  return process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8000/api/public';
 }
 
 /**
  * Get the base URL for images and static assets from the API server
- * Removes the '/api' suffix from the API base URL
+ * Removes the '/api/public' or '/api' suffix from the API base URL
  * @returns The base URL for images (e.g., http://192.168.1.2:8000)
  */
 export function getImageBaseUrl(): string {
   const apiUrl = getApiBaseUrl();
-  // Remove '/api' suffix if present
-  return apiUrl.replace(/\/api\/?$/, '');
+  // Remove '/api/public' or '/api' suffix if present
+  return apiUrl.replace(/\/api(\/public)?\/?$/, '');
 }
 
 /**

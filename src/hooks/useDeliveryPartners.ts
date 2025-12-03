@@ -39,8 +39,8 @@ export function useDeliveryPartners(options: UseDeliveryPartnersOptions = {}): U
   const clearError = useCallback(() => setError(null), []);
 
   const baseApi = (process.env.NEXT_PUBLIC_API_BASE_URL || '').replace(/\/$/, '');
-  // Delivery partners endpoint format: `${API_BASE_URL}/public/delivery-partners`
-  const deliveryUrl = apiUrl || `${baseApi}/public/delivery-partners`;
+  // Delivery partners endpoint format: `${API_BASE_URL}/delivery-partners`
+  const deliveryUrl = apiUrl || `${baseApi}/delivery-partners`;
   // For assets, strip trailing /api if present to point to root server
   const assetBase = baseApi.replace(/\/api$/, '');
 
