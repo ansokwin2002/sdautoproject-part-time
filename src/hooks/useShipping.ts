@@ -1,5 +1,5 @@
+import { API_BASE_URL } from '@/utilities/constants';
 import { useState, useEffect, useCallback } from 'react';
-import { apiService, ApiError } from '@/services/api';
 import { Shipping } from '@/types/shipping';
 
 interface UseShippingOptions {
@@ -36,13 +36,16 @@ export function useShipping(options: UseShippingOptions = {}): UseShippingState 
     setError(null);
 
     try {
-      const data = await apiService.getShipping();
-      setShipping(data);
-    } catch (err) {
-      const errorMessage = err instanceof ApiError 
-        ? err.message 
-        : err instanceof Error 
-          ? err.message 
+      const apiUrl = `${API_BASE_URL}/shipping`;
+      const res = await fetch(apiUrl, { headers: { Accept: 'application/json' } });
+
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(errorData.message || res.statusText);
+      }
+    } catch (err: any) {
+      const errorMessage = err instanceof Error
+          ? err.message
           : 'An unknown error occurred';
 
       console.error('Failed to fetch shipping data:', err);
@@ -98,13 +101,19 @@ export function useShippingById(id: number | null, autoFetch = true) {
     setError(null);
 
     try {
-      const data = await apiService.getShippingById(id);
+      const apiUrl = `${API_BASE_URL}/shipping/${id}`;
+      const res = await fetch(apiUrl, { headers: { Accept: 'application/json' } });
+
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(errorData.message || res.statusText);
+      }
+      const responseData = await res.json();
+      const data = responseData.data;
       setShipping(data);
-    } catch (err) {
-      const errorMessage = err instanceof ApiError 
-        ? err.message 
-        : err instanceof Error 
-          ? err.message 
+    } catch (err: any) {
+      const errorMessage = err instanceof Error
+          ? err.message
           : 'An unknown error occurred';
 
       console.error('Failed to fetch shipping data:', err);

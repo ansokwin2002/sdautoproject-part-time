@@ -1,5 +1,5 @@
+import { API_BASE_URL } from '@/utilities/constants';
 import { useState, useEffect, useCallback } from 'react';
-import { apiService, ApiError } from '@/services/api';
 import { Policy } from '@/types/policy';
 
 interface UsePoliciesOptions {
@@ -36,13 +36,18 @@ export function usePolicies(options: UsePoliciesOptions = {}): UsePoliciesState 
     setError(null);
 
     try {
-      const data = await apiService.getPolicies();
-      setPolicies(data);
-    } catch (err) {
-      const errorMessage = err instanceof ApiError 
-        ? err.message 
-        : err instanceof Error 
-          ? err.message 
+      const apiUrl = `${API_BASE_URL}/policies`;
+      const res = await fetch(apiUrl, { headers: { Accept: 'application/json' } });
+
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(errorData.message || res.statusText);
+      }
+      const responseData = await res.json();
+      const data = responseData.data;
+    } catch (err: any) {
+      const errorMessage = err instanceof Error
+          ? err.message
           : 'An unknown error occurred';
 
       console.error('Failed to fetch policy data:', err);
@@ -98,15 +103,20 @@ export function usePolicyById(id: number | null, autoFetch = true) {
     setError(null);
 
     try {
-      const data = await apiService.getPolicyById(id);
-      setPolicy(data);
-    } catch (err) {
-      const errorMessage = err instanceof ApiError 
-        ? err.message 
-        : err instanceof Error 
-          ? err.message 
-          : 'An unknown error occurred';
+      const apiUrl = `${API_BASE_URL}/policies/${id}`;
+      const res = await fetch(apiUrl, { headers: { Accept: 'application/json' } });
 
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(errorData.message || res.statusText);
+      }
+      const responseData = await res.json();
+      const data = responseData.data;
+      setPolicy(data);
+        } catch (err: any) {
+          const errorMessage = err instanceof Error
+              ? err.message
+              : 'An unknown error occurred';
       console.error('Failed to fetch policy data:', err);
       setError(errorMessage);
     } finally {

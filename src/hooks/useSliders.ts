@@ -1,5 +1,5 @@
+import { API_BASE_URL } from '@/utilities/constants';
 import { useState, useEffect, useCallback } from 'react';
-import { apiService, ApiError } from '@/services/api';
 import { Slider } from '@/types/slider';
 
 interface UseSlidersOptions {
@@ -36,7 +36,15 @@ export function useSliders(options: UseSlidersOptions = {}): UseSlidersState {
     setError(null);
 
     try {
-      const data = await apiService.getSliders();
+      const apiUrl = `${API_BASE_URL}/sliders`;
+      const res = await fetch(apiUrl, { headers: { Accept: 'application/json' } });
+
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(errorData.message || res.statusText);
+      }
+      const responseData = await res.json();
+      const data = responseData.data;
       
       // Sort by ordering field, then by id as fallback
       const sortedSliders = data.sort((a, b) => {
@@ -46,14 +54,11 @@ export function useSliders(options: UseSlidersOptions = {}): UseSlidersState {
         return a.id - b.id;
       });
       
-      setSliders(sortedSliders);
-    } catch (err) {
-      const errorMessage = err instanceof ApiError 
-        ? err.message 
-        : err instanceof Error 
-          ? err.message 
-          : 'An unknown error occurred';
-
+            setSliders(sortedSliders);
+          } catch (err: any) {
+            const errorMessage = err instanceof Error
+                ? err.message
+                : 'An unknown error occurred';
       console.error('Failed to fetch sliders:', err);
 
       // Retry logic
@@ -107,15 +112,20 @@ export function useSliderById(id: number | null, autoFetch = true) {
     setError(null);
 
     try {
-      const data = await apiService.getSliderById(id);
-      setSlider(data);
-    } catch (err) {
-      const errorMessage = err instanceof ApiError 
-        ? err.message 
-        : err instanceof Error 
-          ? err.message 
-          : 'An unknown error occurred';
+      const apiUrl = `${API_BASE_URL}/sliders/${id}`;
+      const res = await fetch(apiUrl, { headers: { Accept: 'application/json' } });
 
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(errorData.message || res.statusText);
+      }
+      const responseData = await res.json();
+      const data = responseData.data;
+      setSlider(data);
+        } catch (err: any) {
+          const errorMessage = err instanceof Error
+              ? err.message
+              : 'An unknown error occurred';
       console.error('Failed to fetch slider:', err);
       setError(errorMessage);
     } finally {

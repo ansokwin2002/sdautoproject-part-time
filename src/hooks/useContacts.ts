@@ -1,5 +1,5 @@
+import { API_BASE_URL } from '@/utilities/constants';
 import { useState, useEffect, useCallback } from 'react';
-import { apiService, ApiError } from '@/services/api';
 import { Contact } from '@/types/contact';
 
 interface UseContactsOptions {
@@ -29,10 +29,18 @@ export function useContacts(options: UseContactsOptions = {}): UseContactsState 
     setLoading(true);
     setError(null);
     try {
-      const data = await apiService.getContacts();
+      const apiUrl = `${API_BASE_URL}/contacts`;
+      const res = await fetch(apiUrl, { headers: { Accept: 'application/json' } });
+
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(errorData.message || res.statusText);
+      }
+      const responseData = await res.json();
+      const data = responseData.data;
       setContacts(data);
-    } catch (err) {
-      const msg = err instanceof ApiError ? err.message : err instanceof Error ? err.message : 'Unknown error';
+    } catch (err: any) {
+      const msg = err instanceof Error ? err.message : 'Unknown error';
       console.error('Failed to fetch contacts:', err);
       if (attempt < retryAttempts) {
         setTimeout(() => fetchContacts(attempt + 1), retryDelay * attempt);

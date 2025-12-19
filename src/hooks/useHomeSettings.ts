@@ -1,6 +1,6 @@
+import { API_BASE_URL } from '@/utilities/constants';
 import { useState, useEffect, useCallback } from 'react';
 import { HomeSettings } from '@/types/settings';
-import { apiService, ApiError } from '@/services/api';
 
 interface UseHomeSettingsState {
   settings: HomeSettings | null;
@@ -44,7 +44,15 @@ export function useHomeSettings(options: UseHomeSettingsOptions = {}): UseHomeSe
     setError(null);
 
     try {
-      const data = await apiService.getHomeSettings();
+      const apiUrl = `${API_BASE_URL}/settings`;
+      const res = await fetch(apiUrl, { headers: { Accept: 'application/json' } });
+
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(errorData.message || res.statusText);
+      }
+      const responseData = await res.json();
+      const data = responseData.data;
       
       setAllSettings(data);
       
@@ -55,20 +63,18 @@ export function useHomeSettings(options: UseHomeSettingsOptions = {}): UseHomeSe
         setSettings(data[0] || null);
       }
       
-    } catch (err) {
-      const errorMessage = err instanceof ApiError
+    } catch (err: any) {
+      const errorMessage = err instanceof Error
         ? err.message
-        : err instanceof Error
-          ? err.message
-          : 'An unknown error occurred';
+        : 'An unknown error occurred';
 
       console.error('Failed to fetch home settings:', err);
 
-      // Don't retry on authentication errors (401) or client errors (4xx)
-      const shouldRetry = !(err instanceof ApiError && err.status && err.status >= 400 && err.status < 500);
+      // Don't retry on client errors (4xx) based on error message
+      const isClientError = errorMessage.startsWith('HTTP 4');
 
       // Retry logic for network errors and server errors only
-      if (attempt < retryAttempts && shouldRetry) {
+      if (attempt < retryAttempts && !isClientError) {
         console.log(`Retrying fetch attempt ${attempt + 1}/${retryAttempts} in ${retryDelay}ms...`);
         setTimeout(() => {
           fetchSettings(attempt + 1);
@@ -119,15 +125,20 @@ export function useHomeSettingById(id: number | null, autoFetch = true) {
     setError(null);
 
     try {
-      const data = await apiService.getHomeSettingById(id);
-      setSetting(data);
-    } catch (err) {
-      const errorMessage = err instanceof ApiError 
-        ? err.message 
-        : err instanceof Error 
-          ? err.message 
-          : 'An unknown error occurred';
+      const apiUrl = `${API_BASE_URL}/settings/${id}`;
+      const res = await fetch(apiUrl, { headers: { Accept: 'application/json' } });
 
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(errorData.message || res.statusText);
+      }
+      const responseData = await res.json();
+      const data = responseData.data;
+      setSetting(data);
+        } catch (err: any) {
+          const errorMessage = err instanceof Error
+              ? err.message
+              : 'An unknown error occurred';
       console.error('Failed to fetch home setting:', err);
       setError(errorMessage);
     } finally {

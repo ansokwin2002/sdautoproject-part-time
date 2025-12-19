@@ -1,3 +1,4 @@
+import { API_BASE_URL } from '@/utilities/constants';
 import { useState, useEffect, useCallback } from 'react';
 
 export interface DeliveryPartner {
@@ -38,7 +39,7 @@ export function useDeliveryPartners(options: UseDeliveryPartnersOptions = {}): U
 
   const clearError = useCallback(() => setError(null), []);
 
-  const baseApi = (process.env.NEXT_PUBLIC_API_BASE_URL || '').replace(/\/$/, '');
+  const baseApi = API_BASE_URL.replace(/\/api\/public$/, '');
   // Delivery partners endpoint format: `${API_BASE_URL}/delivery-partners`
   const deliveryUrl = apiUrl || `${baseApi}/delivery-partners`;
   // For assets, strip trailing /api if present to point to root server

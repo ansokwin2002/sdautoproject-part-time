@@ -1,3 +1,5 @@
+import { API_BASE_URL } from '@/utilities/constants';
+
 /**
  * Application configuration utilities
  * Centralizes environment variable access and URL construction
@@ -8,7 +10,7 @@
  * @returns The API base URL (e.g., http://192.168.1.2:8000/api/public)
  */
 export function getApiBaseUrl(): string {
-  return process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8000/api/public';
+  return API_BASE_URL;
 }
 
 /**

@@ -1,5 +1,5 @@
+import { API_BASE_URL } from '@/utilities/constants';
 import { useState, useEffect, useCallback } from 'react';
-import { apiService, ApiError } from '@/services/api';
 import { Faq } from '@/types/faq';
 
 interface UseFaqsOptions {
@@ -36,13 +36,18 @@ export function useFaqs(options: UseFaqsOptions = {}): UseFaqsState {
     setError(null);
 
     try {
-      const data = await apiService.getFaqs();
-      setFaqs(data);
-    } catch (err) {
-      const errorMessage = err instanceof ApiError 
-        ? err.message 
-        : err instanceof Error 
-          ? err.message 
+      const apiUrl = `${API_BASE_URL}/faqs`;
+      const res = await fetch(apiUrl, { headers: { Accept: 'application/json' } });
+
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(errorData.message || res.statusText);
+      }
+      const responseData = await res.json();
+      const data = responseData.data;
+    } catch (err: any) {
+      const errorMessage = err instanceof Error
+          ? err.message
           : 'An unknown error occurred';
 
       console.error('Failed to fetch FAQ data:', err);
@@ -98,13 +103,19 @@ export function useFaqById(id: number | null, autoFetch = true) {
     setError(null);
 
     try {
-      const data = await apiService.getFaqById(id);
+      const apiUrl = `${API_BASE_URL}/faqs/${id}`;
+      const res = await fetch(apiUrl, { headers: { Accept: 'application/json' } });
+
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(errorData.message || res.statusText);
+      }
+      const responseData = await res.json();
+      const data = responseData.data;
       setFaq(data);
-    } catch (err) {
-      const errorMessage = err instanceof ApiError 
-        ? err.message 
-        : err instanceof Error 
-          ? err.message 
+    } catch (err: any) {
+      const errorMessage = err instanceof Error
+          ? err.message
           : 'An unknown error occurred';
 
       console.error('Failed to fetch FAQ data:', err);
