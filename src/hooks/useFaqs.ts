@@ -45,6 +45,7 @@ export function useFaqs(options: UseFaqsOptions = {}): UseFaqsState {
       }
       const responseData = await res.json();
       const data = responseData.data;
+      setFaqs(data);
     } catch (err: any) {
       const errorMessage = err instanceof Error
           ? err.message

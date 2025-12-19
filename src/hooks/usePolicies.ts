@@ -45,6 +45,7 @@ export function usePolicies(options: UsePoliciesOptions = {}): UsePoliciesState 
       }
       const responseData = await res.json();
       const data = responseData.data;
+      setPolicies(data);
     } catch (err: any) {
       const errorMessage = err instanceof Error
           ? err.message

@@ -39,11 +39,9 @@ export function useDeliveryPartners(options: UseDeliveryPartnersOptions = {}): U
 
   const clearError = useCallback(() => setError(null), []);
 
-  const baseApi = API_BASE_URL.replace(/\/api\/public$/, '');
-  // Delivery partners endpoint format: `${API_BASE_URL}/delivery-partners`
-  const deliveryUrl = apiUrl || `${baseApi}/delivery-partners`;
-  // For assets, strip trailing /api if present to point to root server
-  const assetBase = baseApi.replace(/\/api$/, '');
+  const deliveryUrl = apiUrl || `${API_BASE_URL}/delivery-partners`;
+  // For assets, strip trailing /api/public if present to point to root server
+  const assetBase = API_BASE_URL.replace(/\/api\/public$/, '');
 
   const fetchPartners = useCallback(async (attempt = 1): Promise<void> => {
     setLoading(true);
@@ -66,6 +64,17 @@ export function useDeliveryPartners(options: UseDeliveryPartnersOptions = {}): U
       setPartners(normalized);
     } catch (e: any) {
       console.error('Failed to fetch delivery partners:', e);
+      console.error('Delivery partners fetch error details (message):', e instanceof Error ? e.message : e);
+      // Attempt to log more details if available in the error object
+      if (e.status) {
+        console.error('Delivery partners fetch HTTP status:', e.status);
+      }
+      if (e.response) {
+        // If it's a network error, e.response might not exist or be a readable stream
+        e.response.text().then((text: string) => {
+          console.error('Delivery partners fetch raw response:', text);
+        }).catch(() => {}); // Catch potential errors if response.text() fails
+      }
       if (attempt < retryAttempts) {
         setTimeout(() => fetchPartners(attempt + 1), retryDelay * attempt);
         return;

@@ -143,7 +143,7 @@ function ChatMessage({ message, onOptionSelect }: { message: Message; onOptionSe
           )}
         </div>
         <div className="text-xs text-gray-500 mt-2 px-2">
-          {messageDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+          {messageDate.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}
         </div>
       </div>
       {message.role === 'user' && (
@@ -625,7 +625,7 @@ export function Chatbot({ isOpen, onClose }: { isOpen: boolean; onClose: () => v
                             {session.title}
                           </p>
                           <p className="text-xs text-gray-500 mt-1">
-                            {new Date(session.createdAt).toLocaleDateString()} • {session.messages.length} messages
+                            {new Date(session.createdAt).toLocaleDateString('en-US')} • {session.messages.length} messages
                           </p>
                         </div>
                       </div>

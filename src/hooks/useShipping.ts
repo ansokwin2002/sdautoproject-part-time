@@ -43,6 +43,9 @@ export function useShipping(options: UseShippingOptions = {}): UseShippingState 
         const errorData = await res.json();
         throw new Error(errorData.message || res.statusText);
       }
+      const responseData = await res.json();
+      const data = responseData.data;
+      setShipping(data);
     } catch (err: any) {
       const errorMessage = err instanceof Error
           ? err.message
