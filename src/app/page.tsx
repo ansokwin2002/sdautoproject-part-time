@@ -12,7 +12,10 @@ import { useState, useEffect, useCallback, useRef, Suspense } from "react";
 import { useHomeSettings } from "@/hooks/useHomeSettings";
 import { useSliders } from "@/hooks/useSliders";
 import { useProducts } from "@/hooks/useProducts";
+import { useDeliveryPartners } from "@/hooks/useDeliveryPartners"; // Added
+import { useShipping } from "@/hooks/useShipping"; // Added
 import { getImageUrl } from "@/lib/config";
+import { API_BASE_URL } from '@/utilities/constants'; // Added
 
 // Custom hook for intersection observer
 const useIntersectionObserver = (options = {}) => {
@@ -282,8 +285,156 @@ const AnimatedImage = ({ children, className = "", delay = 0 }) => {
   );
 };
 
+function HomePageDeliveryPartners({ partners, loading, error }) { // Accepts props
+  const assetBase = API_BASE_URL.replace(/\/api\/public$/, ''); 
+
+  // Removed internal items fallback
+
+  if (loading) {
+    return (
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 max-w-7xl mx-auto items-stretch">
+        {Array.from({ length: 4 }).map((_, i) => (
+          <div key={i} className="bg-white rounded-lg p-6 shadow animate-pulse h-64" />
+        ))}
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="text-center text-red-500 py-8">
+        Error loading delivery partners.
+      </div>
+    );
+  }
+
+  if (!partners || partners.length === 0) { // If no partners and no error/loading, return null (handled by Home component)
+    return null;
+  }
+  
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 max-w-7xl mx-auto items-stretch">
+      {partners.map((p, idx) => ( // <--- uses partners directly
+        <AnimatedSection key={(p as any).id ?? idx} delay={100 * (idx + 1)}>
+          <div className="bg-white rounded-lg p-4 md:p-6 lg:p-8 shadow-lg hover:shadow-xl transition-all duration-300 group text-center flex flex-col h-full">
+            <div className="mb-4 md:mb-6">
+              <div className="relative w-32 h-32 md:w-40 md:h-40 lg:w-48 lg:h-48 mx-auto mb-3 md:mb-4 flex items-center justify-center">
+                <Image
+                  src={p.image.startsWith('http') ? p.image : `${assetBase}${p.image}`} // Ensure absolute paths
+                  alt={p.title}
+                  fill
+                  className="object-contain"
+                />
+              </div>
+            </div>
+            <Link href={p.url_link || '#'} target="_blank" rel="noopener noreferrer">
+              <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-2 md:mb-3 hover:underline">{p.title}</h3>
+            </Link>
+            {p.description && (
+              <p className="text-sm md:text-base text-gray-600 leading-relaxed flex-grow">{p.description}</p>
+            )}
+          </div>
+        </AnimatedSection>
+      ))}
+    </div>
+  );
+}
+
+const staticDeliveryPartnersHtml = (
+  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 max-w-7xl mx-auto items-stretch">
+    {/* By Ship - Australia Post */}
+    <AnimatedSection delay={100}>
+      <div className="bg-white rounded-lg p-4 md:p-6 lg:p-8 shadow-lg hover:shadow-xl transition-all duration-300 group text-center flex flex-col h-full">
+        <div className="mb-4 md:mb-6">
+          <div className="relative w-32 h-32 md:w-40 md:h-40 lg:w-48 lg:h-48 mx-auto mb-3 md:mb-4 flex items-center justify-center">
+            <Image
+              src="/assets/post.jpg"
+              alt="Australia Post"
+              fill
+              className="object-contain"
+            />
+          </div>
+        </div>
+        <Link href="https://auspost.com.au/" target="_blank" rel="noopener noreferrer">
+          <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-2 md:mb-3 hover:underline">By Australia Post Express</h3>
+        </Link>
+        <p className="text-sm md:text-base text-gray-600 leading-relaxed flex-grow">
+          Reliable shipping through Australia Post network. Perfect for standard and express delivery across Australia and worldwide, with tracking included.
+        </p>
+      </div>
+    </AnimatedSection>
+
+    {/* By EMS */}
+    <AnimatedSection delay={200}>
+      <div className="bg-white rounded-lg p-4 md:p-6 lg:p-8 shadow-lg hover:shadow-xl transition-all duration-300 group text-center flex flex-col h-full">
+        <div className="mb-4 md:mb-6">
+          <div className="relative w-32 h-32 md:w-40 md:h-40 lg:w-48 lg:h-48 mx-auto mb-3 md:mb-4 flex items-center justify-center">
+            <Image
+              src="/assets/ems_3.png"
+              alt="EMS Express Mail Service"
+              fill
+              className="object-contain"
+            />
+          </div>
+        </div>
+        <Link href="https://www.ems.post/en/global-network/tracking" target="_blank" rel="noopener noreferrer">
+          <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-2 md:mb-3 hover:underline">By EMS (Express Mail Service)</h3>
+        </Link>
+        <p className="text-sm md:text-base text-gray-600 leading-relaxed flex-grow">
+          Fast international delivery with tracking included. Reliable shipping worldwide for your important packages.
+        </p>
+      </div>
+    </AnimatedSection>
+
+    {/* By Air */}
+    <AnimatedSection delay={300}>
+      <div className="bg-white rounded-lg p-4 md:p-6 lg:p-8 shadow-lg hover:shadow-xl transition-all duration-300 group text-center flex flex-col h-full">
+        <div className="mb-4 md:mb-6">
+          <div className="relative w-32 h-32 md:w-40 md:h-40 lg:w-48 lg:h-48 mx-auto mb-3 md:mb-4 flex items-center justify-center">
+            <Image
+              src="/assets/dhl.svg"
+              alt="DHL Logo"
+              fill
+              className="object-contain"
+            />
+          </div>
+        </div>
+        <Link href="https://www.dhl.com/au-en/home.html" target="_blank" rel="noopener noreferrer">
+          <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-2 md:mb-3 hover:underline">By DHL Express</h3>
+        </Link>
+        <p className="text-sm md:text-base text-gray-600 leading-relaxed flex-grow">
+          Trusted worldwide shipping with fast delivery times and full tracking.
+        </p>
+      </div>
+    </AnimatedSection>
+
+    {/* By Land */}
+    <AnimatedSection delay={400}>
+      <div className="bg-white rounded-lg p-4 md:p-6 lg:p-8 shadow-lg hover:shadow-xl transition-all duration-300 group text-center flex flex-col h-full">
+        <div className="mb-4 md:mb-6">
+          <div className="relative w-32 h-32 md:w-40 md:h-40 lg:w-48 lg:h-48 mx-auto mb-3 md:mb-4 flex items-center justify-center">
+            <Image
+              src="/assets/interparcel.png"
+              alt="Interparcel Delivery"
+              fill
+              className="object-contain"
+            />
+          </div>
+        </div>
+        <Link href="https://au.interparcel.com/tracking/" target="_blank" rel="noopener noreferrer">
+          <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-2 md:mb-3 hover:underline">By Interparcel</h3>
+        </Link>
+        <p className="text-sm md:text-base text-gray-600 leading-relaxed flex-grow">
+          Flexible and affordable courier services with multiple delivery options and tracking included.
+        </p>
+      </div>
+    </AnimatedSection>
+  </div>
+);
+
 function HeroCarousel() {
   const { sliders, loading: slidersLoading, error: slidersError } = useSliders();
+
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
   const [isTransitioning, setIsTransitioning] = useState(false);
@@ -521,6 +672,8 @@ function HeroCarousel() {
 export default function Home() {
   const [loading, setLoading] = useState(true);
   const { settings } = useHomeSettings();
+  const { shipping, loading: shippingLoading } = useShipping(); // Added
+  const { partners: deliveryPartners, loading: deliveryLoading, error: deliveryError } = useDeliveryPartners(); // Added
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -556,7 +709,7 @@ export default function Home() {
                 </AnimatedSection>
                 <AnimatedSection delay={200}>
                   <p className="text-gray-600 text-lg leading-relaxed mb-8">
-                    {settings?.description_welcome || "SD Auto is an Australian family-owned and operated business, officially registered with the Australian Taxation Office (ATO) in 2023, and based in Werribee, Melbourne. We specialize in selling 100% genuine parts for popular Thailand-made brands such as Ford, Isuzu, Toyota, Mazda, Mitsubishi, Nissan, Honda, and Suzuki at affordable prices. We offer worldwide shipping with the best rates to your address. With 15 years of experience in the auto parts industry, we guarantee to provide you with the correct part for your vehicle at the best price and service. Contact us today!"}
+                    {settings?.description_welcome || "SD Auto is an Australian family-owned and operated business, officially registered with the Australian Taxation Office (ATO) in 2023, and based in Werribee, Melbourne. We specialize in selling 100% genuine parts for popular Thailand-made brands suchs as Ford, Isuzu, Toyota, Mazda, Mitsubishi, Nissan, Honda, and Suzuki at affordable prices. We offer worldwide shipping with the best rates to your address. With 15 years of experience in the auto parts industry, we guarantee to provide you with the correct part for your vehicle at the best price and service. Contact us today!"}
                   </p>
                 </AnimatedSection>
                 <AnimatedSection delay={300}>
@@ -579,98 +732,17 @@ export default function Home() {
         <div className="container mx-auto">
           <AnimatedSection className="text-center mb-16">
             <div className="w-16 h-1 bg-orange-400 mx-auto mb-4"></div>
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Our Delivery Partners</h2>
-            
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+              {shippingLoading ? <span className="animate-pulse bg-gray-300 h-10 w-64 block mx-auto rounded"></span> : (shipping[0]?.label_partner || "Our Delivery Partners")}
+            </h2>
           </AnimatedSection>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 max-w-7xl mx-auto items-stretch">
-            {/* By Ship - Australia Post */}
-            <AnimatedSection delay={100}>
-              <div className="bg-white rounded-lg p-4 md:p-6 lg:p-8 shadow-lg hover:shadow-xl transition-all duration-300 group text-center flex flex-col h-full">
-                <div className="mb-4 md:mb-6">
-                  <div className="relative w-32 h-32 md:w-40 md:h-40 lg:w-48 lg:h-48 mx-auto mb-3 md:mb-4 flex items-center justify-center">
-                    <Image
-                      src="/assets/post.jpg"
-                      alt="Australia Post"
-                      fill
-                      className="object-contain"
-                    />
-                  </div>
-                </div>
-                <Link href="https://auspost.com.au/" target="_blank" rel="noopener noreferrer">
-                  <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-2 md:mb-3 hover:underline">By Australia Post Express</h3>
-                </Link>
-                                  <p className="text-sm md:text-base text-gray-600 leading-relaxed flex-grow">
-                                    Reliable shipping through Australia Post network. Perfect for standard and express delivery across Australia and worldwide, with tracking included.
-                                  </p>              </div>
-            </AnimatedSection>
-
-            {/* By EMS */}
-            <AnimatedSection delay={200}>
-              <div className="bg-white rounded-lg p-4 md:p-6 lg:p-8 shadow-lg hover:shadow-xl transition-all duration-300 group text-center flex flex-col h-full">
-                <div className="mb-4 md:mb-6">
-                  <div className="relative w-32 h-32 md:w-40 md:h-40 lg:w-48 lg:h-48 mx-auto mb-3 md:mb-4 flex items-center justify-center">
-                    <Image
-                      src="/assets/ems_3.png"
-                      alt="EMS Express Mail Service"
-                      fill
-                      className="object-contain"
-                    />
-                  </div>
-                </div>
-                <Link href="https://www.ems.post/en/global-network/tracking" target="_blank" rel="noopener noreferrer">
-                  <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-2 md:mb-3 hover:underline">By EMS (Express Mail Service)</h3>
-                </Link>
-                <p className="text-sm md:text-base text-gray-600 leading-relaxed flex-grow">
-                  Fast international delivery with tracking included. Reliable shipping worldwide for your important packages.
-                </p>
-              </div>
-            </AnimatedSection>
-
-            {/* By Air */}
-            <AnimatedSection delay={300}>
-              <div className="bg-white rounded-lg p-4 md:p-6 lg:p-8 shadow-lg hover:shadow-xl transition-all duration-300 group text-center flex flex-col h-full">
-                <div className="mb-4 md:mb-6">
-                  <div className="relative w-32 h-32 md:w-40 md:h-40 lg:w-48 lg:h-48 mx-auto mb-3 md:mb-4 flex items-center justify-center">
-                    <Image
-                      src="/assets/dhl.svg"
-                      alt="DHL Logo"
-                      fill
-                      className="object-contain"
-                    />
-                  </div>
-                </div>
-                <Link href="https://www.dhl.com/au-en/home.html" target="_blank" rel="noopener noreferrer">
-                  <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-2 md:mb-3 hover:underline">By DHL Express</h3>
-                </Link>
-                <p className="text-sm md:text-base text-gray-600 leading-relaxed flex-grow">
-                  Trusted worldwide shipping with fast delivery times and full tracking.
-                </p>
-              </div>
-            </AnimatedSection>
-
-            {/* By Land */}
-            <AnimatedSection delay={400}>
-              <div className="bg-white rounded-lg p-4 md:p-6 lg:p-8 shadow-lg hover:shadow-xl transition-all duration-300 group text-center flex flex-col h-full">
-                <div className="mb-4 md:mb-6">
-                  <div className="relative w-32 h-32 md:w-40 md:h-40 lg:w-48 lg:h-48 mx-auto mb-3 md:mb-4 flex items-center justify-center">
-                    <Image
-                      src="/assets/interparcel.png"
-                      alt="Interparcel Delivery"
-                      fill
-                      className="object-contain"
-                    />
-                  </div>
-                </div>
-                <Link href="https://au.interparcel.com/tracking/" target="_blank" rel="noopener noreferrer">
-                  <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-2 md:mb-3 hover:underline">By Interparcel</h3>
-                </Link>
-                <p className="text-sm md:text-base text-gray-600 leading-relaxed flex-grow">
-                  Flexible and affordable courier services with multiple delivery options and tracking included.
-                </p>
-              </div>
-            </AnimatedSection>
-          </div>
+          {/* Conditional rendering for Delivery Partners */}
+          {deliveryLoading || deliveryError || deliveryPartners.length > 0 ? (
+            <HomePageDeliveryPartners partners={deliveryPartners} loading={deliveryLoading} error={deliveryError} />
+          ) : (
+            staticDeliveryPartnersHtml
+          )}
         </div>
       </section>
 
