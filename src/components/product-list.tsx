@@ -117,13 +117,20 @@ export default function ProductList({ products, showContainer = true, selectedBr
   }, [products, propAllowedBrands]);
 
   const filteredAndSortedProducts = useMemo(() => {
-    let filtered = products.filter(product =>
-      (selectedBrand === 'all' || product.brand.toLowerCase() === selectedBrand.toLowerCase()) &&
-      (product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-       product.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-       product.brand.toLowerCase().includes(searchTerm.toLowerCase()) ||
-       (product.partNumber && product.partNumber.toLowerCase().includes(searchTerm.toLowerCase())))
-    );
+    let filtered = products.filter(product => {
+      const brand = product.brand ? String(product.brand).toLowerCase() : '';
+      const name = product.name ? String(product.name).toLowerCase() : '';
+      const description = product.description ? String(product.description).toLowerCase() : '';
+      const partNumber = product.partNumber ? String(product.partNumber).toLowerCase() : '';
+      const lowerSearchTerm = searchTerm.toLowerCase();
+      const lowerSelectedBrand = selectedBrand.toLowerCase();
+
+      return (lowerSelectedBrand === 'all' || brand === lowerSelectedBrand) &&
+             (name.includes(lowerSearchTerm) ||
+              description.includes(lowerSearchTerm) ||
+              brand.includes(lowerSearchTerm) ||
+              partNumber.includes(lowerSearchTerm));
+    });
 
     if (sortOrder !== 'default') {
       const [sortBy, order] = sortOrder.split('-');

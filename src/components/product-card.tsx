@@ -84,7 +84,7 @@ const ProductCard = ({ product, className, loading }: ProductCardProps) => {
           <div className="flex items-center text-sm text-gray-600">
             <Package size={16} className="mr-2 text-gray-400" />
             <span className="font-medium text-gray-800">Brand:</span>
-            <span className="ml-2">{product.brand ? product.brand.replace(' Parts', '') : 'Unknown Brand'}</span>
+            <span className="ml-2">{product.brand || product.brand_id || 'No Brand ID'}</span>
           </div>
 
           {product.partNumber && (
