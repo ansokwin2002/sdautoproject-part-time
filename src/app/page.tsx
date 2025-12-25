@@ -5,12 +5,13 @@ import Link from "next/link";
 import { ArrowRight, Car, Wrench, Sparkles, ChevronLeft, ChevronRight, Play, Pause, MapPin, Clock, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { products } from "@/lib/products";
+
 import ProductCard from "@/components/product-card";
 import ProductList from "@/components/product-list";
 import { useState, useEffect, useCallback, useRef, Suspense } from "react";
 import { useHomeSettings } from "@/hooks/useHomeSettings";
 import { useSliders } from "@/hooks/useSliders";
+import { useProducts } from "@/hooks/useProducts";
 import { getImageUrl } from "@/lib/config";
 
 // Custom hook for intersection observer
@@ -689,7 +690,7 @@ export default function Home() {
           </div>
         </section>
       }>
-        <ProductList showContainer={true} allowedBrands={["Ford Parts", "Isuzu Parts", "Toyota Parts", "Mazda Parts", "Mitsubishi Parts", "Nissan Parts", "Honda Parts", "Suzuki Parts", "Aftermarket"]} />
+        <HomeWithProducts />
       </Suspense>
 
      {/* Latest Blog Section */}
@@ -821,5 +822,21 @@ export default function Home() {
         </div>
       </section>
     </div>
+  );
+}
+
+function HomeWithProducts() {
+  const { products, loading, error } = useProducts();
+
+  // You can add error handling here if you want
+  // if (error) return <div>Error loading products...</div>;
+
+  return (
+    <ProductList 
+      products={products} 
+      isLoading={loading}
+      showContainer={true} 
+      allowedBrands={["Ford Parts", "Isuzu Parts", "Toyota Parts", "Mazda Parts", "Mitsubishi Parts", "Nissan Parts", "Honda Parts", "Suzuki Parts", "Aftermarket"]} 
+    />
   );
 }

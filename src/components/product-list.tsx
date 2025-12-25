@@ -2,7 +2,6 @@
 
 import { useState, useMemo, useRef, useEffect } from 'react';
 import { useRouter, usePathname, useSearchParams } from 'next/navigation';
-import { products } from "@/lib/products";
 import ProductCard from "@/components/product-card";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -64,24 +63,21 @@ const AnimatedCard = ({ children, className = "", delay = 0 }) => {
   );
 };
 
-export default function ProductList({ products: initialProducts, showContainer = true, selectedBrand: propSelectedBrand, allowedBrands: propAllowedBrands }: { products?: import("@/lib/products").Product[], showContainer?: boolean, selectedBrand?: string | null, allowedBrands?: string[] }) {
+export default function ProductList({ products, showContainer = true, selectedBrand: propSelectedBrand, allowedBrands: propAllowedBrands, isLoading = false }: { products: import("@/lib/products").Product[], showContainer?: boolean, selectedBrand?: string | null, allowedBrands?: string[], isLoading?: boolean }) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const [searchTerm, setSearchTerm] = useState('');
   const [sortOrder, setSortOrder] = useState('default');
-  const [selectedBrand, setSelectedBrand] = useState<string>(propSelectedBrand || 'all'); // Use propSelectedBrand as initial state
+  const [selectedBrand, setSelectedBrand] = useState<string>(propSelectedBrand || 'all');
   const [currentPage, setCurrentPage] = useState(1);
-  const [loading, setLoading] = useState(true);
-
-  const productSource = initialProducts || products;
 
   // Update internal selectedBrand when propSelectedBrand changes
   useEffect(() => {
     setSelectedBrand(propSelectedBrand || 'all');
   }, [propSelectedBrand]);
 
-  const uniqueBrands = useMemo(() => {
+    const uniqueBrands = useMemo(() => {
     // Define the complete brand order including brands without products
     const brandOrder = [
       "Ford Parts",
@@ -96,7 +92,7 @@ export default function ProductList({ products: initialProducts, showContainer =
     ];
     
     // Get brands that actually have products
-    const brandsWithProducts = Array.from(new Set(productSource.map((p) => p.brand))).filter(brand => propAllowedBrands ? propAllowedBrands.includes(brand) : true);
+    const brandsWithProducts = Array.from(new Set(products.map((p) => p.brand))).filter(brand => propAllowedBrands ? propAllowedBrands.includes(brand) : true);
     
     // If propAllowedBrands is provided, use the complete brand order (including brands without products)
     // Otherwise, only show brands that have products
@@ -116,19 +112,12 @@ export default function ProductList({ products: initialProducts, showContainer =
       if (aIndex !== -1) return -1;
       if (bIndex !== -1) return 1;
       
-      return a.localeCompare(b);
+      return (a ?? '').localeCompare(b ?? '');
     });
-  }, [productSource, propAllowedBrands]);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setLoading(false);
-    }, 1500); // Simulate loading
-    return () => clearTimeout(timer);
-  }, []);
+  }, [products, propAllowedBrands]);
 
   const filteredAndSortedProducts = useMemo(() => {
-    let filtered = productSource.filter(product =>
+    let filtered = products.filter(product =>
       (selectedBrand === 'all' || product.brand.toLowerCase() === selectedBrand.toLowerCase()) &&
       (product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
        product.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -178,12 +167,12 @@ export default function ProductList({ products: initialProducts, showContainer =
         if (aIndex !== -1) return -1;
         if (bIndex !== -1) return 1;
         
-        return a.brand.localeCompare(b.brand);
+        return (a.brand ?? '').localeCompare(b.brand ?? '');
       });
     }
 
     return filtered;
-  }, [searchTerm, sortOrder, selectedBrand, productSource]); // Add selectedBrand to dependencies
+  }, [searchTerm, sortOrder, selectedBrand, products]);
 
   const totalPages = Math.ceil(filteredAndSortedProducts.length / ITEMS_PER_PAGE);
   const paginatedProducts = filteredAndSortedProducts.slice(
@@ -195,7 +184,6 @@ export default function ProductList({ products: initialProducts, showContainer =
   const handleBrandChange = (brand: string) => {
     setSelectedBrand(brand);
     
-    // Only update URL if we're on the genuine-parts page and have allowedBrands (indicating we should update URLs)
     if (pathname === '/genuine-parts' && propAllowedBrands) {
       if (brand === 'all') {
         router.push('/genuine-parts');
@@ -208,8 +196,8 @@ export default function ProductList({ products: initialProducts, showContainer =
   // Reset currentPage and searchTerm when filters change
   useEffect(() => {
     setCurrentPage(1);
-    setSearchTerm(''); // Reset search term
-  }, [selectedBrand, sortOrder]); // Reset page when search, brand, or sort changes
+    setSearchTerm('');
+  }, [selectedBrand, sortOrder]);
 
   return (
     <section className={showContainer ? "py-16 md:py-20 bg-gray-50" : ""}>
@@ -253,9 +241,9 @@ export default function ProductList({ products: initialProducts, showContainer =
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-5">
-          {loading
-            ? Array.from({ length: ITEMS_PER_PAGE }).map((_, index) => (
-                <AnimatedCard key={index} delay={index * 30}>
+          {isLoading
+            ? Array.from({ length: 8 }).map((_, index) => (
+                <AnimatedCard key={`skeleton-${index}`} delay={index * 30}>
                   <ProductCard loading />
                 </AnimatedCard>
               ))
@@ -266,8 +254,7 @@ export default function ProductList({ products: initialProducts, showContainer =
               ))}
         </div>
 
-        {/* Message when no products found */}
-        {!loading && paginatedProducts.length === 0 && (
+        {!isLoading && paginatedProducts.length === 0 && (
           <div className="text-center py-16">
             <h2 className="text-2xl font-bold text-gray-800 mb-4">No products found</h2>
             <p className="text-gray-600">Try adjusting your filters or search term.</p>
@@ -292,56 +279,49 @@ export default function ProductList({ products: initialProducts, showContainer =
             </Button>
             {totalPages > 0 && (
               <div className="flex items-center space-x-1">
-                {/* Generate page numbers */}
                 {(() => {
                   const pageNumbers = [];
-                  const maxPagesToShow = 5; // Max number of page buttons to show (excluding ellipses)
-                  const ellipsis = "...";
-
+                  const maxPagesToShow = 5;
+                  
                   if (totalPages <= maxPagesToShow) {
-                    // Show all pages if total pages are few
                     for (let i = 1; i <= totalPages; i++) {
                       pageNumbers.push(i);
                     }
                   } else {
-                    // Always show first page
                     pageNumbers.push(1);
+                    let startPage = Math.max(2, currentPage - 1);
+                    let endPage = Math.min(totalPages - 1, currentPage + 1);
 
-                    // Determine start and end for middle pages
-                    let startPage = Math.max(2, currentPage - Math.floor((maxPagesToShow - 3) / 2));
-                    let endPage = Math.min(totalPages - 1, currentPage + Math.ceil((maxPagesToShow - 3) / 2));
-
-                    if (currentPage <= Math.floor(maxPagesToShow / 2) + 1) {
-                      endPage = maxPagesToShow - 1;
-                    } else if (currentPage >= totalPages - Math.floor(maxPagesToShow / 2)) {
-                      startPage = totalPages - maxPagesToShow + 2;
+                    if (currentPage <= 3) {
+                        endPage = 3;
+                    } else if (currentPage >= totalPages - 2) {
+                        startPage = totalPages - 3;
                     }
 
-                    // Add first ellipsis if needed
                     if (startPage > 2) {
-                      pageNumbers.push(ellipsis);
+                      pageNumbers.push('ellipsis-start'); // Use a distinct identifier
                     }
 
-                    // Add middle pages
                     for (let i = startPage; i <= endPage; i++) {
                       pageNumbers.push(i);
                     }
 
-                    // Add second ellipsis if needed
                     if (endPage < totalPages - 1) {
-                      pageNumbers.push(ellipsis);
+                      pageNumbers.push('ellipsis-end'); // Use a distinct identifier
                     }
-
-                    // Always show last page (if not already included)
-                    if (!pageNumbers.includes(totalPages)) {
-                      pageNumbers.push(totalPages);
+                    
+                    if (totalPages > 1) { // Only push totalPages if there's more than one page
+                        pageNumbers.push(totalPages);
                     }
                   }
-
-                  return pageNumbers.map((page, index) => (
-                                        page === ellipsis ? (
-                      <span key={`ellipsis-${index}`} className="text-xs text-gray-600 px-2">{ellipsis}</span>
-                    ) : (
+                  return pageNumbers.map((page, index) => {
+                    if (page === 'ellipsis-start') {
+                      return <span key="ellipsis-start-unique" className="text-xs text-gray-600 px-2">...</span>;
+                    }
+                    if (page === 'ellipsis-end') {
+                        return <span key="ellipsis-end-unique" className="text-xs text-gray-600 px-2">...</span>;
+                    }
+                    return (
                       <Button
                         key={page}
                         variant={currentPage === page ? "default" : "outline"}
@@ -351,8 +331,8 @@ export default function ProductList({ products: initialProducts, showContainer =
                       >
                         {page}
                       </Button>
-                    )
-                  ));
+                    );
+                  });
                 })()}
               </div>
             )}

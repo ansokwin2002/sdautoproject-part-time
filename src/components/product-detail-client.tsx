@@ -1,8 +1,7 @@
 'use client';
 
-import { products, Product } from "@/lib/products";
+import { Product } from "@/lib/products";
 import Image from "next/image";
-import { notFound } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import ProductCard, { ProductCardSkeleton } from "@/components/product-card";
@@ -14,6 +13,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useRouter } from "next/navigation";
 import ImageGalleryModal from '@/components/ImageGalleryModal';
 import { cn } from "@/lib/utils";
+import { useProductById, useProducts } from "@/hooks/useProducts"; // Import the hook
 
 interface MediaItem {
   type: 'image' | 'video';
@@ -21,30 +21,65 @@ interface MediaItem {
 }
 
 interface ProductDetailClientProps {
-  productId: string;
+  productId: string; // Changed to productId
 }
 
 export default function ProductDetailClient({ productId }: ProductDetailClientProps) {
-  const product = products.find((p) => p.id === productId);
+  const router = useRouter();
 
-  if (!product) {
-    notFound();
-  }
-
-  // Construct the media array based on brand and available media
-  const allMedia: MediaItem[] = [
-    ...product.images.map(url => ({ type: 'image', url })),
-    ...(product.brand.toLowerCase().includes('ford') && product.videos ? product.videos.map(url => ({ type: 'video', url })) : [])
-  ];
-
-  const [selectedMedia, setSelectedMedia] = useState<MediaItem>(allMedia[0] || { type: 'image', url: '' });
+  // All hooks must be called unconditionally at the top level
+  const { product, loading, error } = useProductById(productId);
+  const { products: otherProducts, loading: otherProductsLoading } = useProducts();
+  const [selectedMedia, setSelectedMedia] = useState<MediaItem | null>(null); // Initialize with null
   const [isHovering, setIsHovering] = useState(false);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const imageRef = useRef<HTMLDivElement>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   
+  // Effect to initialize selectedMedia once product data is available
+  useEffect(() => {
+    if (product) {
+      const allInitialMedia: MediaItem[] = [
+        ...(product.images ? product.images.map(url => ({ type: 'image', url })) : []),
+        ...(product.brand && (product.brand ?? '').toLowerCase().includes('ford') && product.videos ? product.videos.map(url => ({ type: 'video', url })) : [])
+      ];
+      if (allInitialMedia.length > 0) {
+        setSelectedMedia(allInitialMedia[0]);
+      }
+    }
+  }, [product]); // Dependency on product
 
-  const router = useRouter();
+  // Conditional rendering based on loading and error states
+  if (loading || !product) {
+    return <ProductDetailSkeleton />;
+  }
+
+  if (error) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-screen py-12 bg-gray-50">
+        <h2 className="text-2xl font-bold text-red-600 mb-4">Error loading product.</h2>
+        <p className="text-gray-700 mb-6">{error || "Product not found or could not be loaded."}</p>
+        <Link href="/products" className="text-blue-600 hover:underline">
+          Go back to products
+        </Link>
+      </div>
+    );
+  }
+
+  console.log('Product images:', product.images); // ADDED THIS LINE
+
+  // Ensure selectedMedia is set before proceeding with rendering parts that depend on it
+  if (!selectedMedia) {
+    return <ProductDetailSkeleton />; 
+  }
+
+  // Construct the media array based on brand and available media (now that product is guaranteed)
+  const allMedia: MediaItem[] = [
+    ...(product.images ? product.images.map(url => ({ type: 'image', url })) : []),
+    ...(product.brand && (product.brand ?? '').toLowerCase().includes('ford') && product.videos ? product.videos.map(url => ({ type: 'video', url })) : [])
+  ];
+
+
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!imageRef.current) return;
@@ -69,7 +104,7 @@ export default function ProductDetailClient({ productId }: ProductDetailClientPr
     setIsHovering(false);
   };
 
-  const otherProducts = products.filter((p) => p.id !== product.id);
+  
 
   const handleBuyNowClick = () => {
     router.push('/contact');
@@ -81,7 +116,7 @@ export default function ProductDetailClient({ productId }: ProductDetailClientPr
         {/* Back Button with Card Style */}
         <div className="mb-6 mt-16 md:mt-0">
           <Link
-            href="/genuine-parts"
+            href="/products"
             className="inline-flex items-center bg-white px-4 py-2 rounded-lg border border-gray-200 text-gray-600 hover:text-gray-900 hover:shadow-md hover:border-gray-300 transition-all duration-200 group"
           >
             <ArrowLeft className="h-4 w-4 mr-2 group-hover:-translate-x-1 transition-transform duration-200" />
@@ -126,7 +161,7 @@ export default function ProductDetailClient({ productId }: ProductDetailClientPr
                   {/* Product Tag */}
                   <div className="absolute top-4 left-4">
                     <span className="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-3 py-1.5 text-xs font-semibold rounded-full shadow-lg backdrop-blur-sm">
-                      {product.tag.replace(' Parts', '')}
+                      {(product.tag ?? '').replace(' Parts', '')}
                     </span>
                   </div>
 
@@ -257,7 +292,7 @@ export default function ProductDetailClient({ productId }: ProductDetailClientPr
                     {/* Product Tag */}
                     <div className="absolute top-4 left-4">
                       <span className="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-3 py-1.5 text-xs font-semibold rounded-full shadow-lg backdrop-blur-sm">
-                        {product.tag.replace(' Parts', '')}
+                        {product.tag ? product.tag.replace(' Parts', '') : ''}
                       </span>
                     </div>
 
@@ -301,7 +336,7 @@ export default function ProductDetailClient({ productId }: ProductDetailClientPr
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center gap-2">
                     <span className="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-3 py-1.5 text-xs font-semibold rounded-full shadow-lg">
-                      {product.brand.replace(' Parts', '')}
+                      {(product.brand ?? '').replace(' Parts', '')}
                     </span>
                     
                   </div>
@@ -323,7 +358,7 @@ export default function ProductDetailClient({ productId }: ProductDetailClientPr
                   <div className="flex items-center text-sm text-gray-600">
                     <Package size={16} className="mr-2 text-gray-400" />
                     <span className="font-medium text-gray-800">Brand:</span>
-                    <span className="ml-2">{product.brand.replace(' Parts', '')}</span>
+                    <span className="ml-2">{(product.brand ?? '').replace(' Parts', '')}</span>
                   </div>
 
                   {product.partNumber && (
@@ -437,7 +472,8 @@ export default function ProductDetailClient({ productId }: ProductDetailClientPr
   );
 }
 
-const ProductDetailSkeleton = () => {
+
+export const ProductDetailSkeleton = () => {
   return (
     <div className="bg-gray-50 min-h-screen">
       <div className="container mx-auto px-4 py-6 md:py-12 lg:py-20">
@@ -455,7 +491,7 @@ const ProductDetailSkeleton = () => {
             <div className="block md:hidden">
               <div className="flex gap-3">
                 {Array.from({ length: 5 }).map((_, index) => (
-                  <Skeleton key={index} className="w-16 h-16 rounded-lg flex-shrink-0" />
+                  <Skeleton key={`mobile-image-skeleton-${index}`} className="w-16 h-16 rounded-lg flex-shrink-0" />
                 ))}
               </div>
             </div>
@@ -464,7 +500,7 @@ const ProductDetailSkeleton = () => {
             <div className="hidden md:flex gap-4">
               <div className="flex flex-col gap-2">
                 {Array.from({ length: 5 }).map((_, index) => (
-                  <Skeleton key={index} className="w-20 h-20 rounded-lg" />
+                  <Skeleton key={`desktop-image-skeleton-${index}`} className="w-20 h-20 rounded-lg" />
                 ))}
               </div>
               <Skeleton className="flex-1 h-[400px] rounded-xl" />
@@ -487,7 +523,7 @@ const ProductDetailSkeleton = () => {
             <Skeleton className="h-24 w-full mb-6" />
             <div className="space-y-3 mb-6">
               {Array.from({ length: 4 }).map((_, index) => (
-                <div key={index} className="flex items-center gap-2">
+                <div key={`detail-skeleton-${index}`} className="flex items-center gap-2">
                   <Skeleton className="h-4 w-4 rounded" />
                   <Skeleton className="h-4 w-16" />
                   <Skeleton className="h-4 w-24" />
@@ -515,7 +551,7 @@ const ProductDetailSkeleton = () => {
           <Skeleton className="h-8 w-48 mb-6" />
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {Array.from({ length: 4 }).map((_, index) => (
-              <ProductCardSkeleton key={index} />
+              <ProductCardSkeleton key={`product-card-skeleton-${index}`} />
             ))}
           </div>
         </div>

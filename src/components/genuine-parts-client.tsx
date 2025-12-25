@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useMemo, useEffect, useCallback } from 'react'; // Added useCallback
-import { products } from '@/lib/products';
+import { useProducts } from '@/hooks/useProducts';
 import ProductList from '@/components/product-list';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
@@ -36,9 +36,11 @@ export default function GenuinePartsClient() {
     return initialBrandParam;
   }, [initialBrandParam, allowedBrands]);
 
+  const { products: allProducts, loading, error } = useProducts();
+
   const filteredProductSource = useMemo(() => {
-    return products.filter(product => allowedBrands.includes(product.brand));
-  }, [allowedBrands]);
+    return allProducts.filter(product => allowedBrands.includes(product.brand));
+  }, [allProducts, allowedBrands]);
 
   const uniqueBrands = useMemo(() => {
     // Define the exact order you want the brands to appear
@@ -56,19 +58,7 @@ export default function GenuinePartsClient() {
   }, []);
 
   const [selectedBrand, setSelectedBrand] = useState<string | null>(initialBrand);
-  const [loading, setLoading] = useState(true);
-  
 
-  useEffect(() => {
-    setSelectedBrand(initialBrand);
-  }, [initialBrand]);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setLoading(false);
-    }, 1000); // Simulate loading time
-    return () => clearTimeout(timer);
-  }, []);
 
   const filteredProducts = useMemo(() => {
     if (!selectedBrand) {
@@ -185,7 +175,7 @@ export default function GenuinePartsClient() {
         )}
       </div>
 
-      <ProductList products={filteredProducts} showContainer={false} selectedBrand={selectedBrand} allowedBrands={allowedBrands} />
+      <ProductList products={filteredProducts} showContainer={false} selectedBrand={selectedBrand} allowedBrands={allowedBrands} isLoading={loading} />
     </div>
   );
 }
