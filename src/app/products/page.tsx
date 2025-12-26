@@ -2,6 +2,7 @@
 
 import ProductList from '@/components/product-list';
 import { useProducts } from '@/hooks/useProducts';
+import { Suspense } from 'react';
 
 export default function ProductsPage() {
   const { products, loading, error } = useProducts();
@@ -16,5 +17,9 @@ export default function ProductsPage() {
   // Pass the fetched products to the existing ProductList component.
   // The ProductList component will handle filtering, sorting, and pagination.
   // A loading skeleton is shown by ProductList internally.
-  return <ProductList products={products} isLoading={loading} />;
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <ProductList products={products} isLoading={loading} />
+    </Suspense>
+  );
 }
