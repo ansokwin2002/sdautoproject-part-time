@@ -77,45 +77,6 @@ export default function ProductList({ products, showContainer = true, selectedBr
     setSelectedBrand(propSelectedBrand || 'all');
   }, [propSelectedBrand]);
 
-    const uniqueBrands = useMemo(() => {
-    // Define the complete brand order including brands without products
-    const brandOrder = [
-      "Ford Parts",
-      "Isuzu Parts", 
-      "Toyota Parts",
-      "Mazda Parts",
-      "Mitsubishi Parts",
-      "Nissan Parts",
-      "Honda Parts",
-      "Suzuki Parts",
-      "Aftermarket"
-    ];
-    
-    // Get brands that actually have products
-    const brandsWithProducts = Array.from(new Set(products.map((p) => p.brand))).filter(brand => propAllowedBrands ? propAllowedBrands.includes(brand) : true);
-    
-    // If propAllowedBrands is provided, use the complete brand order (including brands without products)
-    // Otherwise, only show brands that have products
-    if (propAllowedBrands) {
-      return brandOrder.filter(brand => propAllowedBrands.includes(brand));
-    }
-    
-    // For regular product list (not genuine-parts page), only show brands with products
-    return brandsWithProducts.sort((a, b) => {
-      const aIndex = brandOrder.indexOf(a);
-      const bIndex = brandOrder.indexOf(b);
-      
-      if (aIndex !== -1 && bIndex !== -1) {
-        return aIndex - bIndex;
-      }
-      
-      if (aIndex !== -1) return -1;
-      if (bIndex !== -1) return 1;
-      
-      return (a ?? '').localeCompare(b ?? '');
-    });
-  }, [products, propAllowedBrands]);
-
   const filteredAndSortedProducts = useMemo(() => {
     let filtered = products.filter(product => {
       const brand = product.brand ? String(product.brand).toLowerCase() : '';
@@ -124,8 +85,9 @@ export default function ProductList({ products, showContainer = true, selectedBr
       const partNumber = product.partNumber ? String(product.partNumber).toLowerCase() : '';
       const lowerSearchTerm = searchTerm.toLowerCase();
       const lowerSelectedBrand = selectedBrand.toLowerCase();
+      const brandKeyword = lowerSelectedBrand.replace(' parts', '');
 
-      return (lowerSelectedBrand === 'all' || brand === lowerSelectedBrand) &&
+      return (lowerSelectedBrand === 'all' || brand.includes(brandKeyword)) &&
              (name.includes(lowerSearchTerm) ||
               description.includes(lowerSearchTerm) ||
               brand.includes(lowerSearchTerm) ||
@@ -180,6 +142,38 @@ export default function ProductList({ products, showContainer = true, selectedBr
 
     return filtered;
   }, [searchTerm, sortOrder, selectedBrand, products]);
+
+    const uniqueBrands = useMemo(() => {
+    // Define the desired order of brand display, using short names
+    const brandDisplayOrder = [
+      "Ford",
+      "Isuzu", 
+      "Toyota",
+      "Mazda",
+      "Mitsubishi",
+      "Nissan",
+      "Honda",
+      "Suzuki",
+      "Aftermarket"
+    ];
+    
+    // Get unique brand names from the currently filtered and sorted products
+    const brandsFromFilteredProducts = Array.from(new Set(filteredAndSortedProducts.map(p => {
+        // Extract the short brand name from product.brand for comparison and display
+        return p.brand ? p.brand.replace(' Parts', '') : 'Unknown';
+    })));
+
+    // Filter brands to only include those in our predefined display order
+    const relevantBrands = brandsFromFilteredProducts.filter(brand => brandDisplayOrder.includes(brand));
+
+    // Sort these relevant brands according to brandDisplayOrder
+    return relevantBrands.sort((a, b) => {
+        const aIndex = brandDisplayOrder.indexOf(a);
+        const bIndex = brandDisplayOrder.indexOf(b);
+        return aIndex - bIndex;
+    });
+
+  }, [filteredAndSortedProducts]);
 
   const totalPages = Math.ceil(filteredAndSortedProducts.length / ITEMS_PER_PAGE);
   const paginatedProducts = filteredAndSortedProducts.slice(

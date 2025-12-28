@@ -62,7 +62,7 @@ const heroSlides = [
     subtitle: "Built Ford Tough - Experience legendary durability and performance with Ford's complete range of genuine parts and accessories.",
     primaryButton: {
       text: "View Ford Parts",
-      href: "/genuine-parts?brand=Ford%20Parts"
+      href: "/genuine-parts?brand=Ford"
     },
     secondaryButton: {
       text: "Contact Us",
@@ -78,7 +78,7 @@ const heroSlides = [
     subtitle: "Built Ford Tough - Experience legendary durability and performance with Ford's complete range of genuine parts and accessories.",
     primaryButton: {
       text: "View Ford Parts",
-      href: "/genuine-parts?brand=Ford%20Parts"
+      href: "/genuine-parts?brand=Ford"
     },
     secondaryButton: {
       text: "Contact Us",
@@ -95,7 +95,7 @@ const heroSlides = [
     subtitle: "Go the Distance - Commercial grade durability and strength with Isuzu's reliable genuine parts for every journey.",
     primaryButton: {
       text: "View Isuzu Parts",
-      href: "/genuine-parts?brand=Isuzu%20Parts"
+      href: "/genuine-parts?brand=Isuzu"
     },
     secondaryButton: {
       text: "Get Quote",
@@ -112,7 +112,7 @@ const heroSlides = [
     subtitle: "Let's Go Places - Reliability and innovation in every part. Discover Toyota's world-class genuine automotive components.",
     primaryButton: {
       text: "View Toyota Parts",
-      href: "/genuine-parts?brand=Toyota%20Parts"
+      href: "/genuine-parts?brand=Toyota"
     },
     secondaryButton: {
       text: "Learn More",
@@ -129,7 +129,7 @@ const heroSlides = [
     subtitle: "Driving Matters - Precision engineering and stylish design combined with quality genuine parts for the ultimate driving experience.",
     primaryButton: {
       text: "View Mazda Parts",
-      href: "/genuine-parts?brand=Mazda%20Parts"
+      href: "/genuine-parts?brand=Mazda"
     },
     secondaryButton: {
       text: "Contact Us",
@@ -146,7 +146,7 @@ const heroSlides = [
     subtitle: "Drive your Ambition - Proven performance and reliability with Mitsubishi's innovative genuine parts and authentic replacements.",
     primaryButton: {
       text: "View Mitsubishi Parts",
-      href: "/genuine-parts?brand=Mitsubishi%20Parts"
+      href: "/genuine-parts?brand=Mitsubishi"
     },
     secondaryButton: {
       text: "Service Center",
@@ -162,7 +162,7 @@ const heroSlides = [
     subtitle: "Drive your Ambition - Proven performance and reliability with Mitsubishi's innovative genuine parts and authentic replacements.",
     primaryButton: {
       text: "View Mitsubishi Parts",
-      href: "/genuine-parts?brand=Mitsubishi%20Parts"
+      href: "/genuine-parts?brand=Mitsubishi"
     },
     secondaryButton: {
       text: "Service Center",
