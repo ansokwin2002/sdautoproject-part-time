@@ -27,9 +27,9 @@ const transformApiProduct = (apiProduct: any): Product => {
     originalPrice: apiProduct.original_price ? Number(apiProduct.original_price) : undefined,
     images: apiProduct.images || [],
     videos: apiProduct.videos || [],
-    brand: apiProduct.brand ? apiProduct.brand.brand_name : 'Unknown Brand', // Extract brand name
+    brand: apiProduct.brand || 'Unknown Brand',
     code: apiProduct.part_number || '', // Use part_number for code
-    tag: apiProduct.category || 'Uncategorized', // Use category for tag
+    tag: apiProduct.category || apiProduct.brand || 'Uncategorized', // Use category for tag, fallback to brand
     partNumber: apiProduct.part_number || '',
     condition: apiProduct.condition || 'New',
     quantity: apiProduct.quantity || 0,

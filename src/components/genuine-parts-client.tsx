@@ -14,70 +14,66 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 export default function GenuinePartsClient() {
   const searchParams = useSearchParams();
   const router = useRouter(); // Get router instance
-  const initialBrandParam = searchParams.get('brand');
-  const viewParam = searchParams.get('view');
-  const allowedBrands = useMemo(() => ["Ford Parts", "Isuzu Parts", "Toyota Parts", "Mazda Parts", "Mitsubishi Parts", "Nissan Parts", "Honda Parts", "Suzuki Parts", "Aftermarket"], []);
+  const viewParam = searchParams.get('view'); // Keep viewParam
 
-  const initialBrand = useMemo(() => {
-    if (initialBrandParam) {
-      // If the URL already has the full brand name (e.g., "Isuzu Parts"), use it directly
-      if (allowedBrands.includes(initialBrandParam)) {
-        return initialBrandParam;
-      }
-      
-      // If the URL has just the brand name (e.g., "Isuzu"), convert it to full name
-      if (!initialBrandParam.endsWith(' Parts') && initialBrandParam !== 'Aftermarket') {
-        const brandWithParts = `${initialBrandParam} Parts`;
-        if (allowedBrands.includes(brandWithParts)) {
-          return brandWithParts;
-        }
-      }
-    }
-    return initialBrandParam;
-  }, [initialBrandParam, allowedBrands]);
+  const initialBrandParam = searchParams.get('brand');
+  const [selectedBrand, setSelectedBrand] = useState<string | null>(initialBrandParam);
+
+  // Keep selectedBrand in sync with the URL
+  useEffect(() => {
+    setSelectedBrand(initialBrandParam);
+  }, [initialBrandParam]);
 
   const { products: allProducts, loading, error } = useProducts();
 
   const filteredProductSource = useMemo(() => {
-    return allProducts.filter(product => allowedBrands.includes(product.brand));
-  }, [allProducts, allowedBrands]);
+    return allProducts;
+  }, [allProducts]);
 
   const uniqueBrands = useMemo(() => {
-    // Define the exact order you want the brands to appear
     return [
-      "Ford Parts", 
-      "Isuzu Parts", 
-      "Toyota Parts", 
-      "Mazda Parts", 
-      "Mitsubishi Parts", 
-      "Nissan Parts", 
-      "Honda Parts", 
-      "Suzuki Parts", 
+      "Ford",
+      "Isuzu",
+      "Toyota",
+      "Mazda",
+      "Mitsubishi",
+      "Nissan",
+      "Honda",
+      "Suzuki",
       "Aftermarket"
     ];
   }, []);
 
-  const [selectedBrand, setSelectedBrand] = useState<string | null>(initialBrand);
-
+  const brandLogos = {
+    "Ford": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Ford_logo_flat.svg/1200px-Ford_logo_flat.svg.png",
+    "Isuzu": "https://1000logos.net/wp-content/uploads/2021/04/Isuzu-logo-500x281.png",
+    "Toyota": "https://logos-world.net/wp-content/uploads/2020/04/Toyota-Logo.png",
+    "Mazda": "https://logos-world.net/wp-content/uploads/2021/03/Mazda-Logo.png",
+    "Mitsubishi": "https://logos-world.net/wp-content/uploads/2021/03/Mitsubishi-Logo.png",
+    "Nissan": "https://logos-world.net/wp-content/uploads/2021/03/Nissan-Logo.png",
+    "Honda": "https://logos-world.net/wp-content/uploads/2021/03/Honda-Logo.png",
+    "Suzuki": "https://logos-world.net/wp-content/uploads/2021/03/Suzuki-Logo.png",
+    "Aftermarket": "data:image/svg+xml;charset=UTF-8,%3csvg width='150' height='150' viewBox='0 0 150 150' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='150' height='150' fill='%23ccc'/%3e%3ctext x='50%25' y='50%25' font-family='Arial' font-size='40' fill='%23333' text-anchor='middle' dominant-baseline='middle'%3eAM%3c/text%3e%3c/svg%3e", // Placeholder for Aftermarket
+  };
 
   const filteredProducts = useMemo(() => {
     if (!selectedBrand) {
       // When showing all brands, sort by the specific brand order you want
       const brandOrder = [
-        "Ford Parts",
-        "Isuzu Parts", 
-        "Toyota Parts",
-        "Mazda Parts",
-        "Mitsubishi Parts",
-        "Nissan Parts",
-        "Honda Parts",
-        "Suzuki Parts",
+        "Ford",
+        "Isuzu", 
+        "Toyota",
+        "Mazda",
+        "Mitsubishi",
+        "Nissan",
+        "Honda",
+        "Suzuki",
         "Aftermarket"
       ];
       
-      return filteredProductSource.sort((a, b) => {
-        const aIndex = brandOrder.indexOf(a.brand);
-        const bIndex = brandOrder.indexOf(b.brand);
+      return [...filteredProductSource].sort((a, b) => {
+        const aIndex = brandOrder.findIndex(name => a.brand.includes(name));
+        const bIndex = brandOrder.findIndex(name => b.brand.includes(name));
         
         // If both brands are in the order list, sort by their position
         if (aIndex !== -1 && bIndex !== -1) {
@@ -92,25 +88,13 @@ export default function GenuinePartsClient() {
         return a.brand.localeCompare(b.brand);
       });
     }
-    // Compare product.brand with selectedBrand
-    return filteredProductSource.filter(product => product.brand === selectedBrand);
+    
+    // selectedBrand is already the keyword
+    return filteredProductSource.filter(product => product.brand.includes(selectedBrand));
   }, [selectedBrand, filteredProductSource]);
-
-  const brandLogos = {
-    "Ford Parts": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Ford_logo_flat.svg/1200px-Ford_logo_flat.svg.png",
-    "Isuzu Parts": "https://1000logos.net/wp-content/uploads/2021/04/Isuzu-logo-500x281.png",
-    "Toyota Parts": "https://logos-world.net/wp-content/uploads/2020/04/Toyota-Logo.png",
-    "Mazda Parts": "https://logos-world.net/wp-content/uploads/2021/03/Mazda-Logo.png",
-    "Mitsubishi Parts": "https://logos-world.net/wp-content/uploads/2021/03/Mitsubishi-Logo.png",
-    "Nissan Parts": "https://logos-world.net/wp-content/uploads/2021/03/Nissan-Logo.png",
-    "Honda Parts": "https://logos-world.net/wp-content/uploads/2021/03/Honda-Logo.png",
-    "Suzuki Parts": "https://logos-world.net/wp-content/uploads/2021/03/Suzuki-Logo.png",
-    "Aftermarket": "data:image/svg+xml;charset=UTF-8,%3csvg width='150' height='150' viewBox='0 0 150 150' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='150' height='150' fill='%23ccc'/%3e%3ctext x='50%25' y='50%25' font-family='Arial' font-size='40' fill='%23333' text-anchor='middle' dominant-baseline='middle'%3eAM%3c/text%3e%3c/svg%3e", // Placeholder for Aftermarket
-  };
 
   const handleBrandClick = (brand: string | null) => {
     if (brand) {
-      // Use the full brand name in the URL for professional appearance
       router.push(`/genuine-parts?brand=${encodeURIComponent(brand)}`);
     } else {
       router.push(`/genuine-parts`);
@@ -175,7 +159,7 @@ export default function GenuinePartsClient() {
         )}
       </div>
 
-      <ProductList products={filteredProducts} showContainer={false} selectedBrand={selectedBrand} allowedBrands={allowedBrands} isLoading={loading} />
+      <ProductList products={filteredProducts} showContainer={false} selectedBrand={selectedBrand} isLoading={loading} />
     </div>
   );
 }
