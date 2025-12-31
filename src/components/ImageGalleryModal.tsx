@@ -4,10 +4,11 @@ import React, { useState, useEffect, useCallback, useRef } from 'react';
 import Image from 'next/image';
 import { X, ChevronLeft, ChevronRight, Play, ZoomIn, ZoomOut, RotateCw, Download, Maximize2, Minimize2 } from 'lucide-react';
 import { AnimatePresence, motion } from 'framer-motion';
+import { getYouTubeEmbedUrl, getYouTubeThumbnail } from '@/lib/utils';
 
 interface MediaItem {
   type: 'image' | 'video';
-  url: string;
+  url: string; // Can be full URL or YouTube video ID
 }
 
 interface ImageGalleryModalProps {
@@ -16,6 +17,26 @@ interface ImageGalleryModalProps {
   isOpen: boolean;
   onClose: () => void;
 }
+
+// Helper function to get YouTube embed URL from video ID or URL
+const getVideoEmbedUrl = (urlOrId: string): string => {
+  // If it's already a full URL, use getYouTubeEmbedUrl utility
+  if (urlOrId.startsWith('http')) {
+    return getYouTubeEmbedUrl(urlOrId);
+  }
+  // If it's just a video ID (like "LiaePVHH9JQ"), create embed URL
+  return `https://www.youtube.com/embed/${urlOrId}?autoplay=0&rel=0`;
+};
+
+// Helper function to get YouTube thumbnail from video ID or URL
+const getVideoThumbnail = (urlOrId: string): string => {
+  // If it's already a full URL, use getYouTubeThumbnail utility
+  if (urlOrId.startsWith('http')) {
+    return getYouTubeThumbnail(urlOrId) || '';
+  }
+  // If it's just a video ID, create thumbnail URL directly
+  return `https://img.youtube.com/vi/${urlOrId}/mqdefault.jpg`;
+};
 
 const ImageGalleryModal: React.FC<ImageGalleryModalProps> = ({
   media,
@@ -178,9 +199,11 @@ const ImageGalleryModal: React.FC<ImageGalleryModalProps> = ({
     setShowControls(true);
   }, []);
 
-  if (!isOpen) return null;
+  if (!isOpen || !media || media.length === 0) return null;
 
   const currentMedia = media[currentIndex];
+  
+  if (!currentMedia) return null;
 
   return (
     <div 
@@ -333,17 +356,16 @@ const ImageGalleryModal: React.FC<ImageGalleryModalProps> = ({
                 />
               </div>
             ) : (
-              <video
-                src={currentMedia.url}
-                controls
-                autoPlay
-                loop
-                playsInline
-                className="max-w-[90vw] max-h-[90vh] object-contain rounded-lg"
-                style={{
-                  transform: `rotate(${rotation}deg)`,
-                }}
-              />
+              <div className="relative w-[90vw] h-[90vh] max-w-[1200px] max-h-[675px] rounded-lg overflow-hidden bg-black">
+                <iframe
+                  src={getVideoEmbedUrl(currentMedia.url)}
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                  title={`YouTube video ${currentIndex + 1}`}
+                  className="absolute top-0 left-0 w-full h-full"
+                />
+              </div>
             )}
           </motion.div>
         </AnimatePresence>
@@ -375,8 +397,14 @@ const ImageGalleryModal: React.FC<ImageGalleryModalProps> = ({
                       className="object-cover"
                     />
                   ) : (
-                    <div className="w-full h-full flex items-center justify-center bg-gray-800 text-white">
-                      <Play size={16} />
+                    <div className="relative w-full h-full flex items-center justify-center bg-gray-800">
+                      <Image
+                        src={getVideoThumbnail(item.url)}
+                        alt={`Video thumbnail ${index + 1}`}
+                        fill
+                        className="object-cover opacity-70"
+                      />
+                      <Play size={20} className="absolute z-10 text-white drop-shadow-lg" />
                     </div>
                   )}
                   {currentIndex === index && (

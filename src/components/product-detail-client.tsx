@@ -6,50 +6,60 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import ProductCard, { ProductCardSkeleton } from "@/components/product-card";
 import ProductList from "@/components/product-list";
-import { ArrowLeft, Package, Hash, Award, Archive, Eye, Star, Shield, Truck, Heart, Share2, ShoppingCart, Expand, ZoomIn } from "lucide-react";
+import { ArrowLeft, Package, Hash, Award, Archive, Eye, Star, Shield, Truck, Heart, Share2, ShoppingCart, Expand, ZoomIn, Play } from "lucide-react";
 import Link from "next/link";
 import { useState, useEffect, useRef } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useRouter } from "next/navigation";
 import ImageGalleryModal from '@/components/ImageGalleryModal';
-import { cn } from "@/lib/utils";
-import { useProductById, useProducts } from "@/hooks/useProducts"; // Import the hook
+import { cn, getYouTubeEmbedUrl, getYouTubeThumbnail } from "@/lib/utils";
+import { useProductById, useProducts } from "@/hooks/useProducts";
 
 interface MediaItem {
   type: 'image' | 'video';
   url: string;
+  originalUrl?: string;
 }
 
 interface ProductDetailClientProps {
-  productId: string; // Changed to productId
+  productId: string;
 }
 
 export default function ProductDetailClient({ productId }: ProductDetailClientProps) {
   const router = useRouter();
 
-  // All hooks must be called unconditionally at the top level
   const { product, loading, error } = useProductById(productId);
   const { products: otherProducts, loading: otherProductsLoading } = useProducts();
-  const [selectedMedia, setSelectedMedia] = useState<MediaItem | null>(null); // Initialize with null
+  const [selectedMedia, setSelectedMedia] = useState<MediaItem | null>(null);
   const [isHovering, setIsHovering] = useState(false);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const imageRef = useRef<HTMLDivElement>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   
-  // Effect to initialize selectedMedia once product data is available
   useEffect(() => {
     if (product) {
-      const allInitialMedia: MediaItem[] = [
-        ...(product.images ? product.images.map(url => ({ type: 'image', url })) : []),
-        ...(product.brand && (product.brand ?? '').toLowerCase().includes('ford') && product.videos ? product.videos.map(url => ({ type: 'video', url })) : [])
-      ];
+      const images: MediaItem[] = product.images ? product.images.map(url => ({ type: 'image', url })) : [];
+      const youtubeVideosRaw = (product.brand && (product.brand ?? '').toLowerCase().includes('ford') && product.videos)
+        ? product.videos.map(videoId => `https://www.youtube.com/watch?v=${videoId}`)
+        : [];
+      
+      const videosForInitialDisplay: MediaItem[] = youtubeVideosRaw.map(url => ({
+        type: 'image',
+        url: getYouTubeThumbnail(url) || url,
+        originalUrl: url
+      }));
+
+      const allInitialMedia: MediaItem[] = [...images, ...videosForInitialDisplay];
+      
       if (allInitialMedia.length > 0) {
         setSelectedMedia(allInitialMedia[0]);
+      } else {
+        // Set a default placeholder image if no images or videos are available
+        setSelectedMedia({ type: 'image', url: '/assets/placeholder.png' });
       }
     }
-  }, [product]); // Dependency on product
+  }, [product]);
 
-  // Conditional rendering based on loading and error states
   if (loading || !product) {
     return <ProductDetailSkeleton />;
   }
@@ -66,20 +76,28 @@ export default function ProductDetailClient({ productId }: ProductDetailClientPr
     );
   }
 
-  console.log('Product images:', product.images); // ADDED THIS LINE
-
-  // Ensure selectedMedia is set before proceeding with rendering parts that depend on it
   if (!selectedMedia) {
     return <ProductDetailSkeleton />; 
   }
 
-  // Construct the media array based on brand and available media (now that product is guaranteed)
-  const allMedia: MediaItem[] = [
-    ...(product.images ? product.images.map(url => ({ type: 'image', url })) : []),
-    ...(product.brand && (product.brand ?? '').toLowerCase().includes('ford') && product.videos ? product.videos.map(url => ({ type: 'video', url })) : [])
-  ];
+  const images: MediaItem[] = product.images ? product.images.map(url => ({ type: 'image', url })) : [];
+  const youtubeVideosFullUrls: string[] = (product.brand && (product.brand ?? '').toLowerCase().includes('ford') && product.videos)
+    ? product.videos.map(videoId => `https://www.youtube.com/watch?v=${videoId}`)
+    : [];
 
+  const videosForDisplay: MediaItem[] = youtubeVideosFullUrls.map(url => ({
+    type: 'image',
+    url: getYouTubeThumbnail(url) || url,
+    originalUrl: url
+  }));
 
+  const videosForModal: MediaItem[] = youtubeVideosFullUrls.map(url => ({
+    type: 'video',
+    url: url
+  }));
+
+  const displayMedia: MediaItem[] = [...images, ...videosForDisplay];
+  const modalMedia: MediaItem[] = [...images, ...videosForModal];
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!imageRef.current) return;
@@ -95,7 +113,7 @@ export default function ProductDetailClient({ productId }: ProductDetailClientPr
   };
 
   const handleMouseEnter = () => {
-    if (window.innerWidth >= 1024 && selectedMedia.type === 'image') {
+    if (window.innerWidth >= 1024 && selectedMedia && selectedMedia.type === 'image') {
       setIsHovering(true);
     }
   };
@@ -104,16 +122,18 @@ export default function ProductDetailClient({ productId }: ProductDetailClientPr
     setIsHovering(false);
   };
 
-  
-
   const handleBuyNowClick = () => {
     router.push('/contact');
+  };
+
+  const handleMediaClick = () => {
+    setIsModalOpen(true);
   };
 
   return (
     <div className="bg-gray-50 min-h-screen">
       <div className="container mx-auto px-4 py-6 md:py-12 lg:py-20 flex flex-col h-full">
-        {/* Back Button with Card Style */}
+        {/* Back Button */}
         <div className="mb-6 mt-16 md:mt-0">
           <Link
             href="/products"
@@ -124,7 +144,7 @@ export default function ProductDetailClient({ productId }: ProductDetailClientPr
           </Link>
         </div>
 
-        {/* Main Product Section with Card Styling */}
+        {/* Main Product Section */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-12 items-stretch flex-grow">
           {/* Product Images Card */}
           <div className="order-1 h-full">
@@ -134,9 +154,9 @@ export default function ProductDetailClient({ productId }: ProductDetailClientPr
                 <div
                   ref={imageRef}
                   className="relative w-full aspect-square rounded-xl overflow-hidden shadow-lg group cursor-pointer"
-                  onClick={() => setIsModalOpen(true)}
+                  onClick={handleMediaClick}
                 >
-                  {selectedMedia.type === 'image' ? (
+                  {selectedMedia.type === 'image' && !selectedMedia.originalUrl ? (
                     <Image
                       src={selectedMedia.url}
                       alt={product.name}
@@ -144,15 +164,17 @@ export default function ProductDetailClient({ productId }: ProductDetailClientPr
                       className="object-cover group-hover:scale-105 transition-transform duration-500"
                     />
                   ) : (
-                    <video
-                      src={selectedMedia.url}
-                      controls={false} // No controls here, only in modal
-                      autoPlay
-                      loop
-                      muted // Mute for autoplay in preview
-                      playsInline
-                      className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-500"
-                    />
+                    <div className="relative w-full h-full flex items-center justify-center bg-black">
+                      <Image
+                        src={selectedMedia.url}
+                        alt={product.name}
+                        fill
+                        className="object-cover opacity-60"
+                      />
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <Play size={60} className="text-white opacity-90 drop-shadow-lg" />
+                      </div>
+                    </div>
                   )}
                   
                   {/* Overlays */}
@@ -176,7 +198,7 @@ export default function ProductDetailClient({ productId }: ProductDetailClientPr
                   {/* Gallery Button */}
                   <div className="absolute bottom-4 right-4">
                     <button
-                      onClick={() => setIsModalOpen(true)}
+                      onClick={handleMediaClick}
                       className="bg-white/90 backdrop-blur-sm text-gray-900 p-3 rounded-full shadow-lg hover:bg-white hover:scale-110 transition-all duration-200 group/btn"
                       aria-label="Open gallery"
                     >
@@ -188,7 +210,7 @@ export default function ProductDetailClient({ productId }: ProductDetailClientPr
                   <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300">
                     <div className="bg-white/90 backdrop-blur-sm text-gray-900 px-6 py-2.5 rounded-full font-semibold text-sm shadow-lg">
                       <Eye size={16} className="inline mr-2" />
-                      Click to Expand
+                      {selectedMedia.originalUrl ? 'Click to Play Video' : 'Click to Expand'}
                     </div>
                   </div>
                 </div>
@@ -197,25 +219,24 @@ export default function ProductDetailClient({ productId }: ProductDetailClientPr
               {/* Mobile: Horizontal Scrolling Thumbnails */}
               <div className="block md:hidden">
                 <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-hide">
-                  {allMedia.map((item, index) => (
+                  {displayMedia.map((item, index) => (
                     <div
                       key={index}
                       className={cn(
                         "relative w-16 h-16 flex-shrink-0 cursor-pointer rounded-lg overflow-hidden border-2 transition-all duration-200 hover:scale-105",
-                        selectedMedia.url === item.url ? 'border-blue-500 shadow-md' : 'border-gray-200 hover:border-gray-300'
+                        selectedMedia?.originalUrl === item.originalUrl || selectedMedia?.url === item.url ? 'border-blue-500 shadow-md' : 'border-gray-200 hover:border-gray-300'
                       )}
                       onClick={() => setSelectedMedia(item)}
                     >
-                      {item.type === 'image' ? (
-                        <Image
-                          src={item.url}
-                          alt={`Thumbnail ${index + 1}`}
-                          fill
-                          className="object-cover"
-                        />
-                      ) : (
-                        <div className="w-full h-full flex items-center justify-center bg-gray-800 text-white text-xs">
-                          Video
+                      <Image
+                        src={item.url}
+                        alt={`Thumbnail ${index + 1}`}
+                        fill
+                        className="object-cover"
+                      />
+                      {item.originalUrl && (
+                        <div className="absolute inset-0 flex items-center justify-center bg-black/30 text-white">
+                          <Play size={20} />
                         </div>
                       )}
                     </div>
@@ -227,25 +248,24 @@ export default function ProductDetailClient({ productId }: ProductDetailClientPr
               <div className="hidden md:flex gap-4 h-[400px]">
                 {/* Thumbnails */}
                 <div className="flex flex-col w-20 h-full overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100 pr-1">
-                  {allMedia.map((item, index) => (
+                  {displayMedia.map((item, index) => (
                     <div
                       key={index}
                       className={cn(
                         "relative w-20 h-[75px] cursor-pointer rounded-lg overflow-hidden border-2 mb-2 transition-all duration-200 hover:scale-105 group flex-shrink-0",
-                        selectedMedia.url === item.url ? 'border-blue-500 shadow-md' : 'border-transparent hover:border-gray-300'
+                        selectedMedia?.originalUrl === item.originalUrl || selectedMedia?.url === item.url ? 'border-blue-500 shadow-md' : 'border-transparent hover:border-gray-300'
                       )}
                       onClick={() => setSelectedMedia(item)}
                     >
-                      {item.type === 'image' ? (
-                        <Image
-                          src={item.url}
-                          alt={`Product thumbnail ${index + 1}`}
-                          fill
-                          className="object-cover group-hover:scale-110 transition-transform duration-300"
-                        />
-                      ) : (
-                        <div className="w-full h-full flex items-center justify-center bg-gray-800 text-white text-xs">
-                          Video
+                      <Image
+                        src={item.url}
+                        alt={`Product thumbnail ${index + 1}`}
+                        fill
+                        className="object-cover group-hover:scale-110 transition-transform duration-300"
+                      />
+                      {item.originalUrl && (
+                        <div className="absolute inset-0 flex items-center justify-center bg-black/30 text-white">
+                          <Play size={20} />
                         </div>
                       )}
                     </div>
@@ -256,12 +276,16 @@ export default function ProductDetailClient({ productId }: ProductDetailClientPr
                 <div className="flex-1 h-full">
                   <div
                     ref={imageRef}
-                    className="relative w-full h-full rounded-xl overflow-hidden shadow-lg cursor-crosshair group"
+                    className="relative w-full h-full rounded-xl overflow-hidden shadow-lg group"
                     onMouseMove={handleMouseMove}
                     onMouseEnter={handleMouseEnter}
                     onMouseLeave={handleMouseLeave}
+                    onClick={selectedMedia.originalUrl ? handleMediaClick : undefined}
+                    style={{
+                      cursor: selectedMedia.originalUrl ? 'pointer' : (selectedMedia.type === 'image' ? 'crosshair' : 'default')
+                    }}
                   >
-                    {selectedMedia.type === 'image' ? (
+                    {selectedMedia.type === 'image' && !selectedMedia.originalUrl ? (
                       <Image
                         src={selectedMedia.url}
                         alt={product.name}
@@ -275,15 +299,18 @@ export default function ProductDetailClient({ productId }: ProductDetailClientPr
                         }}
                       />
                     ) : (
-                      <video
-                        src={selectedMedia.url}
-                        controls={false} // No controls here, only in modal
-                        autoPlay
-                        loop
-                        muted // Mute for autoplay in preview
-                        playsInline
-                        className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-500"
-                      />
+                      <div className="relative w-full h-full flex items-center justify-center bg-black">
+                        <Image
+                          src={selectedMedia.url}
+                          alt={product.name}
+                          fill
+                          className="object-cover opacity-60"
+                        />
+                        <div className="absolute inset-0 flex items-center justify-center">
+                          <Play size={60} className="text-white opacity-90 drop-shadow-lg group-hover:scale-110 transition-transform duration-300" />
+                        </div>
+                        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300" />
+                      </div>
                     )}
                     
                     {/* Overlays */}
@@ -307,7 +334,10 @@ export default function ProductDetailClient({ productId }: ProductDetailClientPr
                     {/* Gallery Button */}
                     <div className="absolute bottom-4 right-4">
                       <button
-                        onClick={() => setIsModalOpen(true)}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleMediaClick();
+                        }}
                         className="bg-white/90 backdrop-blur-sm text-gray-900 p-3 rounded-full shadow-lg hover:bg-white hover:scale-110 transition-all duration-200 group/btn"
                         aria-label="Open gallery"
                       >
@@ -316,7 +346,7 @@ export default function ProductDetailClient({ productId }: ProductDetailClientPr
                     </div>
 
                     {/* Zoom indicator */}
-                    {isHovering && selectedMedia.type === 'image' && (
+                    {isHovering && selectedMedia.type === 'image' && !selectedMedia.originalUrl && (
                       <div className="absolute top-4 left-4 bg-black/70 text-white px-3 py-2 rounded-lg text-sm font-medium backdrop-blur-sm">
                         2x Zoom
                       </div>
@@ -329,18 +359,15 @@ export default function ProductDetailClient({ productId }: ProductDetailClientPr
 
           {/* Product Details Card */}
           <div className="order-2 relative h-full">
-            {/* Product Information Card */}
             <div className="bg-white rounded-xl border border-gray-100 overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 h-full flex flex-col">
               <div className="p-6 flex flex-col flex-grow">
-                {/* Header with Brand and Actions */}
+                {/* Header */}
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center gap-2">
                     <span className="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-3 py-1.5 text-xs font-semibold rounded-full shadow-lg">
                       {(product.brand ?? '').replace(' Parts', '')}
                     </span>
-                    
                   </div>
-                  
                 </div>
                 
                 {/* Product Title */}
@@ -370,10 +397,6 @@ export default function ProductDetailClient({ productId }: ProductDetailClientPr
                       </span>
                     </div>
                   )}
-
-                  
-
-                  
 
                   {product.condition && (
                     <div className="flex items-center text-sm text-gray-600">
@@ -408,30 +431,28 @@ export default function ProductDetailClient({ productId }: ProductDetailClientPr
                   </div>
                 </div>
 
-                
-
                 {/* Spacer */}
                 <div className="flex-grow" />
 
                 {/* Price Section */}
                 <div className="border-t border-gray-100 pt-6 mt-auto">
                   <div className="flex items-center justify-between mb-6">
-                    <div className="flex items-center gap-3">
-                      <span className="text-4xl font-bold text-gray-900">
-                        {product.price}
-                      </span>
-                      {product.originalPrice && (
-                        <>
-                          <span className="text-lg md:text-xl text-gray-400 line-through">
-                            ${product.originalPrice.toFixed(2)}
-                          </span>
-                          <span className="bg-red-100 text-red-800 px-3 py-1 rounded-full text-sm font-semibold">
-                            {Math.round(((product.originalPrice - parseFloat(product.price.replace(/[^\d.-]/g, ''))) / product.originalPrice) * 100)}% OFF
-                          </span>
-                        </>
-                      )}
-                    </div>
-                  </div>
+                                      <div className="flex items-center gap-3">
+                                        <span className="text-4xl font-bold text-gray-900">
+                                          {product.formatted_price || `$${parseFloat(product.price.replace(/[^\d.-]/g, '')).toFixed(2)}`}
+                                        </span>
+                                        {/* Calculate and display discount only if original price is valid and greater than current price */}
+                                        {product.original_price && parseFloat(product.original_price) > 0 && parseFloat(product.original_price) > parseFloat(product.price.replace(/[^\d.-]/g, '')) && (
+                                          <>
+                                            <span className="text-lg md:text-xl text-gray-400 line-through">
+                                              {product.formatted_original_price || `$${parseFloat(product.original_price).toFixed(2)}`}
+                                            </span>
+                                            <span className="bg-red-100 text-red-800 px-3 py-1 rounded-full text-sm font-semibold">
+                                              {Math.round(((parseFloat(product.original_price) - parseFloat(product.price.replace(/[^\d.-]/g, ''))) / parseFloat(product.original_price)) * 100)}% OFF
+                                            </span>
+                                          </>
+                                        )}
+                                      </div>                  </div>
 
                   {/* Buy Button */}
                   <Button
@@ -460,10 +481,10 @@ export default function ProductDetailClient({ productId }: ProductDetailClientPr
       </div>
 
       {/* Image Gallery Modal */}
-      {product && (
+      {product && selectedMedia && (
         <ImageGalleryModal
-          media={allMedia}
-          initialIndex={allMedia.findIndex(item => item.url === selectedMedia.url)}
+          media={modalMedia}
+          initialIndex={modalMedia.findIndex(item => item.originalUrl === selectedMedia.originalUrl || item.url === item.url)}
           isOpen={isModalOpen}
           onClose={() => setIsModalOpen(false)}
         />
@@ -471,7 +492,6 @@ export default function ProductDetailClient({ productId }: ProductDetailClientPr
     </div>
   );
 }
-
 
 export const ProductDetailSkeleton = () => {
   return (
@@ -482,9 +502,7 @@ export const ProductDetailSkeleton = () => {
         </div>
         
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-12">
-          {/* Image Skeletons */}
           <div className="bg-white rounded-xl border border-gray-100 overflow-hidden shadow-sm p-6">
-            {/* Mobile Image Skeleton */}
             <div className="block md:hidden mb-4">
               <Skeleton className="w-full aspect-square rounded-xl" />
             </div>
@@ -496,7 +514,6 @@ export const ProductDetailSkeleton = () => {
               </div>
             </div>
             
-            {/* Desktop Image Skeleton */}
             <div className="hidden md:flex gap-4">
               <div className="flex flex-col gap-2">
                 {Array.from({ length: 5 }).map((_, index) => (
@@ -507,7 +524,6 @@ export const ProductDetailSkeleton = () => {
             </div>
           </div>
           
-          {/* Details Skeleton */}
           <div className="bg-white rounded-xl border border-gray-100 overflow-hidden shadow-sm p-6">
             <div className="flex justify-between mb-4">
               <div className="flex gap-2">
