@@ -388,15 +388,13 @@ export default function ProductDetailClient({ productId }: ProductDetailClientPr
                     <span className="ml-2">{(product.brand ?? '').replace(' Parts', '')}</span>
                   </div>
 
-                  {product.partNumber && (
                     <div className="flex items-center text-sm text-gray-600">
                       <Hash size={16} className="mr-2 text-gray-400" />
                       <span className="font-medium text-gray-800">Part Number:</span>
                       <span className="ml-2 font-mono text-xs bg-gray-50 px-2 py-1 rounded">
-                        {product.partNumber}
+                        {product.partNumber || 'N/A'}
                       </span>
                     </div>
-                  )}
 
                   {product.condition && (
                     <div className="flex items-center text-sm text-gray-600">
@@ -426,7 +424,7 @@ export default function ProductDetailClient({ productId }: ProductDetailClientPr
                         ? "bg-orange-100 text-orange-700"
                         : "bg-red-100 text-red-700"
                     )}>
-                      {product.quantity > 0 ? `${product.quantity} units` : 'Out of stock'}
+                      {product.quantity > 0 ? `${product.quantity}` : 'Out of stock'}
                     </span>
                   </div>
                 </div>
@@ -439,13 +437,13 @@ export default function ProductDetailClient({ productId }: ProductDetailClientPr
                   <div className="flex items-center justify-between mb-6">
                                       <div className="flex items-center gap-3">
                                         <span className="text-4xl font-bold text-gray-900">
-                                          {product.formatted_price || `$${parseFloat(product.price.replace(/[^\d.-]/g, '')).toFixed(2)}`}
+                                          {product.formatted_price ? `AU ${product.formatted_price.replace('$', '')}` : `AU $${parseFloat(product.price.replace(/[^\d.-]/g, '')).toFixed(2)}`}
                                         </span>
                                         {/* Calculate and display discount only if original price is valid and greater than current price */}
                                         {product.original_price && parseFloat(product.original_price) > 0 && parseFloat(product.original_price) > parseFloat(product.price.replace(/[^\d.-]/g, '')) && (
                                           <>
                                             <span className="text-lg md:text-xl text-gray-400 line-through">
-                                              {product.formatted_original_price || `$${parseFloat(product.original_price).toFixed(2)}`}
+                                              {product.formatted_original_price ? `AU ${product.formatted_original_price.replace('$', '')}` : `AU $${parseFloat(product.original_price).toFixed(2)}`}
                                             </span>
                                             <span className="bg-red-100 text-red-800 px-3 py-1 rounded-full text-sm font-semibold">
                                               {Math.round(((parseFloat(product.original_price) - parseFloat(product.price.replace(/[^\d.-]/g, ''))) / parseFloat(product.original_price)) * 100)}% OFF

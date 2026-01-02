@@ -87,15 +87,13 @@ const ProductCard = ({ product, className, loading }: ProductCardProps) => {
             <span className="ml-2">{product.brand || product.brand_id || 'No Brand ID'}</span>
           </div>
 
-          {product.partNumber && (
             <div className="flex items-center text-sm text-gray-600">
               <Hash size={16} className="mr-2 text-gray-400" />
               <span className="font-medium text-gray-800">Part Number:</span>
               <span className="ml-2 font-mono text-xs bg-gray-50 px-2 py-1 rounded">
-                {product.partNumber}
+                {product.partNumber || 'N/A'}
               </span>
             </div>
-          )}
 
           {product.condition && (
             <div className="flex items-center text-sm text-gray-600">
@@ -125,7 +123,7 @@ const ProductCard = ({ product, className, loading }: ProductCardProps) => {
                 ? "bg-orange-100 text-orange-700"
                 : "bg-red-100 text-red-700"
             )}>
-              {product.quantity > 0 ? `${product.quantity} units` : 'Out of stock'}
+              {product.quantity > 0 ? `${product.quantity}` : 'Out of stock'}
             </span>
           </div>
         </div>
@@ -138,17 +136,18 @@ const ProductCard = ({ product, className, loading }: ProductCardProps) => {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <span className="text-2xl font-bold text-gray-900">
-                {product.price}
+                AU ${product.price.replace('$', '')}
               </span>
               
             </div>
             
             <Link 
               href={`/product/${product.id}`}
+              title="View product detail"
               className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-4 py-2 rounded-lg font-semibold text-sm transition-all duration-200 shadow-md hover:shadow-lg flex items-center gap-2"
             >
               <Eye size={16} />
-              View Details
+              View
             </Link>
           </div>
         </div>
