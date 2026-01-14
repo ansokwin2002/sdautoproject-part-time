@@ -40,7 +40,7 @@ export default function ProductListPage() {
         if (nameA > nameB) return order === 'asc' ? 1 : -1;
         return 0;
       } else if (sortBy === 'price') {
-        return order === 'asc' ? a.price - b.price : b.price - a.price;
+        return order === 'asc' ? (Number(a.price) || 0) - (Number(b.price) || 0) : (Number(b.price) || 0) - (Number(a.price) || 0);
       }
       return 0;
     });
