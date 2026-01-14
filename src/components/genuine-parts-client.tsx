@@ -44,7 +44,7 @@ export default function GenuinePartsClient() {
     ];
   }, []);
 
-  const brandLogos = {
+  const brandLogos: { [key: string]: string } = {
     "Ford": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Ford_logo_flat.svg/1200px-Ford_logo_flat.svg.png",
     "Isuzu": "https://1000logos.net/wp-content/uploads/2021/04/Isuzu-logo-500x281.png",
     "Toyota": "https://logos-world.net/wp-content/uploads/2020/04/Toyota-Logo.png",
