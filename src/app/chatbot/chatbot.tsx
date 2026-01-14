@@ -248,7 +248,7 @@ export function Chatbot({ isOpen, onClose }: { isOpen: boolean; onClose: () => v
       return;
     }
 
-    const flow = conversationFlows[flowKey];
+    const flow = conversationFlows[flowKey as keyof typeof conversationFlows];
     if (!flow) return;
 
     const firstStep = Object.keys(flow.steps)[0];
