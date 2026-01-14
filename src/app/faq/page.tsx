@@ -7,7 +7,7 @@ import { useState, useEffect, useRef } from 'react';
 const useIntersectionObserver = (options = {}) => {
   const [isIntersecting, setIsIntersecting] = useState(false);
   const [hasAnimated, setHasAnimated] = useState(false);
-  const ref = useRef(null);
+  const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -36,11 +36,11 @@ const useIntersectionObserver = (options = {}) => {
     };
   }, [hasAnimated, options]);
 
-  return [ref, isIntersecting];
+  return { ref, isIntersecting };
 };
 
-const AnimatedSection = ({ children, className = "", delay = 0 }) => {
-  const [ref, isIntersecting] = useIntersectionObserver();
+const AnimatedSection = ({ children, className = "", delay = 0 }: { children: React.ReactNode, className?: string, delay?: number }) => {
+  const { ref, isIntersecting } = useIntersectionObserver();
   
   return (
     <div
@@ -57,8 +57,8 @@ const AnimatedSection = ({ children, className = "", delay = 0 }) => {
   );
 };
 
-const AnimatedText = ({ children, className = "", delay = 0 }) => {
-  const [ref, isIntersecting] = useIntersectionObserver();
+const AnimatedText = ({ children, className = "", delay = 0 }: { children: React.ReactNode, className?: string, delay?: number }) => {
+  const { ref, isIntersecting } = useIntersectionObserver();
   
   return (
     <div
