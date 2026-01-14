@@ -45,7 +45,7 @@ const useIntersectionObserver = (options = {}) => {
 };
 
 // Animation variants for different elements
-const AnimatedSection = ({ children, className = "", delay = 0 }) => {
+const AnimatedSection = ({ children, className = "", delay = 0 }: { children: React.ReactNode, className?: string, delay?: number }) => {
   const [ref, isIntersecting] = useIntersectionObserver();
   
   return (
