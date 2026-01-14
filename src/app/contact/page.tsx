@@ -12,7 +12,7 @@ import { useContacts } from "@/hooks/useContacts";
 const useIntersectionObserver = (options = {}) => {
   const [isIntersecting, setIsIntersecting] = useState(false);
   const [hasAnimated, setHasAnimated] = useState(false);
-  const ref = useRef(null);
+  const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -41,12 +41,12 @@ const useIntersectionObserver = (options = {}) => {
     };
   }, [hasAnimated, options]);
 
-  return [ref, isIntersecting];
+  return { ref, isIntersecting };
 };
 
 // Animation variants for different elements
 const AnimatedSection = ({ children, className = "", delay = 0 }: { children: React.ReactNode, className?: string, delay?: number }) => {
-  const [ref, isIntersecting] = useIntersectionObserver();
+  const { ref, isIntersecting } = useIntersectionObserver();
   
   return (
     <div
@@ -63,8 +63,8 @@ const AnimatedSection = ({ children, className = "", delay = 0 }: { children: Re
   );
 };
 
-const AnimatedCard = ({ children, className = "", delay = 0 }) => {
-  const [ref, isIntersecting] = useIntersectionObserver();
+const AnimatedCard = ({ children, className = "", delay = 0 }: { children: React.ReactNode, className?: string, delay?: number }) => {
+  const { ref, isIntersecting } = useIntersectionObserver();
   
   return (
     <div
@@ -81,8 +81,8 @@ const AnimatedCard = ({ children, className = "", delay = 0 }) => {
   );
 };
 
-const AnimatedText = ({ children, className = "", delay = 0 }) => {
-  const [ref, isIntersecting] = useIntersectionObserver();
+const AnimatedText = ({ children, className = "", delay = 0 }: { children: React.ReactNode, className?: string, delay?: number }) => {
+  const { ref, isIntersecting } = useIntersectionObserver();
   
   return (
     <div
@@ -100,7 +100,7 @@ const AnimatedText = ({ children, className = "", delay = 0 }) => {
 };
 
 // Success/Error notification component
-const Notification = ({ type, message, onClose }) => {
+const Notification = ({ type, message, onClose }: { type: string, message: string, onClose: () => void }) => {
   useEffect(() => {
     const timer = setTimeout(() => {
       onClose();
@@ -151,12 +151,12 @@ export default function ContactPage() {
     engineCapacity: '',
     message: ''
   });
-  const [errors, setErrors] = useState({});
+  const [errors, setErrors] = useState<Record<string, string>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [notification, setNotification] = useState(null);
+  const [notification, setNotification] = useState<{ type: string; message: string } | null>(null);
 
   const validateForm = () => {
-    const newErrors = {};
+    const newErrors: Record<string, string> = {};
     
     if (formData.name.length < 2) {
       newErrors.name = 'Name must be at least 2 characters.';
@@ -174,7 +174,7 @@ export default function ContactPage() {
     return newErrors;
   };
 
-  const handleInputChange = (field, value) => {
+  const handleInputChange = (field: string, value: string) => {
     setFormData(prev => ({
       ...prev,
       [field]: value
@@ -189,7 +189,7 @@ export default function ContactPage() {
     }
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const newErrors = validateForm();
     
