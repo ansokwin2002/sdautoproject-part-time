@@ -8,7 +8,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 
 import ProductCard from "@/components/product-card";
 import ProductList from "@/components/product-list";
-import { useState, useEffect, useCallback, useRef, Suspense } from "react";
+import { useState, useEffect, useCallback, useRef, Suspense, ReactNode } from "react";
 import { useHomeSettings } from "@/hooks/useHomeSettings";
 import { useSliders } from "@/hooks/useSliders";
 import { useProducts } from "@/hooks/useProducts";
@@ -212,8 +212,14 @@ const services = [
   }
 ];
 
+interface AnimatedComponentProps {
+  children: ReactNode;
+  className?: string;
+  delay?: number;
+}
+
 // Animation variants for different elements
-const AnimatedSection = ({ children, className = "", delay = 0 }) => {
+const AnimatedSection = ({ children, className = "", delay = 0 }: AnimatedComponentProps) => {
   const [ref, isIntersecting] = useIntersectionObserver();
   
   return (
@@ -231,7 +237,7 @@ const AnimatedSection = ({ children, className = "", delay = 0 }) => {
   );
 };
 
-const AnimatedCard = ({ children, className = "", delay = 0 }) => {
+const AnimatedCard = ({ children, className = "", delay = 0 }: AnimatedComponentProps) => {
   const [ref, isIntersecting] = useIntersectionObserver();
   
   return (
@@ -249,7 +255,7 @@ const AnimatedCard = ({ children, className = "", delay = 0 }) => {
   );
 };
 
-const AnimatedText = ({ children, className = "", delay = 0 }) => {
+const AnimatedText = ({ children, className = "", delay = 0 }: AnimatedComponentProps) => {
   const [ref, isIntersecting] = useIntersectionObserver();
   
   return (
@@ -267,7 +273,7 @@ const AnimatedText = ({ children, className = "", delay = 0 }) => {
   );
 };
 
-const AnimatedImage = ({ children, className = "", delay = 0 }) => {
+const AnimatedImage = ({ children, className = "", delay = 0 }: AnimatedComponentProps) => {
   const [ref, isIntersecting] = useIntersectionObserver();
   
   return (
