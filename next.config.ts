@@ -1,4 +1,5 @@
-/** @type {import('next').NextConfig} */
+import type { NextConfig } from 'next';
+import type { Configuration } from 'webpack';
 
 // Extract hostname and port from NEXT_PUBLIC_API_BASE_URL for image optimization
 function getApiHostnameConfig() {
@@ -6,18 +7,18 @@ function getApiHostnameConfig() {
   try {
     const url = new URL(apiUrl);
     return {
-      protocol: url.protocol.replace(':', ''),
+      protocol: url.protocol.replace(':', '') as 'http' | 'https',
       hostname: url.hostname,
       port: url.port || (url.protocol === 'https:' ? '443' : '80'),
     };
   } catch {
-    return { protocol: 'http', hostname: 'localhost', port: '8000' };
+    return { protocol: 'http' as const, hostname: 'localhost', port: '8000' };
   }
 }
 
 const apiConfig = getApiHostnameConfig();
 
-const nextConfig = {
+const nextConfig: NextConfig = {
   experimental: {
     workerThreads: false,
     cpus: 1,
@@ -27,15 +28,15 @@ const nextConfig = {
   // ✅ FORCE skip type checking
   typescript: {
     ignoreBuildErrors: true,
-    tsconfigPath: './tsconfig.json',
   },
   eslint: {
     ignoreDuringBuilds: true,
   },
   
   // ADD THIS to completely disable type checking
-  webpack: (config, { isServer }) => {
+  webpack: (config: Configuration, { isServer }: { isServer: boolean }) => {
     if (!isServer) {
+      config.resolve = config.resolve || {};
       config.resolve.fallback = {
         ...config.resolve.fallback,
         fs: false,
@@ -65,4 +66,4 @@ const nextConfig = {
   },
 };
 
-module.exports = nextConfig;
+export default nextConfig;
