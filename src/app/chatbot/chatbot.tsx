@@ -316,7 +316,7 @@ export function Chatbot({ isOpen, onClose }: { isOpen: boolean; onClose: () => v
         const flow = conversationFlows[selectedFlow];
         if (flow) {
           const firstStep = Object.keys(flow.steps)[0];
-          const stepData = flow.steps[firstStep];
+          const stepData = flow.steps[firstStep as keyof typeof flow.steps];
           
           const botMessage: Message = {
             role: 'assistant',
