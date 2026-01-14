@@ -291,7 +291,21 @@ const AnimatedImage = ({ children, className = "", delay = 0 }: AnimatedComponen
   );
 };
 
-function HomePageDeliveryPartners({ partners, loading, error }) { // Accepts props
+interface DeliveryPartner {
+  id: number;
+  image: string;
+  title: string;
+  url_link?: string;
+  description?: string;
+}
+
+interface HomePageDeliveryPartnersProps {
+  partners: DeliveryPartner[];
+  loading: boolean;
+  error: any;
+}
+
+function HomePageDeliveryPartners({ partners, loading, error }: HomePageDeliveryPartnersProps) { // Accepts props
   const assetBase = API_BASE_URL.replace(/\/api\/public$/, ''); 
 
   // Removed internal items fallback
