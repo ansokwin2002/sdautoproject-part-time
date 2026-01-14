@@ -504,7 +504,7 @@ function HeroCarousel() {
     setTimeout(() => setIsTransitioning(false), 500);
   }, [isTransitioning, slides.length]);
 
-  const goToSlide = useCallback((index) => {
+  const goToSlide = useCallback((index: number) => {
     if (isTransitioning || index === currentSlide) return;
     setIsTransitioning(true);
     setCurrentSlide(index);
