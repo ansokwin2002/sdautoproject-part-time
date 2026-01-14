@@ -80,6 +80,7 @@ export default function ProductDetailClient({ productId }: ProductDetailClientPr
     return <ProductDetailSkeleton />; 
   }
 
+
   const images: MediaItem[] = product.images ? product.images.map(url => ({ type: 'image', url })) : [];
   const youtubeVideosFullUrls: string[] = (product.brand && (product.brand ?? '').toLowerCase().includes('ford') && product.videos)
     ? product.videos.map(videoId => `https://www.youtube.com/watch?v=${videoId}`)

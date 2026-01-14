@@ -73,26 +73,13 @@ const ProductDetailPageSkeleton = () => (
 
 export default function ProductDetailPage() {
   const params = useParams();
-  const id = Array.isArray(params.id) ? params.id[0] : (params.id ?? null);
+  const id = Array.isArray(params.id) ? params.id[0] : params.id;
 
-  const { product, loading, error } = useProductById(id);
-  const { products: allProducts } = useProducts();
-
-  const otherProducts = allProducts.filter((p) => p.id !== id);
-
-  if (loading) {
+  if (!id) {
+    // Render a skeleton or a not-found component if there is no ID
     return <ProductDetailPageSkeleton />;
   }
 
-  if (error || !product) {
-    return (
-        <div className="container mx-auto py-16 text-center">
-            <h2 className="text-2xl font-bold text-red-600 mb-4">Product not found</h2>
-            <p className="text-gray-600">{error || "The product you are looking for does not exist."}</p>
-        </div>
-    );
-  }
-
-  // We will pass the fetched product object and the list of other products to the client component.
-  return <ProductDetailClient product={product} otherProducts={otherProducts} />;
+  // The ProductDetailClient component will handle its own data fetching and state (loading, error)
+  return <ProductDetailClient productId={id} />;
 }
