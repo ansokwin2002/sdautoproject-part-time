@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useCallback, useRef, ReactNode } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
@@ -8,10 +8,10 @@ import { Phone, Mail, Clock, Shield, Wrench, Package, MapPin, Truck, CreditCard,
 import { useFaqs } from "@/hooks/useFaqs";
 
 // Custom hook for intersection observer
-const useIntersectionObserver = (options = {}) => {
+const useIntersectionObserver = (options = {}): [React.RefObject<HTMLDivElement>, boolean] => {
   const [isIntersecting, setIsIntersecting] = useState(false);
   const [hasAnimated, setHasAnimated] = useState(false);
-  const ref = useRef(null);
+  const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -61,7 +61,7 @@ const AnimatedSection = ({ children, className = "", delay = 0 }) => {
   );
 };
 
-const AnimatedCard = ({ children, className = "", delay = 0 }) => {
+const AnimatedCard = ({ children, className = "", delay = 0 }: AnimatedComponentProps) => {
   const [ref, isIntersecting] = useIntersectionObserver();
   
   return (
