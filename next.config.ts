@@ -1,4 +1,4 @@
-import type { NextConfig } from 'next';
+/** @type {import('next').NextConfig} */
 
 // Extract hostname and port from NEXT_PUBLIC_API_BASE_URL for image optimization
 function getApiHostnameConfig() {
@@ -6,18 +6,23 @@ function getApiHostnameConfig() {
   try {
     const url = new URL(apiUrl);
     return {
-      protocol: url.protocol.replace(':', '') as 'http' | 'https',
+      protocol: url.protocol.replace(':', ''),
       hostname: url.hostname,
       port: url.port || (url.protocol === 'https:' ? '443' : '80'),
     };
   } catch {
-    return { protocol: 'http' as const, hostname: 'localhost', port: '8000' };
+    return { protocol: 'http', hostname: 'localhost', port: '8000' };
   }
 }
 
 const apiConfig = getApiHostnameConfig();
 
-const nextConfig: NextConfig = {
+const nextConfig = {
+  experimental: {
+    workerThreads: false,
+    cpus: 1
+  },
+  
   // ✅ Allow build even if TS or ESLint errors occur
   typescript: {
     ignoreBuildErrors: true,
@@ -47,9 +52,6 @@ const nextConfig: NextConfig = {
       { protocol: 'http', hostname: 'localhost', port: '8000', pathname: '/storage/**' },
     ],
   },
-
-  // ✅ No need for 'experimental.appDir' in Next.js 13+ — it's enabled by default
-  // ✅ 'allowedDevOrigins' is not a valid key and has been removed
 };
 
-export default nextConfig;
+module.exports = nextConfig;
