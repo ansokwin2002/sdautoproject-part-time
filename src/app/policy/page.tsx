@@ -1,13 +1,13 @@
 "use client";
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, ReactNode } from 'react';
 import { usePolicies } from '@/hooks/usePolicies';
 
 // Custom hook for intersection observer
-const useIntersectionObserver = (options = {}) => {
+const useIntersectionObserver = (options = {}): [React.RefObject<HTMLDivElement>, boolean] => {
   const [isIntersecting, setIsIntersecting] = useState(false);
   const [hasAnimated, setHasAnimated] = useState(false);
-  const ref = useRef(null);
+  const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -39,7 +39,13 @@ const useIntersectionObserver = (options = {}) => {
   return [ref, isIntersecting];
 };
 
-const AnimatedSection = ({ children, className = "", delay = 0 }) => {
+interface AnimatedComponentProps {
+  children: ReactNode;
+  className?: string;
+  delay?: number;
+}
+
+const AnimatedSection = ({ children, className = "", delay = 0 }: AnimatedComponentProps) => {
   const [ref, isIntersecting] = useIntersectionObserver();
   
   return (
