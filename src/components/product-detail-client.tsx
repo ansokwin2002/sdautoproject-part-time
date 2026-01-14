@@ -447,7 +447,7 @@ export default function ProductDetailClient({ productId }: ProductDetailClientPr
                                               {product.formatted_original_price ? `AU ${product.formatted_original_price.replace('$', '')}` : `AU $${product.originalPrice.toFixed(2)}`}
                                             </span>
                                             <span className="bg-red-100 text-red-800 px-3 py-1 rounded-full text-sm font-semibold">
-                                              {Math.round(((parseFloat(product.original_price) - parseFloat(product.price.replace(/[^\d.-]/g, ''))) / parseFloat(product.original_price)) * 100)}% OFF
+                                              {Math.round(((product.originalPrice - parseFloat(product.price.replace(/[^\d.-]/g, ''))) / product.originalPrice) * 100)}% OFF
                                             </span>
                                           </>
                                         )}
