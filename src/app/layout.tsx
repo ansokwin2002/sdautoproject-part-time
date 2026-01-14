@@ -9,7 +9,6 @@ import { Toaster } from '@/components/ui/toaster';
 import ScrollToTopButton from '@/components/ui/scroll-to-top-button';
 import PageLoadingIndicator from '@/components/ui/page-loading-indicator';
 import { usePathname } from 'next/navigation';
-import { ChatbotTrigger } from '@/app/chatbot/chatbot'; // Corrected import
 
 // Note: Metadata export is not supported in Client Components. 
 // If you need to use metadata, consider moving this to a Server Component or a layout.tsx in a parent directory.
@@ -46,7 +45,6 @@ export default function RootLayout({
         <Toaster />
         <ScrollToTopButton />
         <PageLoadingIndicator />
-        <ChatbotTrigger /> {/* Render ChatbotTrigger */}
       </body>
     </html>
   );
