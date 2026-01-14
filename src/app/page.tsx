@@ -18,10 +18,10 @@ import { getImageUrl } from "@/lib/config";
 import { API_BASE_URL } from '@/utilities/constants'; // Added
 
 // Custom hook for intersection observer
-const useIntersectionObserver = (options = {}) => {
+const useIntersectionObserver = (options = {}): [React.RefObject<HTMLDivElement>, boolean] => {
   const [isIntersecting, setIsIntersecting] = useState(false);
   const [hasAnimated, setHasAnimated] = useState(false);
-  const ref = useRef(null);
+  const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
