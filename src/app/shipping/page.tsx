@@ -4,16 +4,16 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, Car, Wrench, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useCallback, useRef, ReactNode } from "react";
 import { useShipping } from "@/hooks/useShipping";
 import { useDeliveryPartners } from "@/hooks/useDeliveryPartners";
 import { getImageUrl } from "@/lib/config";
 
 // Custom hook for intersection observer
-const useIntersectionObserver = (options = {}) => {
+const useIntersectionObserver = (options = {}): [React.RefObject<HTMLDivElement>, boolean] => {
   const [isIntersecting, setIsIntersecting] = useState(false);
   const [hasAnimated, setHasAnimated] = useState(false);
-  const ref = useRef(null);
+  const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -45,8 +45,14 @@ const useIntersectionObserver = (options = {}) => {
   return [ref, isIntersecting];
 };
 
+interface AnimatedComponentProps {
+  children: ReactNode;
+  className?: string;
+  delay?: number;
+}
+
 // Animation variants for different elements
-const AnimatedSection = ({ children, className = "", delay = 0 }) => {
+const AnimatedSection = ({ children, className = "", delay = 0 }: AnimatedComponentProps) => {
   const [ref, isIntersecting] = useIntersectionObserver();
   
   return (
@@ -64,7 +70,7 @@ const AnimatedSection = ({ children, className = "", delay = 0 }) => {
   );
 };
 
-const AnimatedCard = ({ children, className = "", delay = 0 }) => {
+const AnimatedCard = ({ children, className = "", delay = 0 }: AnimatedComponentProps) => {
   const [ref, isIntersecting] = useIntersectionObserver();
   
   return (
@@ -82,7 +88,7 @@ const AnimatedCard = ({ children, className = "", delay = 0 }) => {
   );
 };
 
-const AnimatedText = ({ children, className = "", delay = 0 }) => {
+const AnimatedText = ({ children, className = "", delay = 0 }: AnimatedComponentProps) => {
   const [ref, isIntersecting] = useIntersectionObserver();
   
   return (
@@ -100,7 +106,7 @@ const AnimatedText = ({ children, className = "", delay = 0 }) => {
   );
 };
 
-const AnimatedImage = ({ children, className = "", delay = 0 }) => {
+const AnimatedImage = ({ children, className = "", delay = 0 }: AnimatedComponentProps) => {
   const [ref, isIntersecting] = useIntersectionObserver();
   
   return (
