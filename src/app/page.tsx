@@ -8,7 +8,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 
 import ProductCard from "@/components/product-card";
 import ProductList from "@/components/product-list";
-import { useState, useEffect, useCallback, useRef, Suspense, ReactNode } from "react";
+import { useState, useEffect, useCallback, useRef, Suspense, ReactNode, KeyboardEvent } from "react";
 import { useHomeSettings } from "@/hooks/useHomeSettings";
 import { useSliders } from "@/hooks/useSliders";
 import { useProducts } from "@/hooks/useProducts";
@@ -521,7 +521,7 @@ function HeroCarousel() {
 
   // Keyboard navigation
   useEffect(() => {
-    const handleKeyPress = (e) => {
+    const handleKeyPress = (e: KeyboardEvent) => {
       if (e.key === 'ArrowLeft') prevSlide();
       if (e.key === 'ArrowRight') nextSlide();
       if (e.key === ' ') {
