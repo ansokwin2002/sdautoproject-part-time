@@ -100,7 +100,7 @@ export default function ProductListPage() {
             {paginatedProducts.map((product) => (
               <TableRow key={product.id}>
                 <TableCell>
-                  <img src={product.image} alt={product.name} className="w-16 h-16 object-cover rounded-md" />
+                  <img src={product.images?.[0] || '/placeholder.png'} alt={product.name} className="w-16 h-16 object-cover rounded-md" />
                 </TableCell>
                 <TableCell className="font-medium">{product.name}</TableCell>
                 <TableCell>{product.code}</TableCell>
