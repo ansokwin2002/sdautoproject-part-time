@@ -43,7 +43,13 @@ const useIntersectionObserver = (options = {}): [React.RefObject<HTMLDivElement>
   return [ref, isIntersecting];
 };
 
-const AnimatedSection = ({ children, className = "", delay = 0 }) => {
+interface AnimatedComponentProps {
+  children: ReactNode;
+  className?: string;
+  delay?: number;
+}
+
+const AnimatedSection = ({ children, className = "", delay = 0 }: AnimatedComponentProps) => {
   const [ref, isIntersecting] = useIntersectionObserver();
   
   return (
