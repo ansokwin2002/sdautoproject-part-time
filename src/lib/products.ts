@@ -3,7 +3,9 @@ export interface Product {
   name: string;
   description: string;
   price: string;
+  formatted_price?: string;
   originalPrice?: number;
+  formatted_original_price?: string;
   images: string[];
   videos?: string[]; // Added this line
   brand: string;
