@@ -1,5 +1,4 @@
 import type { NextConfig } from 'next';
-import type { Configuration } from 'webpack';
 
 // Extract hostname and port from NEXT_PUBLIC_API_BASE_URL for image optimization
 function getApiHostnameConfig() {
@@ -34,7 +33,7 @@ const nextConfig: NextConfig = {
   },
   
   // ADD THIS to completely disable type checking
-  webpack: (config: Configuration, { isServer }: { isServer: boolean }) => {
+  webpack: (config: any, { isServer }: any) => {
     if (!isServer) {
       config.resolve = config.resolve || {};
       config.resolve.fallback = {
