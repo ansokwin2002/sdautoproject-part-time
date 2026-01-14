@@ -292,7 +292,7 @@ const AnimatedImage = ({ children, className = "", delay = 0 }: AnimatedComponen
 };
 
 interface DeliveryPartner {
-  id: number;
+  id?: number;
   image: string;
   title: string;
   url_link?: string;
@@ -335,7 +335,7 @@ function HomePageDeliveryPartners({ partners, loading, error }: HomePageDelivery
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 max-w-7xl mx-auto items-stretch">
       {partners.map((p, idx) => ( // <--- uses partners directly
-        <AnimatedSection key={(p as any).id ?? idx} delay={100 * (idx + 1)}>
+        <AnimatedSection key={p.id ?? idx} delay={100 * (idx + 1)}>
           <div className="bg-white rounded-lg p-4 md:p-6 lg:p-8 shadow-lg hover:shadow-xl transition-all duration-300 group text-center flex flex-col h-full">
             <div className="mb-4 md:mb-6">
               <div className="relative w-32 h-32 md:w-40 md:h-40 lg:w-48 lg:h-48 mx-auto mb-3 md:mb-4 flex items-center justify-center">
