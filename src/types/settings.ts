@@ -19,6 +19,7 @@ export interface HomeSettings {
   why_choose_description3?: string;
   why_choose_title4?: string;
   why_choose_description4?: string;
+  footer_home?: string;
   created_at?: string;
   updated_at?: string;
 }
