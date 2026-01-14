@@ -441,10 +441,10 @@ export default function ProductDetailClient({ productId }: ProductDetailClientPr
                                           {product.formatted_price ? `AU ${product.formatted_price.replace('$', '')}` : `AU $${parseFloat(product.price.replace(/[^\d.-]/g, '')).toFixed(2)}`}
                                         </span>
                                         {/* Calculate and display discount only if original price is valid and greater than current price */}
-                                        {product.originalPrice && parseFloat(product.originalPrice) > 0 && parseFloat(product.originalPrice) > parseFloat(product.price.replace(/[^\d.-]/g, '')) && (
+                                        {product.originalPrice && product.originalPrice > 0 && product.originalPrice > parseFloat(product.price.replace(/[^\d.-]/g, '')) && (
                                           <>
                                             <span className="text-lg md:text-xl text-gray-400 line-through">
-                                              {product.formatted_original_price ? `AU ${product.formatted_original_price.replace('$', '')}` : `AU $${parseFloat(product.originalPrice).toFixed(2)}`}
+                                              {product.formatted_original_price ? `AU ${product.formatted_original_price.replace('$', '')}` : `AU $${product.originalPrice.toFixed(2)}`}
                                             </span>
                                             <span className="bg-red-100 text-red-800 px-3 py-1 rounded-full text-sm font-semibold">
                                               {Math.round(((parseFloat(product.original_price) - parseFloat(product.price.replace(/[^\d.-]/g, ''))) / parseFloat(product.original_price)) * 100)}% OFF
