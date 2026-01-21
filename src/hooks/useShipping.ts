@@ -1,6 +1,10 @@
 import { API_BASE_URL } from '@/utilities/constants';
 import { useState, useEffect, useCallback } from 'react';
 import { Shipping } from '@/types/shipping';
+import { get, set } from '@/lib/cache';
+
+const CACHE_KEY = 'shipping';
+const CACHE_TTL = 5 * 60 * 1000; // 5 minutes
 
 interface UseShippingOptions {
   autoFetch?: boolean;
@@ -32,6 +36,12 @@ export function useShipping(options: UseShippingOptions = {}): UseShippingState 
   }, []);
 
   const fetchShipping = useCallback(async (attempt = 1): Promise<void> => {
+    const cachedData = get<Shipping[]>(CACHE_KEY);
+    if (cachedData) {
+        setShipping(cachedData);
+        return;
+    }
+
     setLoading(true);
     setError(null);
 
@@ -45,6 +55,7 @@ export function useShipping(options: UseShippingOptions = {}): UseShippingState 
       }
       const responseData = await res.json();
       const data = responseData.data;
+      set(CACHE_KEY, data, CACHE_TTL);
       setShipping(data);
     } catch (err: any) {
       const errorMessage = err instanceof Error
@@ -69,6 +80,7 @@ export function useShipping(options: UseShippingOptions = {}): UseShippingState 
   }, []);
 
   const refetch = useCallback(async (): Promise<void> => {
+    set(CACHE_KEY, null, 0); // Invalidate cache
     await fetchShipping();
   }, [fetchShipping]);
 
@@ -100,6 +112,13 @@ export function useShippingById(id: number | null, autoFetch = true) {
   const fetchShipping = useCallback(async (): Promise<void> => {
     if (!id) return;
 
+    const cacheKey = `${CACHE_KEY}-${id}`;
+    const cachedData = get<Shipping>(cacheKey);
+    if (cachedData) {
+        setShipping(cachedData);
+        return;
+    }
+
     setLoading(true);
     setError(null);
 
@@ -113,6 +132,7 @@ export function useShippingById(id: number | null, autoFetch = true) {
       }
       const responseData = await res.json();
       const data = responseData.data;
+      set(cacheKey, data, CACHE_TTL);
       setShipping(data);
     } catch (err: any) {
       const errorMessage = err instanceof Error
@@ -127,8 +147,11 @@ export function useShippingById(id: number | null, autoFetch = true) {
   }, [id]);
 
   const refetch = useCallback(async (): Promise<void> => {
+    if (id) {
+        set(`${CACHE_KEY}-${id}`, null, 0); // Invalidate cache
+    }
     await fetchShipping();
-  }, [fetchShipping]);
+  }, [fetchShipping, id]);
 
   useEffect(() => {
     if (autoFetch && id) {

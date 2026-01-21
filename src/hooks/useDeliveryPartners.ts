@@ -1,5 +1,9 @@
 import { API_BASE_URL } from '@/utilities/constants';
 import { useState, useEffect, useCallback } from 'react';
+import { get, set } from '@/lib/cache';
+
+const CACHE_KEY = 'delivery-partners';
+const CACHE_TTL = 5 * 60 * 1000; // 5 minutes
 
 export interface DeliveryPartner {
   id?: number;
@@ -44,6 +48,12 @@ export function useDeliveryPartners(options: UseDeliveryPartnersOptions = {}): U
   const assetBase = API_BASE_URL.replace(/\/api\/public$/, '');
 
   const fetchPartners = useCallback(async (attempt = 1): Promise<void> => {
+    const cachedData = get<DeliveryPartner[]>(CACHE_KEY);
+    if (cachedData) {
+        setPartners(cachedData);
+        return;
+    }
+    
     setLoading(true);
     setError(null);
 
@@ -61,6 +71,7 @@ export function useDeliveryPartners(options: UseDeliveryPartnersOptions = {}): U
         ...item,
         image: item.image?.startsWith('http') ? item.image : `${assetBase}${item.image}`,
       }));
+      set(CACHE_KEY, normalized, CACHE_TTL);
       setPartners(normalized);
     } catch (e: any) {
       console.error('Failed to fetch delivery partners:', e);
@@ -86,6 +97,7 @@ export function useDeliveryPartners(options: UseDeliveryPartnersOptions = {}): U
   }, [deliveryUrl, assetBase]);
 
   const refetch = useCallback(async () => {
+    set(CACHE_KEY, null, 0); // Invalidate cache
     await fetchPartners();
   }, [fetchPartners]);
 

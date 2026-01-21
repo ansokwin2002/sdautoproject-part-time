@@ -1,6 +1,10 @@
 import { API_BASE_URL } from '@/utilities/constants';
 import { useState, useEffect, useCallback } from 'react';
 import { Slider } from '@/types/slider';
+import { get, set } from '@/lib/cache';
+
+const CACHE_KEY = 'sliders';
+const CACHE_TTL = 5 * 60 * 1000; // 5 minutes
 
 interface UseSlidersOptions {
   autoFetch?: boolean;
@@ -32,6 +36,12 @@ export function useSliders(options: UseSlidersOptions = {}): UseSlidersState {
   }, []);
 
   const fetchSliders = useCallback(async (attempt = 1): Promise<void> => {
+    const cachedData = get<Slider[]>(CACHE_KEY);
+    if (cachedData) {
+      setSliders(cachedData);
+      return;
+    }
+
     setLoading(true);
     setError(null);
 
@@ -54,11 +64,13 @@ export function useSliders(options: UseSlidersOptions = {}): UseSlidersState {
         return a.id - b.id;
       });
       
-            setSliders(sortedSliders);
-          } catch (err: any) {
-            const errorMessage = err instanceof Error
-                ? err.message
-                : 'An unknown error occurred';
+      set(CACHE_KEY, sortedSliders, CACHE_TTL);
+      setSliders(sortedSliders);
+      
+    } catch (err: any) {
+        const errorMessage = err instanceof Error
+            ? err.message
+            : 'An unknown error occurred';
       console.error('Failed to fetch sliders:', err);
 
       // Retry logic
@@ -77,6 +89,7 @@ export function useSliders(options: UseSlidersOptions = {}): UseSlidersState {
   }, []);
 
   const refetch = useCallback(async (): Promise<void> => {
+    set(CACHE_KEY, null, 0); // Invalidate cache
     await fetchSliders();
   }, [fetchSliders]);
 
@@ -108,6 +121,13 @@ export function useSliderById(id: number | null, autoFetch = true) {
   const fetchSlider = useCallback(async (): Promise<void> => {
     if (!id) return;
 
+    const cacheKey = `${CACHE_KEY}-${id}`;
+    const cachedData = get<Slider>(cacheKey);
+    if (cachedData) {
+      setSlider(cachedData);
+      return;
+    }
+
     setLoading(true);
     setError(null);
 
@@ -121,6 +141,7 @@ export function useSliderById(id: number | null, autoFetch = true) {
       }
       const responseData = await res.json();
       const data = responseData.data;
+      set(cacheKey, data, CACHE_TTL);
       setSlider(data);
         } catch (err: any) {
           const errorMessage = err instanceof Error
@@ -134,8 +155,11 @@ export function useSliderById(id: number | null, autoFetch = true) {
   }, [id]);
 
   const refetch = useCallback(async (): Promise<void> => {
+    if (id) {
+        set(`${CACHE_KEY}-${id}`, null, 0); // Invalidate cache
+    }
     await fetchSlider();
-  }, [fetchSlider]);
+  }, [fetchSlider, id]);
 
   useEffect(() => {
     if (autoFetch && id) {

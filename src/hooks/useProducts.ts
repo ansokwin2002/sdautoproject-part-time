@@ -2,6 +2,10 @@ import { API_BASE_URL } from '@/utilities/constants';
 import { useState, useEffect, useCallback } from 'react';
 import { Product } from '@/lib/products'; // Using the existing Product type
 import { products as staticProducts } from '@/lib/products'; // Import static data
+import { get, set } from '@/lib/cache';
+
+const CACHE_KEY = 'products';
+const CACHE_TTL = 5 * 60 * 1000; // 5 minutes
 
 interface UseProductsOptions {
   autoFetch?: boolean;
@@ -53,6 +57,12 @@ export function useProducts(options: UseProductsOptions = {}): UseProductsState 
   }, []);
 
   const fetchProducts = useCallback(async (attempt = 1): Promise<void> => {
+    const cachedData = get<Product[]>(CACHE_KEY);
+    if (cachedData) {
+        setProducts(cachedData);
+        return;
+    }
+
     setLoading(true);
     setError(null);
 
@@ -68,6 +78,7 @@ export function useProducts(options: UseProductsOptions = {}): UseProductsState 
       
       if (responseData.data && responseData.data.length > 0) {
         const transformedProducts = responseData.data.map(transformApiProduct);
+        set(CACHE_KEY, transformedProducts, CACHE_TTL);
         setProducts(transformedProducts);
       } else {
         // Fallback to static data if API returns 0 records
@@ -87,6 +98,7 @@ export function useProducts(options: UseProductsOptions = {}): UseProductsState 
   }, []);
 
   const refetch = useCallback(async (): Promise<void> => {
+    set(CACHE_KEY, null, 0); // Invalidate cache
     await fetchProducts();
   }, [fetchProducts]);
 
@@ -118,6 +130,14 @@ export function useProductById(id: string | null, autoFetch = true) {
   const fetchProduct = useCallback(async (): Promise<void> => {
     if (!id) return;
 
+    const cacheKey = `${CACHE_KEY}-${id}`;
+    const cachedData = get<Product>(cacheKey);
+    if (cachedData) {
+        setProduct(cachedData);
+        return;
+    }
+
+
     setLoading(true);
     setError(null);
 
@@ -132,6 +152,7 @@ export function useProductById(id: string | null, autoFetch = true) {
       const responseData = await res.json();
       if (responseData.data) {
         const transformedProduct = transformApiProduct(responseData.data);
+        set(cacheKey, transformedProduct, CACHE_TTL);
         setProduct(transformedProduct);
       } else {
         throw new Error('Product not found in API');
@@ -154,8 +175,11 @@ export function useProductById(id: string | null, autoFetch = true) {
   }, [id]);
 
   const refetch = useCallback(async (): Promise<void> => {
+    if (id) {
+        set(`${CACHE_KEY}-${id}`, null, 0); // Invalidate cache
+    }
     await fetchProduct();
-  }, [fetchProduct]);
+  }, [fetchProduct, id]);
 
   useEffect(() => {
     if (autoFetch && id) {

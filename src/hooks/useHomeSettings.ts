@@ -1,6 +1,10 @@
 import { API_BASE_URL } from '@/utilities/constants';
 import { useState, useEffect, useCallback } from 'react';
 import { HomeSettings } from '@/types/settings';
+import { get, set } from '@/lib/cache';
+
+const CACHE_KEY = 'home-settings';
+const CACHE_TTL = 5 * 60 * 1000; // 5 minutes
 
 interface UseHomeSettingsState {
   settings: HomeSettings | null;
@@ -40,6 +44,17 @@ export function useHomeSettings(options: UseHomeSettingsOptions = {}): UseHomeSe
   }, []);
 
   const fetchSettings = useCallback(async (attempt = 1): Promise<void> => {
+    const cachedData = get<HomeSettings[]>(CACHE_KEY);
+    if (cachedData) {
+      setAllSettings(cachedData);
+      if (!fetchAll && cachedData.length > 0) {
+        setSettings(cachedData[0]);
+      } else if (fetchAll) {
+        setSettings(cachedData[0] || null);
+      }
+      return;
+    }
+
     setLoading(true);
     setError(null);
 
@@ -54,6 +69,7 @@ export function useHomeSettings(options: UseHomeSettingsOptions = {}): UseHomeSe
       const responseData = await res.json();
       const data = responseData.data;
       
+      set(CACHE_KEY, data, CACHE_TTL);
       setAllSettings(data);
       
       // If not fetching all, set the first setting as the primary setting
@@ -89,6 +105,7 @@ export function useHomeSettings(options: UseHomeSettingsOptions = {}): UseHomeSe
   }, [fetchAll]);
 
   const refetch = useCallback(async (): Promise<void> => {
+    set(CACHE_KEY, null, 0); // Invalidate cache
     await fetchSettings();
   }, [fetchSettings]);
 
@@ -121,6 +138,13 @@ export function useHomeSettingById(id: number | null, autoFetch = true) {
   const fetchSetting = useCallback(async (): Promise<void> => {
     if (!id) return;
 
+    const cacheKey = `${CACHE_KEY}-${id}`;
+    const cachedData = get<HomeSettings>(cacheKey);
+    if (cachedData) {
+      setSetting(cachedData);
+      return;
+    }
+
     setLoading(true);
     setError(null);
 
@@ -134,6 +158,7 @@ export function useHomeSettingById(id: number | null, autoFetch = true) {
       }
       const responseData = await res.json();
       const data = responseData.data;
+      set(cacheKey, data, CACHE_TTL);
       setSetting(data);
         } catch (err: any) {
           const errorMessage = err instanceof Error
@@ -147,8 +172,11 @@ export function useHomeSettingById(id: number | null, autoFetch = true) {
   }, [id]);
 
   const refetch = useCallback(async (): Promise<void> => {
+    if(id) {
+        set(`${CACHE_KEY}-${id}`, null, 0); // Invalidate cache
+    }
     await fetchSetting();
-  }, [fetchSetting]);
+  }, [fetchSetting, id]);
 
   useEffect(() => {
     if (autoFetch && id) {
