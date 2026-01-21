@@ -260,7 +260,7 @@ export default function ContactPage() {
         {/* Header Section */}
         <div className="text-center">
           <AnimatedText delay={100}>
-            <h1 className="text-4xl md:text-5xl font-bold font-headline">Product Inquiry</h1>
+            <h1 className="text-4xl md:text-5xl font-bold font-headline">Product Inquirys</h1>
           </AnimatedText>
           <AnimatedText delay={200}>
             <p className="text-muted-foreground mt-3 max-w-2xl mx-auto text-lg">
