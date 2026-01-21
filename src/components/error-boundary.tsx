@@ -22,13 +22,11 @@ class ErrorBoundary extends Component<Props, State> {
 
   public componentDidCatch(error: Error, errorInfo: ErrorInfo) {
     console.error("Uncaught error:", error, errorInfo);
-    if (this.isChunkLoadError(error)) {
-      window.location.reload();
+    // Check if the error is a ChunkLoadError
+    if (error.name === 'ChunkLoadError') {
+      console.log("ChunkLoadError detected, reloading page...");
+      window.location.reload(true); // Force a hard reload
     }
-  }
-
-  private isChunkLoadError(error: Error): boolean {
-    return error.name === 'ChunkLoadError';
   }
 
   public render() {
