@@ -86,7 +86,7 @@ export function useHomeSettings(options: UseHomeSettingsOptions = {}): UseHomeSe
     } finally {
       setLoading(false);
     }
-  }, [fetchAll, retryAttempts, retryDelay]);
+  }, [fetchAll]);
 
   const refetch = useCallback(async (): Promise<void> => {
     await fetchSettings();

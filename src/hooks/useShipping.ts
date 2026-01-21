@@ -66,7 +66,7 @@ export function useShipping(options: UseShippingOptions = {}): UseShippingState 
     } finally {
       setLoading(false);
     }
-  }, [retryAttempts, retryDelay]);
+  }, []);
 
   const refetch = useCallback(async (): Promise<void> => {
     await fetchShipping();

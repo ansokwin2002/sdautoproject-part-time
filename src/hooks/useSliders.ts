@@ -74,7 +74,7 @@ export function useSliders(options: UseSlidersOptions = {}): UseSlidersState {
     } finally {
       setLoading(false);
     }
-  }, [retryAttempts, retryDelay]);
+  }, []);
 
   const refetch = useCallback(async (): Promise<void> => {
     await fetchSliders();

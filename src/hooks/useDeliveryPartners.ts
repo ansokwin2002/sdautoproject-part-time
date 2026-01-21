@@ -83,7 +83,7 @@ export function useDeliveryPartners(options: UseDeliveryPartnersOptions = {}): U
     } finally {
       setLoading(false);
     }
-  }, [deliveryUrl, assetBase, retryAttempts, retryDelay]);
+  }, [deliveryUrl, assetBase]);
 
   const refetch = useCallback(async () => {
     await fetchPartners();
