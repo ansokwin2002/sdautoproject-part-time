@@ -273,7 +273,7 @@ export default function ContactPage() {
         <AnimatedCard delay={300}>
           <Card className="shadow-lg mx-auto">
             <CardHeader className="text-center">
-              <CardTitle className="text-2xl">Email Enquiry Forms</CardTitle>
+              <CardTitle className="text-2xl">Email Enquiry Form</CardTitle>
               <CardDescription className="text-base">
                 Please complete this form to send us your enquiry.
               </CardDescription>

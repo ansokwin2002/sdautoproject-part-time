@@ -18,6 +18,7 @@ function getApiHostnameConfig() {
 const apiConfig = getApiHostnameConfig();
 
 const nextConfig: NextConfig = {
+  output: 'standalone',
   experimental: {
     workerThreads: false,
     cpus: 1,
