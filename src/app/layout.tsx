@@ -10,7 +10,7 @@ import ScrollToTopButton from '@/components/ui/scroll-to-top-button';
 import PageLoadingIndicator from '@/components/ui/page-loading-indicator';
 import { usePathname } from 'next/navigation';
 
-import ErrorBoundary from '@/components/error-boundary';
+
 
 // Note: Metadata export is not supported in Client Components. 
 // If you need to use metadata, consider moving this to a Server Component or a layout.tsx in a parent directory.
@@ -42,7 +42,7 @@ export default function RootLayout({
         <div className="relative flex min-h-dvh flex-col">
           {!isAdminRoute && <Header />}
           <main className="flex-1">
-            <ErrorBoundary>{children}</ErrorBoundary>
+            {children}
           </main>
           {!isAdminRoute && <Footer />}
         </div>
