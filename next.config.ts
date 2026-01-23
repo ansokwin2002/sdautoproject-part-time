@@ -1,67 +1,33 @@
 import type { NextConfig } from 'next';
 
-// Extract hostname and port from NEXT_PUBLIC_API_BASE_URL for image optimization
-function getApiHostnameConfig() {
-  const apiUrl = 'https://api.sdauto.com.au/api/public';
-  try {
-    const url = new URL(apiUrl);
-    return {
-      protocol: url.protocol.replace(':', '') as 'http' | 'https',
-      hostname: url.hostname,
-      port: url.port || (url.protocol === 'https:' ? '443' : '80'),
-    };
-  } catch {
-    return { protocol: 'http' as const, hostname: 'localhost', port: '8000' };
-  }
-}
-
-const apiConfig = getApiHostnameConfig();
-
 const nextConfig: NextConfig = {
-  experimental: {
-    workerThreads: false,
-    cpus: 1,
-    typedRoutes: false,
+  reactStrictMode: true,
+
+  // ✅ Allow external images (SSR safe)
+  images: {
+    remotePatterns: [
+      { protocol: 'https', hostname: 'placehold.co' },
+      { protocol: 'https', hostname: 'picsum.photos' },
+      { protocol: 'https', hostname: 'images.unsplash.com' },
+      { protocol: 'https', hostname: 'media.cnn.com' },
+      { protocol: 'https', hostname: 'imgcdn.oto.com' },
+      { protocol: 'https', hostname: 'www.toyota.com.la' },
+      { protocol: 'https', hostname: 'www.topgear.com' },
+      { protocol: 'https', hostname: 'res.cloudinary.com' },
+      { protocol: 'https', hostname: 'media.ed.edmunds-media.com' },
+      { protocol: 'https', hostname: 'seo-cms.autoscout24.ch' },
+      { protocol: 'https', hostname: 'sdmntpraustraliaeast.oaiusercontent.com' },
+      { protocol: 'https', hostname: 'api.sdauto.com.au' },
+      { protocol: 'http', hostname: 'localhost' },
+    ],
   },
-  
-  // ✅ FORCE skip type checking
+
+  // ✅ Ignore build-time checks ONLY (safe)
   typescript: {
     ignoreBuildErrors: true,
   },
   eslint: {
     ignoreDuringBuilds: true,
-  },
-  
-  // ADD THIS to completely disable type checking
-  webpack: (config: any, { isServer }: any) => {
-    if (!isServer) {
-      config.resolve = config.resolve || {};
-      config.resolve.fallback = {
-        ...config.resolve.fallback,
-        fs: false,
-      };
-    }
-    return config;
-  },
-
-  // ✅ Image optimization setup
-  images: {
-    unoptimized: true,
-    remotePatterns: [
-      { protocol: 'https', hostname: 'placehold.co', pathname: '/**' },
-      { protocol: 'https', hostname: 'picsum.photos', pathname: '/**' },
-      { protocol: 'https', hostname: 'images.unsplash.com', pathname: '/**' },
-      { protocol: 'https', hostname: 'media.cnn.com', pathname: '/**' },
-      { protocol: 'https', hostname: 'imgcdn.oto.com', pathname: '/**' },
-      { protocol: 'https', hostname: 'www.toyota.com.la', pathname: '/**' },
-      { protocol: 'https', hostname: 'www.topgear.com', pathname: '/**' },
-      { protocol: 'https', hostname: 'res.cloudinary.com', pathname: '/**' },
-      { protocol: 'https', hostname: 'media.ed.edmunds-media.com', pathname: '/**' },
-      { protocol: 'https', hostname: 'seo-cms.autoscout24.ch', pathname: '/**' },
-      { protocol: 'https', hostname: 'sdmntpraustraliaeast.oaiusercontent.com', pathname: '/**' },
-      { protocol: apiConfig.protocol, hostname: apiConfig.hostname, port: apiConfig.port, pathname: '/storage/**' },
-      { protocol: 'http', hostname: 'localhost', port: '8000', pathname: '/storage/**' },
-    ],
   },
 };
 
