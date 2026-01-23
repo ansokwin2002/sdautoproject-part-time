@@ -2,7 +2,7 @@ import type { NextConfig } from 'next';
 
 // Extract hostname and port from NEXT_PUBLIC_API_BASE_URL for image optimization
 function getApiHostnameConfig() {
-  const apiUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8000/api';
+  const apiUrl = 'https://api.sdauto.com.au/api/public';
   try {
     const url = new URL(apiUrl);
     return {
@@ -18,7 +18,6 @@ function getApiHostnameConfig() {
 const apiConfig = getApiHostnameConfig();
 
 const nextConfig: NextConfig = {
-  output: 'standalone',
   experimental: {
     workerThreads: false,
     cpus: 1,
