@@ -57,44 +57,48 @@ export function useDeliveryPartners(options: UseDeliveryPartnersOptions = {}): U
     setLoading(true);
     setError(null);
 
-    try {
-      const res = await fetch(deliveryUrl, { headers: { Accept: 'application/json' } });
-      if (!res.ok) {
-        const text = await res.text();
-        throw new Error(`HTTP ${res.status}: ${text || res.statusText}`);
+    for (let attempt = 1; attempt <= retryAttempts; attempt++) {
+      try {
+        const res = await fetch(deliveryUrl, { headers: { Accept: 'application/json' } });
+        if (!res.ok) {
+          const text = await res.text();
+          throw new Error(`HTTP ${res.status}: ${text || res.statusText}`);
+        }
+        const data = await res.json();
+        // Normalize expected shape (array of items with title, description, image, url_link)
+        const list: DeliveryPartner[] = Array.isArray(data) ? data : (data?.data ?? []);
+        // Normalize images to absolute URLs using assetBase
+        const normalized = list.map((item) => ({
+          ...item,
+          image: item.image?.startsWith('http') ? item.image : `${assetBase}${item.image}`,
+        }));
+        set(CACHE_KEY, normalized, CACHE_TTL);
+        setPartners(normalized);
+        setLoading(false);
+        return; // Exit on success
+
+      } catch (e: any) {
+        if (attempt === retryAttempts) {
+          console.error('Failed to fetch delivery partners:', e);
+          console.error('Delivery partners fetch error details (message):', e instanceof Error ? e.message : e);
+          // Attempt to log more details if available in the error object
+          if (e.status) {
+            console.error('Delivery partners fetch HTTP status:', e.status);
+          }
+          if (e.response) {
+            // If it's a network error, e.response might not exist or be a readable stream
+            e.response.text().then((text: string) => {
+              console.error('Delivery partners fetch raw response:', text);
+            }).catch(() => {}); // Catch potential errors if response.text() fails
+          }
+          setError(e?.message || 'Failed to load delivery partners');
+          setLoading(false);
+        } else {
+          await new Promise(resolve => setTimeout(resolve, retryDelay));
+        }
       }
-      const data = await res.json();
-      // Normalize expected shape (array of items with title, description, image, url_link)
-      const list: DeliveryPartner[] = Array.isArray(data) ? data : (data?.data ?? []);
-      // Normalize images to absolute URLs using assetBase
-      const normalized = list.map((item) => ({
-        ...item,
-        image: item.image?.startsWith('http') ? item.image : `${assetBase}${item.image}`,
-      }));
-      set(CACHE_KEY, normalized, CACHE_TTL);
-      setPartners(normalized);
-    } catch (e: any) {
-      console.error('Failed to fetch delivery partners:', e);
-      console.error('Delivery partners fetch error details (message):', e instanceof Error ? e.message : e);
-      // Attempt to log more details if available in the error object
-      if (e.status) {
-        console.error('Delivery partners fetch HTTP status:', e.status);
-      }
-      if (e.response) {
-        // If it's a network error, e.response might not exist or be a readable stream
-        e.response.text().then((text: string) => {
-          console.error('Delivery partners fetch raw response:', text);
-        }).catch(() => {}); // Catch potential errors if response.text() fails
-      }
-      if (attempt < retryAttempts) {
-        setTimeout(() => fetchPartners(attempt + 1), retryDelay * attempt);
-        return;
-      }
-      setError(e?.message || 'Failed to load delivery partners');
-    } finally {
-      setLoading(false);
     }
-  }, [deliveryUrl, assetBase]);
+  }, [deliveryUrl, assetBase, retryAttempts, retryDelay]);
 
   const refetch = useCallback(async () => {
     set(CACHE_KEY, null, 0); // Invalidate cache

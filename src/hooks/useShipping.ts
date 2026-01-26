@@ -45,39 +45,34 @@ export function useShipping(options: UseShippingOptions = {}): UseShippingState 
     setLoading(true);
     setError(null);
 
-    try {
-      const apiUrl = `${API_BASE_URL}/shipping`;
-      const res = await fetch(apiUrl, { headers: { Accept: 'application/json' } });
+    for (let attempt = 1; attempt <= retryAttempts; attempt++) {
+      try {
+        const apiUrl = `${API_BASE_URL}/shipping`;
+        const res = await fetch(apiUrl, { headers: { Accept: 'application/json' } });
 
-      if (!res.ok) {
-        const errorData = await res.json();
-        throw new Error(errorData.message || res.statusText);
+        if (!res.ok) {
+          const errorData = await res.json();
+          throw new Error(errorData.message || res.statusText);
+        }
+        const responseData = await res.json();
+        const data = responseData.data;
+        set(CACHE_KEY, data, CACHE_TTL);
+        setShipping(data);
+        setLoading(false);
+        return; // Exit on success
+
+      } catch (err: any) {
+        if (attempt === retryAttempts) {
+          const errorMessage = err instanceof Error ? err.message : 'An unknown error occurred';
+          console.error('Failed to fetch shipping data:', err);
+          setError(errorMessage);
+          setLoading(false);
+        } else {
+          await new Promise(resolve => setTimeout(resolve, retryDelay));
+        }
       }
-      const responseData = await res.json();
-      const data = responseData.data;
-      set(CACHE_KEY, data, CACHE_TTL);
-      setShipping(data);
-    } catch (err: any) {
-      const errorMessage = err instanceof Error
-          ? err.message
-          : 'An unknown error occurred';
-
-      console.error('Failed to fetch shipping data:', err);
-
-      // Retry logic
-      if (attempt < retryAttempts) {
-        console.log(`Retrying shipping fetch (attempt ${attempt + 1}/${retryAttempts})...`);
-        setTimeout(() => {
-          fetchShipping(attempt + 1);
-        }, retryDelay * attempt);
-        return;
-      }
-
-      setError(errorMessage);
-    } finally {
-      setLoading(false);
     }
-  }, []);
+  }, [retryAttempts, retryDelay]);
 
   const refetch = useCallback(async (): Promise<void> => {
     set(CACHE_KEY, null, 0); // Invalidate cache
@@ -100,7 +95,13 @@ export function useShipping(options: UseShippingOptions = {}): UseShippingState 
 }
 
 // Hook for getting a specific shipping by ID
-export function useShippingById(id: number | null, autoFetch = true) {
+export function useShippingById(id: number | null, options: UseShippingOptions = {}) {
+  const {
+    autoFetch = true,
+    retryAttempts = 3,
+    retryDelay = 1000
+  } = options;
+
   const [shipping, setShipping] = useState<Shipping | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -122,29 +123,35 @@ export function useShippingById(id: number | null, autoFetch = true) {
     setLoading(true);
     setError(null);
 
-    try {
-      const apiUrl = `${API_BASE_URL}/shipping/${id}`;
-      const res = await fetch(apiUrl, { headers: { Accept: 'application/json' } });
+    for (let attempt = 1; attempt <= retryAttempts; attempt++) {
+      try {
+        const apiUrl = `${API_BASE_URL}/shipping/${id}`;
+        const res = await fetch(apiUrl, { headers: { Accept: 'application/json' } });
 
-      if (!res.ok) {
-        const errorData = await res.json();
-        throw new Error(errorData.message || res.statusText);
+        if (!res.ok) {
+          const errorData = await res.json();
+          throw new Error(errorData.message || res.statusText);
+        }
+        
+        const responseData = await res.json();
+        const data = responseData.data;
+        set(cacheKey, data, CACHE_TTL);
+        setShipping(data);
+        setLoading(false);
+        return; // Exit on success
+
+      } catch (err: any) {
+        if (attempt === retryAttempts) {
+          const errorMessage = err instanceof Error ? err.message : 'An unknown error occurred';
+          console.error('Failed to fetch shipping data:', err);
+          setError(errorMessage);
+          setLoading(false);
+        } else {
+          await new Promise(resolve => setTimeout(resolve, retryDelay));
+        }
       }
-      const responseData = await res.json();
-      const data = responseData.data;
-      set(cacheKey, data, CACHE_TTL);
-      setShipping(data);
-    } catch (err: any) {
-      const errorMessage = err instanceof Error
-          ? err.message
-          : 'An unknown error occurred';
-
-      console.error('Failed to fetch shipping data:', err);
-      setError(errorMessage);
-    } finally {
-      setLoading(false);
     }
-  }, [id]);
+  }, [id, retryAttempts, retryDelay]);
 
   const refetch = useCallback(async (): Promise<void> => {
     if (id) {

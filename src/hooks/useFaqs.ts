@@ -35,36 +35,31 @@ export function useFaqs(options: UseFaqsOptions = {}): UseFaqsState {
     setLoading(true);
     setError(null);
 
-    try {
-      const apiUrl = `${API_BASE_URL}/faqs`;
-      const res = await fetch(apiUrl, { headers: { Accept: 'application/json' } });
+    for (let attempt = 1; attempt <= retryAttempts; attempt++) {
+      try {
+        const apiUrl = `${API_BASE_URL}/faqs`;
+        const res = await fetch(apiUrl, { headers: { Accept: 'application/json' } });
 
-      if (!res.ok) {
-        const errorData = await res.json();
-        throw new Error(errorData.message || res.statusText);
+        if (!res.ok) {
+          const errorData = await res.json();
+          throw new Error(errorData.message || res.statusText);
+        }
+        const responseData = await res.json();
+        const data = responseData.data;
+        setFaqs(data);
+        setLoading(false);
+        return; // Exit on success
+
+      } catch (err: any) {
+        if (attempt === retryAttempts) {
+          const errorMessage = err instanceof Error ? err.message : 'An unknown error occurred';
+          console.error('Failed to fetch FAQ data:', err);
+          setError(errorMessage);
+          setLoading(false);
+        } else {
+          await new Promise(resolve => setTimeout(resolve, retryDelay));
+        }
       }
-      const responseData = await res.json();
-      const data = responseData.data;
-      setFaqs(data);
-    } catch (err: any) {
-      const errorMessage = err instanceof Error
-          ? err.message
-          : 'An unknown error occurred';
-
-      console.error('Failed to fetch FAQ data:', err);
-
-      // Retry logic
-      if (attempt < retryAttempts) {
-        console.log(`Retrying FAQ fetch (attempt ${attempt + 1}/${retryAttempts})...`);
-        setTimeout(() => {
-          fetchFaqs(attempt + 1);
-        }, retryDelay * attempt);
-        return;
-      }
-
-      setError(errorMessage);
-    } finally {
-      setLoading(false);
     }
   }, [retryAttempts, retryDelay]);
 
@@ -88,7 +83,13 @@ export function useFaqs(options: UseFaqsOptions = {}): UseFaqsState {
 }
 
 // Hook for getting a specific FAQ by ID
-export function useFaqById(id: number | null, autoFetch = true) {
+export function useFaqById(id: number | null, options: UseFaqsOptions = {}) {
+  const {
+    autoFetch = true,
+    retryAttempts = 3,
+    retryDelay = 1000
+  } = options;
+
   const [faq, setFaq] = useState<Faq | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -103,28 +104,34 @@ export function useFaqById(id: number | null, autoFetch = true) {
     setLoading(true);
     setError(null);
 
-    try {
-      const apiUrl = `${API_BASE_URL}/faqs/${id}`;
-      const res = await fetch(apiUrl, { headers: { Accept: 'application/json' } });
+    for (let attempt = 1; attempt <= retryAttempts; attempt++) {
+      try {
+        const apiUrl = `${API_BASE_URL}/faqs/${id}`;
+        const res = await fetch(apiUrl, { headers: { Accept: 'application/json' } });
 
-      if (!res.ok) {
-        const errorData = await res.json();
-        throw new Error(errorData.message || res.statusText);
+        if (!res.ok) {
+          const errorData = await res.json();
+          throw new Error(errorData.message || res.statusText);
+        }
+        
+        const responseData = await res.json();
+        const data = responseData.data;
+        setFaq(data);
+        setLoading(false);
+        return; // Exit on success
+
+      } catch (err: any) {
+        if (attempt === retryAttempts) {
+          const errorMessage = err instanceof Error ? err.message : 'An unknown error occurred';
+          console.error('Failed to fetch FAQ data:', err);
+          setError(errorMessage);
+          setLoading(false);
+        } else {
+          await new Promise(resolve => setTimeout(resolve, retryDelay));
+        }
       }
-      const responseData = await res.json();
-      const data = responseData.data;
-      setFaq(data);
-    } catch (err: any) {
-      const errorMessage = err instanceof Error
-          ? err.message
-          : 'An unknown error occurred';
-
-      console.error('Failed to fetch FAQ data:', err);
-      setError(errorMessage);
-    } finally {
-      setLoading(false);
     }
-  }, [id]);
+  }, [id, retryAttempts, retryDelay]);
 
   const refetch = useCallback(async (): Promise<void> => {
     await fetchFaq();

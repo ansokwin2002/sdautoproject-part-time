@@ -58,51 +58,42 @@ export function useHomeSettings(options: UseHomeSettingsOptions = {}): UseHomeSe
     setLoading(true);
     setError(null);
 
-    try {
-      const apiUrl = `${API_BASE_URL}/settings`;
-      const res = await fetch(apiUrl, { headers: { Accept: 'application/json' } });
+    for (let attempt = 1; attempt <= retryAttempts; attempt++) {
+      try {
+        const apiUrl = `${API_BASE_URL}/settings`;
+        const res = await fetch(apiUrl, { headers: { Accept: 'application/json' } });
 
-      if (!res.ok) {
-        const errorData = await res.json();
-        throw new Error(errorData.message || res.statusText);
+        if (!res.ok) {
+          const errorData = await res.json();
+          throw new Error(errorData.message || res.statusText);
+        }
+        const responseData = await res.json();
+        const data = responseData.data;
+        
+        set(CACHE_KEY, data, CACHE_TTL);
+        setAllSettings(data);
+        
+        // If not fetching all, set the first setting as the primary setting
+        if (!fetchAll && data.length > 0) {
+          setSettings(data[0]);
+        } else if (fetchAll) {
+          setSettings(data[0] || null);
+        }
+        setLoading(false);
+        return; // Exit on success
+
+      } catch (err: any) {
+        if (attempt === retryAttempts) {
+          const errorMessage = err instanceof Error ? err.message : 'An unknown error occurred';
+          console.error('Failed to fetch home settings:', err);
+          setError(errorMessage);
+          setLoading(false);
+        } else {
+          await new Promise(resolve => setTimeout(resolve, retryDelay));
+        }
       }
-      const responseData = await res.json();
-      const data = responseData.data;
-      
-      set(CACHE_KEY, data, CACHE_TTL);
-      setAllSettings(data);
-      
-      // If not fetching all, set the first setting as the primary setting
-      if (!fetchAll && data.length > 0) {
-        setSettings(data[0]);
-      } else if (fetchAll) {
-        setSettings(data[0] || null);
-      }
-      
-    } catch (err: any) {
-      const errorMessage = err instanceof Error
-        ? err.message
-        : 'An unknown error occurred';
-
-      console.error('Failed to fetch home settings:', err);
-
-      // Don't retry on client errors (4xx) based on error message
-      const isClientError = errorMessage.startsWith('HTTP 4');
-
-      // Retry logic for network errors and server errors only
-      if (attempt < retryAttempts && !isClientError) {
-        console.log(`Retrying fetch attempt ${attempt + 1}/${retryAttempts} in ${retryDelay}ms...`);
-        setTimeout(() => {
-          fetchSettings(attempt + 1);
-        }, retryDelay);
-        return;
-      }
-
-      setError(errorMessage);
-    } finally {
-      setLoading(false);
     }
-  }, [fetchAll]);
+  }, [fetchAll, retryAttempts, retryDelay]);
 
   const refetch = useCallback(async (): Promise<void> => {
     set(CACHE_KEY, null, 0); // Invalidate cache
@@ -126,7 +117,13 @@ export function useHomeSettings(options: UseHomeSettingsOptions = {}): UseHomeSe
 }
 
 // Hook for getting a specific setting by ID
-export function useHomeSettingById(id: number | null, autoFetch = true) {
+export function useHomeSettingById(id: number | null, options: UseHomeSettingsOptions = {}) {
+  const {
+    autoFetch = true,
+    retryAttempts = 3,
+    retryDelay = 1000
+  } = options;
+
   const [setting, setSetting] = useState<HomeSettings | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -148,28 +145,35 @@ export function useHomeSettingById(id: number | null, autoFetch = true) {
     setLoading(true);
     setError(null);
 
-    try {
-      const apiUrl = `${API_BASE_URL}/settings/${id}`;
-      const res = await fetch(apiUrl, { headers: { Accept: 'application/json' } });
+    for (let attempt = 1; attempt <= retryAttempts; attempt++) {
+      try {
+        const apiUrl = `${API_BASE_URL}/settings/${id}`;
+        const res = await fetch(apiUrl, { headers: { Accept: 'application/json' } });
 
-      if (!res.ok) {
-        const errorData = await res.json();
-        throw new Error(errorData.message || res.statusText);
+        if (!res.ok) {
+          const errorData = await res.json();
+          throw new Error(errorData.message || res.statusText);
+        }
+        
+        const responseData = await res.json();
+        const data = responseData.data;
+        set(cacheKey, data, CACHE_TTL);
+        setSetting(data);
+        setLoading(false);
+        return; // Exit on success
+
+      } catch (err: any) {
+        if (attempt === retryAttempts) {
+          const errorMessage = err instanceof Error ? err.message : 'An unknown error occurred';
+          console.error('Failed to fetch home setting:', err);
+          setError(errorMessage);
+          setLoading(false);
+        } else {
+          await new Promise(resolve => setTimeout(resolve, retryDelay));
+        }
       }
-      const responseData = await res.json();
-      const data = responseData.data;
-      set(cacheKey, data, CACHE_TTL);
-      setSetting(data);
-        } catch (err: any) {
-          const errorMessage = err instanceof Error
-              ? err.message
-              : 'An unknown error occurred';
-      console.error('Failed to fetch home setting:', err);
-      setError(errorMessage);
-    } finally {
-      setLoading(false);
     }
-  }, [id]);
+  }, [id, retryAttempts, retryDelay]);
 
   const refetch = useCallback(async (): Promise<void> => {
     if(id) {

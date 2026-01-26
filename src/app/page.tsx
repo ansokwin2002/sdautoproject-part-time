@@ -458,6 +458,7 @@ function HeroCarousel() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
   const [isTransitioning, setIsTransitioning] = useState(false);
+  const lastClick = useRef(0);
 
   // Use dynamic sliders from API, fallback to hardcoded slides if no API data
   const slides = sliders.length > 0 ? sliders : heroSlides;
@@ -491,6 +492,10 @@ function HeroCarousel() {
   };
 
   const nextSlide = useCallback(() => {
+    const now = Date.now();
+    if (now - lastClick.current < 500) return; // Throttle clicks to 500ms
+    lastClick.current = now;
+
     if (isTransitioning || slides.length === 0) return;
     setIsTransitioning(true);
     setCurrentSlide((prev) => (prev + 1) % slides.length);
@@ -498,6 +503,10 @@ function HeroCarousel() {
   }, [isTransitioning, slides.length]);
 
   const prevSlide = useCallback(() => {
+    const now = Date.now();
+    if (now - lastClick.current < 500) return; // Throttle clicks to 500ms
+    lastClick.current = now;
+
     if (isTransitioning || slides.length === 0) return;
     setIsTransitioning(true);
     setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
@@ -505,6 +514,10 @@ function HeroCarousel() {
   }, [isTransitioning, slides.length]);
 
   const goToSlide = useCallback((index: number) => {
+    const now = Date.now();
+    if (now - lastClick.current < 500) return; // Throttle clicks to 500ms
+    lastClick.current = now;
+
     if (isTransitioning || index === currentSlide) return;
     setIsTransitioning(true);
     setCurrentSlide(index);

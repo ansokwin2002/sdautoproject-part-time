@@ -56,46 +56,53 @@ export function useProducts(options: UseProductsOptions = {}): UseProductsState 
     setError(null);
   }, []);
 
-  const fetchProducts = useCallback(async (attempt = 1): Promise<void> => {
+  const fetchProducts = useCallback(async (): Promise<void> => {
     const cachedData = get<Product[]>(CACHE_KEY);
     if (cachedData) {
-        setProducts(cachedData);
-        return;
+      setProducts(cachedData);
+      return;
     }
 
     setLoading(true);
     setError(null);
 
-    try {
-      const apiUrl = `${API_BASE_URL}/products`;
-      const res = await fetch(apiUrl, { headers: { Accept: 'application/json' } });
+    for (let attempt = 1; attempt <= retryAttempts; attempt++) {
+      try {
+        const apiUrl = `${API_BASE_URL}/products`;
+        const res = await fetch(apiUrl, { headers: { Accept: 'application/json' } });
 
-      if (!res.ok) {
-        const errorData = await res.json();
-        throw new Error(errorData.message || res.statusText);
+        if (!res.ok) {
+          const errorData = await res.json();
+          throw new Error(errorData.message || res.statusText);
+        }
+        
+        const responseData = await res.json();
+
+        if (responseData.data && responseData.data.length > 0) {
+          const transformedProducts = responseData.data.map(transformApiProduct);
+          set(CACHE_KEY, transformedProducts, CACHE_TTL);
+          setProducts(transformedProducts);
+        } else {
+          console.log('API returned insufficient data, falling back to static products.');
+          setProducts(staticProducts);
+        }
+        
+        setLoading(false);
+        return; // Exit the function on success
+        
+      } catch (err: any) {
+        if (attempt === retryAttempts) {
+          const errorMessage = err instanceof Error ? err.message : 'An unknown error occurred';
+          console.error('Failed to fetch products, falling back to static data:', err);
+          setError(errorMessage);
+          setProducts(staticProducts); // Fallback on final error
+          setLoading(false);
+        } else {
+          await new Promise(resolve => setTimeout(resolve, retryDelay));
+        }
       }
-      const responseData = await res.json();
-      
-      if (responseData.data && responseData.data.length > 0) {
-        const transformedProducts = responseData.data.map(transformApiProduct);
-        set(CACHE_KEY, transformedProducts, CACHE_TTL);
-        setProducts(transformedProducts);
-      } else {
-        // Fallback to static data if API returns 0 records
-        console.log('API returned insufficient data, falling back to static products.');
-        setProducts(staticProducts);
-      }
-    } catch (err: any) {
-        const errorMessage = err instanceof Error
-            ? err.message
-            : 'An unknown error occurred';
-      console.error('Failed to fetch products, falling back to static data:', err);
-      setError(errorMessage);
-      setProducts(staticProducts); // Fallback on error
-    } finally {
-      setLoading(false);
     }
-  }, []);
+  }, [retryAttempts, retryDelay]);
 
   const refetch = useCallback(async (): Promise<void> => {
     set(CACHE_KEY, null, 0); // Invalidate cache
@@ -118,7 +125,13 @@ export function useProducts(options: UseProductsOptions = {}): UseProductsState 
 }
 
 // Hook for getting a specific product by ID
-export function useProductById(id: string | null, autoFetch = true) {
+export function useProductById(id: string | null, options: UseProductsOptions = {}) {
+  const {
+    autoFetch = true,
+    retryAttempts = 3,
+    retryDelay = 1000
+  } = options;
+
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -133,46 +146,54 @@ export function useProductById(id: string | null, autoFetch = true) {
     const cacheKey = `${CACHE_KEY}-${id}`;
     const cachedData = get<Product>(cacheKey);
     if (cachedData) {
-        setProduct(cachedData);
-        return;
+      setProduct(cachedData);
+      return;
     }
-
 
     setLoading(true);
     setError(null);
 
-    try {
-      const apiUrl = `${API_BASE_URL}/products/${id}`;
-      const res = await fetch(apiUrl, { headers: { Accept: 'application/json' } });
+    for (let attempt = 1; attempt <= retryAttempts; attempt++) {
+      try {
+        const apiUrl = `${API_BASE_URL}/products/${id}`;
+        const res = await fetch(apiUrl, { headers: { Accept: 'application/json' } });
 
-      if (!res.ok) {
-        const errorData = await res.json();
-        throw new Error(errorData.message || res.statusText);
+        if (!res.ok) {
+          const errorData = await res.json();
+          throw new Error(errorData.message || res.statusText);
+        }
+        
+        const responseData = await res.json();
+        
+        if (responseData.data) {
+          const transformedProduct = transformApiProduct(responseData.data);
+          set(cacheKey, transformedProduct, CACHE_TTL);
+          setProduct(transformedProduct);
+        } else {
+          throw new Error('Product not found in API');
+        }
+        
+        setLoading(false);
+        return; // Exit on success
+
+      } catch (err: any) {
+        if (attempt === retryAttempts) {
+          const errorMessage = err instanceof Error ? err.message : 'An unknown error occurred';
+          console.error(`Failed to fetch product ${id} from API, falling back to static data:`, err);
+          setError(errorMessage);
+          const staticProduct = staticProducts.find(p => p.id === id);
+          if (staticProduct) {
+            setProduct(staticProduct);
+          } else {
+            setError(`Product with ID ${id} not found.`);
+          }
+          setLoading(false);
+        } else {
+          await new Promise(resolve => setTimeout(resolve, retryDelay));
+        }
       }
-      const responseData = await res.json();
-      if (responseData.data) {
-        const transformedProduct = transformApiProduct(responseData.data);
-        set(cacheKey, transformedProduct, CACHE_TTL);
-        setProduct(transformedProduct);
-      } else {
-        throw new Error('Product not found in API');
-      }
-    } catch (err: any) {
-        const errorMessage = err instanceof Error
-            ? err.message
-            : 'An unknown error occurred';
-      console.error(`Failed to fetch product ${id} from API, falling back to static data:`, err);
-      setError(errorMessage);
-      const staticProduct = staticProducts.find(p => p.id === id);
-      if (staticProduct) {
-        setProduct(staticProduct);
-      } else {
-        setError(`Product with ID ${id} not found.`);
-      }
-    } finally {
-      setLoading(false);
     }
-  }, [id]);
+  }, [id, retryAttempts, retryDelay]);
 
   const refetch = useCallback(async (): Promise<void> => {
     if (id) {

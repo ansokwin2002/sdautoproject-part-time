@@ -1,5 +1,3 @@
-'use client';
-
 import { useState, useMemo, useRef, useEffect } from 'react';
 import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 import ProductCard from "@/components/product-card";
@@ -241,7 +239,7 @@ export default function ProductList({ products, showContainer = true, selectedBr
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-5">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt.5">
           {isLoading
             ? Array.from({ length: 8 }).map((_, index) => (
                 <AnimatedCard key={`skeleton-${index}`} delay={index * 30}>

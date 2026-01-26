@@ -35,36 +35,31 @@ export function usePolicies(options: UsePoliciesOptions = {}): UsePoliciesState 
     setLoading(true);
     setError(null);
 
-    try {
-      const apiUrl = `${API_BASE_URL}/policies`;
-      const res = await fetch(apiUrl, { headers: { Accept: 'application/json' } });
+    for (let attempt = 1; attempt <= retryAttempts; attempt++) {
+      try {
+        const apiUrl = `${API_BASE_URL}/policies`;
+        const res = await fetch(apiUrl, { headers: { Accept: 'application/json' } });
 
-      if (!res.ok) {
-        const errorData = await res.json();
-        throw new Error(errorData.message || res.statusText);
+        if (!res.ok) {
+          const errorData = await res.json();
+          throw new Error(errorData.message || res.statusText);
+        }
+        const responseData = await res.json();
+        const data = responseData.data;
+        setPolicies(data);
+        setLoading(false);
+        return; // Exit on success
+
+      } catch (err: any) {
+        if (attempt === retryAttempts) {
+          const errorMessage = err instanceof Error ? err.message : 'An unknown error occurred';
+          console.error('Failed to fetch policy data:', err);
+          setError(errorMessage);
+          setLoading(false);
+        } else {
+          await new Promise(resolve => setTimeout(resolve, retryDelay));
+        }
       }
-      const responseData = await res.json();
-      const data = responseData.data;
-      setPolicies(data);
-    } catch (err: any) {
-      const errorMessage = err instanceof Error
-          ? err.message
-          : 'An unknown error occurred';
-
-      console.error('Failed to fetch policy data:', err);
-
-      // Retry logic
-      if (attempt < retryAttempts) {
-        console.log(`Retrying policy fetch (attempt ${attempt + 1}/${retryAttempts})...`);
-        setTimeout(() => {
-          fetchPolicies(attempt + 1);
-        }, retryDelay * attempt);
-        return;
-      }
-
-      setError(errorMessage);
-    } finally {
-      setLoading(false);
     }
   }, [retryAttempts, retryDelay]);
 
@@ -88,7 +83,13 @@ export function usePolicies(options: UsePoliciesOptions = {}): UsePoliciesState 
 }
 
 // Hook for getting a specific policy by ID
-export function usePolicyById(id: number | null, autoFetch = true) {
+export function usePolicyById(id: number | null, options: UsePoliciesOptions = {}) {
+  const {
+    autoFetch = true,
+    retryAttempts = 3,
+    retryDelay = 1000
+  } = options;
+
   const [policy, setPolicy] = useState<Policy | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -103,27 +104,34 @@ export function usePolicyById(id: number | null, autoFetch = true) {
     setLoading(true);
     setError(null);
 
-    try {
-      const apiUrl = `${API_BASE_URL}/policies/${id}`;
-      const res = await fetch(apiUrl, { headers: { Accept: 'application/json' } });
+    for (let attempt = 1; attempt <= retryAttempts; attempt++) {
+      try {
+        const apiUrl = `${API_BASE_URL}/policies/${id}`;
+        const res = await fetch(apiUrl, { headers: { Accept: 'application/json' } });
 
-      if (!res.ok) {
-        const errorData = await res.json();
-        throw new Error(errorData.message || res.statusText);
+        if (!res.ok) {
+          const errorData = await res.json();
+          throw new Error(errorData.message || res.statusText);
+        }
+        
+        const responseData = await res.json();
+        const data = responseData.data;
+        setPolicy(data);
+        setLoading(false);
+        return; // Exit on success
+
+      } catch (err: any) {
+        if (attempt === retryAttempts) {
+          const errorMessage = err instanceof Error ? err.message : 'An unknown error occurred';
+          console.error('Failed to fetch policy data:', err);
+          setError(errorMessage);
+          setLoading(false);
+        } else {
+          await new Promise(resolve => setTimeout(resolve, retryDelay));
+        }
       }
-      const responseData = await res.json();
-      const data = responseData.data;
-      setPolicy(data);
-        } catch (err: any) {
-          const errorMessage = err instanceof Error
-              ? err.message
-              : 'An unknown error occurred';
-      console.error('Failed to fetch policy data:', err);
-      setError(errorMessage);
-    } finally {
-      setLoading(false);
     }
-  }, [id]);
+  }, [id, retryAttempts, retryDelay]);
 
   const refetch = useCallback(async (): Promise<void> => {
     await fetchPolicy();

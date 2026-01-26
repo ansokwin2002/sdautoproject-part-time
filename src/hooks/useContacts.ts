@@ -28,27 +28,31 @@ export function useContacts(options: UseContactsOptions = {}): UseContactsState 
   const fetchContacts = useCallback(async (attempt = 1): Promise<void> => {
     setLoading(true);
     setError(null);
-    try {
-      const apiUrl = `${API_BASE_URL}/contacts`;
-      const res = await fetch(apiUrl, { headers: { Accept: 'application/json' } });
+    for (let attempt = 1; attempt <= retryAttempts; attempt++) {
+      try {
+        const apiUrl = `${API_BASE_URL}/contacts`;
+        const res = await fetch(apiUrl, { headers: { Accept: 'application/json' } });
 
-      if (!res.ok) {
-        const errorData = await res.json();
-        throw new Error(errorData.message || res.statusText);
+        if (!res.ok) {
+          const errorData = await res.json();
+          throw new Error(errorData.message || res.statusText);
+        }
+        const responseData = await res.json();
+        const data = responseData.data;
+        setContacts(data);
+        setLoading(false);
+        return; // Exit on success
+
+      } catch (err: any) {
+        if (attempt === retryAttempts) {
+          const errorMessage = err instanceof Error ? err.message : 'An unknown error occurred';
+          console.error('Failed to fetch contacts:', err);
+          setError(errorMessage);
+          setLoading(false);
+        } else {
+          await new Promise(resolve => setTimeout(resolve, retryDelay));
+        }
       }
-      const responseData = await res.json();
-      const data = responseData.data;
-      setContacts(data);
-    } catch (err: any) {
-      const msg = err instanceof Error ? err.message : 'Unknown error';
-      console.error('Failed to fetch contacts:', err);
-      if (attempt < retryAttempts) {
-        setTimeout(() => fetchContacts(attempt + 1), retryDelay * attempt);
-        return;
-      }
-      setError(msg);
-    } finally {
-      setLoading(false);
     }
   }, [retryAttempts, retryDelay]);
 
