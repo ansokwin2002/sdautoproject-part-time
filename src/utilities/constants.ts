@@ -1,1 +1,1 @@
-export const API_BASE_URL = 'http://192.168.77.79:8000/api/public';
+export const API_BASE_URL = 'hhttps://sdauto.info/api/public';
