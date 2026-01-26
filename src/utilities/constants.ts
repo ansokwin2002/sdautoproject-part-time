@@ -1,1 +1,1 @@
-export const API_BASE_URL = 'hhttps://sdauto.info/api/public';
+export const API_BASE_URL = 'https://sdauto.info/api/public';
