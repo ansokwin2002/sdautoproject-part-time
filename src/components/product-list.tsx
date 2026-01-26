@@ -4,6 +4,7 @@ import ProductCard from "@/components/product-card";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
+import { useDebounce } from '@/hooks/use-debounce';
 
 const ITEMS_PER_PAGE = 20;
 
@@ -69,6 +70,8 @@ export default function ProductList({ products, showContainer = true, selectedBr
   const [sortOrder, setSortOrder] = useState('default');
   const [selectedBrand, setSelectedBrand] = useState<string>(propSelectedBrand || 'all');
   const [currentPage, setCurrentPage] = useState(1);
+  const lastClick = useRef(0);
+  const debouncedSearchTerm = useDebounce(searchTerm, 300);
 
   // Update internal selectedBrand when propSelectedBrand changes
   useEffect(() => {
@@ -81,7 +84,7 @@ export default function ProductList({ products, showContainer = true, selectedBr
       const name = product.name ? String(product.name).toLowerCase() : '';
       const description = product.description ? String(product.description).toLowerCase() : '';
       const partNumber = product.partNumber ? String(product.partNumber).toLowerCase() : '';
-      const lowerSearchTerm = searchTerm.toLowerCase();
+      const lowerSearchTerm = debouncedSearchTerm.toLowerCase();
       const lowerSelectedBrand = selectedBrand.toLowerCase();
       const brandKeyword = lowerSelectedBrand.replace(' parts', '');
 
@@ -139,7 +142,7 @@ export default function ProductList({ products, showContainer = true, selectedBr
     }
 
     return filtered;
-  }, [searchTerm, sortOrder, selectedBrand, products]);
+  }, [debouncedSearchTerm, sortOrder, selectedBrand, products]);
 
     const uniqueBrands = useMemo(() => {
     // Define the desired order of brand display, using short names
@@ -192,6 +195,13 @@ export default function ProductList({ products, showContainer = true, selectedBr
     }
   };
 
+  const handlePageChange = (page: number) => {
+    const now = Date.now();
+    if (now - lastClick.current < 300) return;
+    lastClick.current = now;
+    setCurrentPage(page);
+  }
+
   // Reset currentPage and searchTerm when filters change
   useEffect(() => {
     setCurrentPage(1);
@@ -239,7 +249,7 @@ export default function ProductList({ products, showContainer = true, selectedBr
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt.5">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-5">
           {isLoading
             ? Array.from({ length: 8 }).map((_, index) => (
                 <AnimatedCard key={`skeleton-${index}`} delay={index * 30}>
@@ -270,7 +280,7 @@ export default function ProductList({ products, showContainer = true, selectedBr
             <Button
               variant="outline"
               size="sm"
-              onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+              onClick={() => handlePageChange(Math.max(currentPage - 1, 1))}
               disabled={currentPage === 1}
               className="text-xs px-2 py-0.5"
             >
@@ -325,7 +335,7 @@ export default function ProductList({ products, showContainer = true, selectedBr
                         key={page}
                         variant={currentPage === page ? "default" : "outline"}
                         size="sm"
-                        onClick={() => setCurrentPage(page as number)}
+                        onClick={() => handlePageChange(page as number)}
                         className="text-xs px-2 py-0.5"
                       >
                         {page}
@@ -338,7 +348,7 @@ export default function ProductList({ products, showContainer = true, selectedBr
             <Button
               variant="outline"
               size="sm"
-              onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+              onClick={() => handlePageChange(Math.min(currentPage + 1, totalPages))}
               disabled={currentPage === totalPages}
               className="text-xs px-2 py-0.5"
             >
